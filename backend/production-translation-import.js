@@ -100,6 +100,14 @@ const TRANSLATION_FILES = {
   farmer: {
     en: '../frontend/src/i18n/locales/en/farmer.json',
     ne: '../frontend/src/i18n/locales/ne/farmer.json'
+  },
+  reviews: {
+    en: '../frontend/src/i18n/locales/en/reviews.json',
+    ne: '../frontend/src/i18n/locales/ne/reviews.json'
+  },
+  home: {
+    en: '../frontend/src/i18n/locales/en/home.json',
+    ne: '../frontend/src/i18n/locales/ne/home.json'
   }
 };
 

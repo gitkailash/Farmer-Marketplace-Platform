@@ -165,7 +165,7 @@ export class TranslationController {
    */
   async getTranslationKeys(req: Request, res: Response): Promise<void> {
     try {
-      const { namespace, page = '1', limit = '50' } = req.query;
+      const { namespace, page = '1', limit = '50', search } = req.query;
       
       const pageNum = parseInt(page as string, 10);
       const limitNum = parseInt(limit as string, 10);
@@ -180,7 +180,8 @@ export class TranslationController {
       const result = await translationService.getTranslationKeys(
         namespace as string,
         pageNum,
-        limitNum
+        limitNum,
+        search as string
       );
 
       res.json({

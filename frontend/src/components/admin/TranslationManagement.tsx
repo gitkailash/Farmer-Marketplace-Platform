@@ -95,7 +95,8 @@ const TranslationManagement: React.FC = () => {
       const response = await translationService.getTranslationKeys({
         namespace: selectedNamespace || undefined,
         page: currentPage,
-        limit: 50
+        limit: 50,
+        search: searchTerm || undefined
       })
       
       if (response.success && response.data) {
@@ -111,7 +112,7 @@ const TranslationManagement: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }, [selectedNamespace, currentPage])
+  }, [selectedNamespace, currentPage, searchTerm])
 
   // Load validation reports
   const loadValidationReports = useCallback(async () => {
@@ -142,16 +143,22 @@ const TranslationManagement: React.FC = () => {
     loadTranslationKeys()
   }, [loadTranslationKeys])
 
+  // Debounced search effect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setCurrentPage(1) // Reset to first page when searching
+      loadTranslationKeys()
+    }, 300) // 300ms debounce
+
+    return () => clearTimeout(timeoutId)
+  }, [searchTerm])
+
   useEffect(() => {
     loadValidationReports()
   }, [loadValidationReports])
 
-  // Filter keys based on search term
-  const filteredKeys = translationKeys.filter(key => 
-    key.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    key.translations.en.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (key.translations.ne && key.translations.ne.toLowerCase().includes(searchTerm.toLowerCase()))
-  )
+  // Use the loaded keys directly (no client-side filtering needed)
+  const displayedKeys = translationKeys
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -459,6 +466,7 @@ const TranslationManagement: React.FC = () => {
               onChange={(e) => {
                 setSelectedNamespace(e.target.value)
                 setCurrentPage(1)
+                setSearchTerm('') // Clear search when changing namespace
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
@@ -481,12 +489,12 @@ const TranslationManagement: React.FC = () => {
               Translation Keys
             </h3>
             <div className="text-sm text-gray-600">
-              Showing {filteredKeys.length} of {totalKeys} keys
+              Showing {displayedKeys.length} of {totalKeys} keys
             </div>
           </div>
         </div>
 
-        {filteredKeys.length === 0 ? (
+        {displayedKeys.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <Languages className="mx-auto text-gray-400 mb-4" size={48} />
             <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -534,7 +542,7 @@ const TranslationManagement: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredKeys.map((key) => (
+                {displayedKeys.map((key) => (
                   <tr key={key._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>

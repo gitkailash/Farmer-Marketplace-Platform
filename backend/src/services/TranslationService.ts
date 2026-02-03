@@ -310,16 +310,30 @@ export class TranslationService implements ITranslationService {
   }
 
   /**
-   * Get all translation keys with pagination
+   * Get all translation keys with pagination and search
    */
   async getTranslationKeys(
     namespace?: string, 
     page: number = 1, 
-    limit: number = 50
+    limit: number = 50,
+    search?: string
   ): Promise<{ keys: ITranslationKey[], total: number, page: number, totalPages: number }> {
     const query: any = {};
+    
+    // Namespace filter
     if (namespace && namespace.trim() !== '') {
       query.namespace = namespace;
+    }
+
+    // Search filter
+    if (search && search.trim() !== '') {
+      const searchRegex = new RegExp(search.trim(), 'i');
+      query.$or = [
+        { key: searchRegex },
+        { 'translations.en': searchRegex },
+        { 'translations.ne': searchRegex },
+        { context: searchRegex }
+      ];
     }
 
     const skip = (page - 1) * limit;

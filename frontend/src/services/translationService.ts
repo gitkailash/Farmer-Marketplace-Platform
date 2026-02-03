@@ -77,6 +77,7 @@ export const getTranslationKeys = async (params?: {
   namespace?: string
   page?: number
   limit?: number
+  search?: string
 }): Promise<ApiResponse<{
   keys: TranslationKey[]
   total: number
@@ -88,13 +89,14 @@ export const getTranslationKeys = async (params?: {
   if (params?.namespace) queryParams.append('namespace', params.namespace)
   if (params?.page) queryParams.append('page', params.page.toString())
   if (params?.limit) queryParams.append('limit', params.limit.toString())
+  if (params?.search) queryParams.append('search', params.search)
   
   // Add cache-busting parameter for admin calls
   queryParams.append('_t', Date.now().toString())
 
   const url = `/translations/keys?${queryParams.toString()}`
   console.log('🌐 Making API call to:', url)
-  console.log('� Query parrams:', Object.fromEntries(queryParams))
+  console.log('📋 Query params:', Object.fromEntries(queryParams))
 
   const response = await api.get(url)
   console.log('📨 Raw API response:', response.data)

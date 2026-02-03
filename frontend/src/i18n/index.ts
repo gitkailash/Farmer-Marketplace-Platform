@@ -174,6 +174,9 @@ export const translationLoader: TranslationLoader = {
             case 'en/reviews':
               translationModule = await import('./locales/en/reviews.json');
               break;
+            case 'en/home':
+              translationModule = await import('./locales/en/home.json');
+              break;
             case 'ne/common':
               translationModule = await import('./locales/ne/common.json');
               break;
@@ -194,6 +197,9 @@ export const translationLoader: TranslationLoader = {
               break;
             case 'ne/reviews':
               translationModule = await import('./locales/ne/reviews.json');
+              break;
+            case 'ne/home':
+              translationModule = await import('./locales/ne/home.json');
               break;
             default:
               console.warn(`No static fallback for: ${language}/${namespace}`);

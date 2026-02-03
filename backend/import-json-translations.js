@@ -13,13 +13,21 @@ const translationFiles = {
     common: '../frontend/src/i18n/locales/en/common.json',
     auth: '../frontend/src/i18n/locales/en/auth.json',
     products: '../frontend/src/i18n/locales/en/products.json',
-    admin: '../frontend/src/i18n/locales/en/admin.json'
+    admin: '../frontend/src/i18n/locales/en/admin.json',
+    buyer: '../frontend/src/i18n/locales/en/buyer.json',
+    farmer: '../frontend/src/i18n/locales/en/farmer.json',
+    reviews: '../frontend/src/i18n/locales/en/reviews.json',
+    home: '../frontend/src/i18n/locales/en/home.json'
   },
   ne: {
     common: '../frontend/src/i18n/locales/ne/common.json',
     auth: '../frontend/src/i18n/locales/ne/auth.json',
     products: '../frontend/src/i18n/locales/ne/products.json',
-    admin: '../frontend/src/i18n/locales/ne/admin.json'
+    admin: '../frontend/src/i18n/locales/ne/admin.json',
+    buyer: '../frontend/src/i18n/locales/ne/buyer.json',
+    farmer: '../frontend/src/i18n/locales/ne/farmer.json',
+    reviews: '../frontend/src/i18n/locales/ne/reviews.json',
+    home: '../frontend/src/i18n/locales/ne/home.json'
   }
 };
 
@@ -206,7 +214,7 @@ async function main() {
     const allErrors = [];
 
     // Import each namespace
-    for (const namespace of ['common', 'auth', 'products', 'admin']) {
+    for (const namespace of ['common', 'auth', 'products', 'admin', 'buyer', 'farmer', 'reviews', 'home']) {
       console.log(`\n📂 Processing ${namespace} namespace...`);
       
       // Load English and Nepali files
