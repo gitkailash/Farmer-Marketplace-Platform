@@ -62,7 +62,7 @@ export interface ILocalePreferences {
 
 // User Types
 export interface User {
-  _id: string;
+  id: string;
   email: string;
   role: 'VISITOR' | 'BUYER' | 'FARMER' | 'ADMIN';
   profile: {

@@ -18,7 +18,7 @@ interface ProcessedReviewData {
 }
 
 const FarmerReviews: React.FC = () => {
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [reviewData, setReviewData] = useState<ProcessedReviewData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -26,14 +26,15 @@ const FarmerReviews: React.FC = () => {
   const [retryCount, setRetryCount] = useState(0)
   const [processingErrors, setProcessingErrors] = useState<string[]>([])
 
-  useEffect(() => {
-    if (user?._id) {
-      loadFarmerReviews()
-    }
-  }, [user])
-
   const loadFarmerReviews = useCallback(async (isRetry = false) => {
     try {
+      // Check if user is authenticated
+      if (!user?.id) {
+        setError('User not authenticated')
+        setLoading(false)
+        return
+      }
+
       setLoading(true)
       if (!isRetry) {
         setError(null)
@@ -71,16 +72,20 @@ const FarmerReviews: React.FC = () => {
       } else {
         const errorMessage = response.message || 'Failed to load reviews'
         setError(errorMessage)
-        console.error('API call failed:', response)
       }
     } catch (err: any) {
       const errorMessage = err.message || 'Failed to load reviews'
       setError(errorMessage)
-      console.error('Review loading error:', err)
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [user])
+
+  useEffect(() => {
+    if (user?.id && !authLoading) {
+      loadFarmerReviews()
+    }
+  }, [user, authLoading, loadFarmerReviews])
 
   const handleRetry = useCallback(() => {
     setRetryCount(prev => prev + 1)

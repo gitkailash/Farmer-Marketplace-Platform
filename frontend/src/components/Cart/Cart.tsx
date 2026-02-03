@@ -15,7 +15,7 @@ interface CartProps {
 const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate()
   const { isAuthenticated, user } = useAuth()
-  const { t } = useAppTranslation('common')
+  const { t } = useAppTranslation('buyer')
   const { t: tProducts } = useAppTranslation('products')
   const { language } = useI18n()
   
