@@ -1,0 +1,292 @@
+{
+  "dashboard": {
+    "title": "Buyer Dashboard",
+    "welcome": "Welcome back, {{name}}! 👋",
+    "subtitle": "Here's what's happening with your orders and messages",
+    "loading": "Loading dashboard...",
+    "errorLoading": "Failed to load dashboard data"
+  },
+  "header": {
+    "farmerMarket": "Farmer Market",
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "myOrders": "My Orders",
+    "messages": "Messages",
+    "settings": "Settings",
+    "logout": "Logout",
+    "signedInAs": "Hi, {{name}}",
+    "accountType": "{{role}} account",
+    "language": "Language / भाषा",
+    "openMenu": "Open main menu",
+    "closeMenu": "Close main menu",
+    "exploreProducts": "Explore Products",
+    "login": "Login",
+    "register": "Register"
+  },
+  "stats": {
+    "totalOrders": "Total Orders",
+    "pendingOrders": "Pending Orders",
+    "completedOrders": "Completed Orders",
+    "unreadMessages": "Unread Messages",
+    "pendingReviews": "Pending Reviews",
+    "totalReviews": "Total Reviews"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "browseProducts": "Browse Products",
+    "viewOrders": "View Orders",
+    "messages": "Messages",
+    "myReviews": "My Reviews"
+  },
+  "notifications": {
+    "title": "📢 Action Required",
+    "pendingOrdersText": "You have {{count}} pending order{{count, plural, one {} other {s}}}",
+    "unreadMessagesText": "You have {{count}} unread message{{count, plural, one {} other {s}}}",
+    "pendingReviewsText": "You can write {{count}} review{{count, plural, one {} other {s}}}",
+    "viewOrders": "View Orders →",
+    "readMessages": "Read Messages →",
+    "writeReviews": "Write Reviews →"
+  },
+  "tips": {
+    "title": "💡 Tips for Better Shopping",
+    "beforeOrdering": {
+      "title": "Before Ordering:",
+      "messageFarmers": "• Message farmers about product freshness",
+      "askBulkPricing": "• Ask about bulk pricing for larger quantities",
+      "confirmDelivery": "• Confirm delivery options and timing",
+      "checkRatings": "• Check farmer ratings and reviews"
+    },
+    "afterReceiving": {
+      "title": "After Receiving:",
+      "leaveReviews": "• Leave honest reviews to help other buyers",
+      "rateExperience": "• Rate your experience with the farmer",
+      "reportIssues": "• Report any issues through messages",
+      "considerReordering": "• Consider reordering from good farmers"
+    }
+  },
+  "orders": {
+    "browseProducts": "Browse Products",
+    "viewAllOrders": "View All Orders",
+    "noOrdersYet": "No orders yet",
+    "startShopping": "Start shopping to see your orders here",
+    "page": {
+      "title": "My Orders",
+      "titleFarmer": "Order Management",
+      "subtitle": "Track your orders and view order history",
+      "subtitleFarmer": "Manage incoming orders from buyers",
+      "loading": "Loading orders...",
+      "errorLoading": "Failed to load orders",
+      "retry": "Retry"
+    },
+    "filters": {
+      "allOrders": "All Orders",
+      "pending": "PENDING",
+      "accepted": "ACCEPTED", 
+      "completed": "COMPLETED",
+      "cancelled": "CANCELLED"
+    },
+    "status": {
+      "pending": "PENDING",
+      "accepted": "ACCEPTED",
+      "completed": "COMPLETED", 
+      "cancelled": "CANCELLED"
+    },
+    "card": {
+      "orderNumber": "Order #{{number}}",
+      "placedOn": "Placed on {{date}}",
+      "farmer": "Farmer:",
+      "buyer": "Buyer:",
+      "items": "Items:",
+      "itemCount": "{{count}} item{{count, plural, one {} other {s}}}",
+      "orderItems": "Order Items",
+      "deliveryAddress": "Delivery Address",
+      "specialInstructions": "Special Instructions",
+      "orderTotal": "Order Total:",
+      "viewDetails": "View Details",
+      "acceptOrder": "Accept Order",
+      "markCompleted": "Mark as Completed",
+      "cancelOrder": "Cancel Order",
+      "leaveReview": "Leave Review",
+      "quantity": "Qty: {{quantity}}",
+      "priceEach": "${{price}} each",
+      "pricePerUnit": "${{price}} per {{unit}}",
+      "productId": "ID: {{id}}",
+      "byFarmer": "by Farmer #{{farmerId}}"
+    },
+    "processing": {
+      "title": "Processing order items...",
+      "dataQualityNotice": "Data Quality Notice",
+      "dataQualityDesc": "Some product information may be incomplete or unavailable. Order totals remain accurate.",
+      "processingNotice": "Processing Notice",
+      "noItemsDisplayed": "No items could be displayed",
+      "orderTotal": "Order total: ${{total}}",
+      "allDetailsLoaded": "All details loaded",
+      "someDetailsUnavailable": "Some details unavailable"
+    },
+    "empty": {
+      "title": "No orders found",
+      "titleFiltered": "No {{status}} orders",
+      "descriptionBuyer": "You haven't placed any orders yet. Start shopping to see your orders here.",
+      "descriptionFarmer": "No orders match the selected status. Orders will appear here when buyers place them.",
+      "startShopping": "Start Shopping"
+    },
+    "actions": {
+      "acceptSuccess": "Order accepted successfully!",
+      "acceptError": "Failed to accept order",
+      "completeSuccess": "Order marked as completed!",
+      "completeError": "Failed to complete order", 
+      "cancelConfirm": "Are you sure you want to cancel this order?",
+      "cancelSuccess": "Order cancelled successfully",
+      "cancelError": "Failed to cancel order"
+    }
+  },
+  "messages": {
+    "title": "Messages",
+    "subtitle": "Communicate with farmers about products and orders",
+    "newCount": "{{count}} new",
+    "browseProducts": "Browse Products",
+    "selectConversation": "Select a conversation",
+    "selectConversationDesc": "Choose a message thread to start chatting with farmers about their products",
+    "contactFromProducts": "Contact farmers directly from product pages",
+    "messagingTips": "💡 Messaging Tips",
+    "beforeOrdering": {
+      "title": "Before ordering:",
+      "freshness": "• Ask about product freshness and harvest dates",
+      "bulkPricing": "• Inquire about bulk pricing for larger quantities",
+      "delivery": "• Confirm delivery options and timing"
+    },
+    "etiquette": {
+      "title": "Communication etiquette:",
+      "polite": "• Be polite and respectful in all messages",
+      "details": "• Provide clear details about your requirements",
+      "respond": "• Respond promptly to farmer inquiries"
+    },
+    "checkMessages": "Check Messages",
+    "noMessages": "No messages",
+    "startMessaging": "Message farmers to get started",
+    "errorLoading": "Failed to load message count"
+  },
+  "reviews": {
+    "title": "My Reviews",
+    "subtitle": "Manage your reviews and rate your experiences with farmers",
+    "viewOrders": "View Orders",
+    "tabs": {
+      "myReviews": "My Reviews",
+      "pending": "Pending Reviews"
+    },
+    "myReviews": {
+      "empty": {
+        "title": "No Reviews Yet",
+        "description": "You haven't written any reviews yet. Complete some orders and share your experience with farmers!",
+        "action": "Browse Products"
+      },
+      "yourReview": "Your Review",
+      "approved": "Approved",
+      "pendingApproval": "Pending Approval",
+      "reviewFor": "Review for Farmer #{{farmerId}}",
+      "order": "Order: #{{orderId}}",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cannotEdit": "ℹ️ Approved reviews cannot be edited or deleted"
+    },
+    "pending": {
+      "empty": {
+        "title": "No Pending Reviews",
+        "description": "You don't have any completed orders waiting for reviews. Complete some orders to start leaving reviews!",
+        "action": "Browse Products"
+      },
+      "readyToReview": {
+        "title": "📝 Ready to Review",
+        "description": "Share your experience with farmers to help other buyers make informed decisions. Your reviews will be published after admin approval."
+      },
+      "orderCard": {
+        "order": "Order #{{orderId}}",
+        "completed": "✅ Completed",
+        "farmer": "Farmer:",
+        "completedDate": "Completed:",
+        "total": "Total:",
+        "items": "Items:",
+        "itemCount": "{{count}} item{{count, plural, one {} other {s}}}",
+        "orderItems": "Order Items:",
+        "productItem": "Product #{{productId}} - Qty: {{quantity}} @ ${{price}}",
+        "moreItems": "+{{count}} more item{{count, plural, one {} other {s}}}",
+        "writeReview": "Write Review"
+      }
+    },
+    "modals": {
+      "writeReview": "Write Review",
+      "editReview": "Edit Review",
+      "deleteReview": "Delete Review",
+      "deleteConfirm": "Are you sure you want to delete this review? This action cannot be undone.",
+      "deleteButton": "Delete",
+      "cancel": "Cancel"
+    },
+    "messages": {
+      "submitSuccess": "Review submitted successfully! It will be visible after admin approval.",
+      "submitSuccessTitle": "Review Submitted",
+      "submitError": "Failed to submit review",
+      "submitErrorTitle": "Review Failed",
+      "editNotImplemented": "Review editing is not yet implemented in the backend API",
+      "deleteNotImplemented": "Review deletion is not yet implemented in the backend API",
+      "featureNotAvailable": "Feature Not Available",
+      "updateFailed": "Failed to update review",
+      "updateFailedTitle": "Update Failed",
+      "deleteFailed": "Failed to delete review",
+      "deleteFailedTitle": "Delete Failed"
+    },
+    "writeReview": "Write Review",
+    "viewReviews": "View Reviews",
+    "noReviews": "No reviews yet",
+    "startReviewing": "Complete orders to write reviews"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "subtitle": "Review your items and proceed to checkout",
+    "button": {
+      "cart": "Cart",
+      "cartSummary": "Cart Summary",
+      "viewFullCart": "View Full Cart",
+      "quickView": "Quick View",
+      "items": "{{count}} items",
+      "total": "Total:"
+    },
+    "page": {
+      "cartItems": "Cart Items ({{count}} items)",
+      "orderSummary": "Order Summary",
+      "subtotal": "Subtotal ({{count}} items)",
+      "shipping": "Shipping",
+      "shippingCalculated": "Calculated at checkout",
+      "total": "Total",
+      "proceedToCheckout": "Proceed to Checkout",
+      "continueShopping": "Continue Shopping",
+      "clearCart": "Clear Cart"
+    },
+    "empty": {
+      "title": "Your cart is empty",
+      "description": "Looks like you haven't added any products to your cart yet. Start shopping to fill it up!",
+      "browseProducts": "Browse Products",
+      "recoverPrevious": "Recover Previous Cart",
+      "recoverDescription": "We found items from your previous session"
+    },
+    "item": {
+      "quantity": "Quantity:",
+      "decreaseQuantity": "Decrease quantity",
+      "increaseQuantity": "Increase quantity",
+      "maxStockReached": "Max stock reached",
+      "stock": "Stock: {{count}}",
+      "byFarmer": "by Farmer #{{farmerId}}",
+      "removeFromCart": "Remove {{name}} from cart"
+    },
+    "messages": {
+      "updatingCart": "Updating cart...",
+      "recoverFromBackup": "Recover from backup",
+      "onlyBuyersCheckout": "Only buyers can checkout"
+    },
+    "errors": {
+      "updateFailed": "Failed to update cart",
+      "removeFailed": "Failed to remove item",
+      "clearFailed": "Failed to clear cart",
+      "loadFailed": "Failed to load cart"
+    }
+  }
+}

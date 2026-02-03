@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual Operations Test - Fast Testing</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #1f2937;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        
+        .test-controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f3f4f6;
+            border-radius: 8px;
+        }
+        
+        .test-controls button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .test-controls button:hover {
+            background: #2563eb;
+        }
+        
+        .test-controls button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .config-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+        }
+        
+        .config-section input {
+            width: 300px;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        
+        .test-results {
+            margin-top: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        
+        .test-item {
+            padding: 12px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .test-item:last-child {
+            border-bottom: none;
+        }
+        
+        .test-status {
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .test-status.pass {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .test-status.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .test-status.warn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .test-status.running {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .summary {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .summary-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        
+        .nepali-text {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            font-size: 14px;
+        }
+        
+        .test-details {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .error-details {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 4px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #991b1b;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Multilingual Operations Test - Fast Testing</h1>
+        <p>Comprehensive testing of insert and update operations for Products, News, Gallery, and Mayor Messages in both English and Nepali.</p>
+        
+        <div class="config-section">
+            <h3>Configuration</h3>
+            <div>
+                <label>API Base URL:</label>
+                <input type="text" id="apiUrl" value="http://localhost:5000/api" placeholder="http://localhost:5000/api">
+            </div>
+            <div>
+                <label>Farmer Email:</label>
+                <input type="text" id="farmerEmail" value="farmer@test.com" placeholder="farmer@test.com">
+            </div>
+            <div>
+                <label>Admin Email:</label>
+                <input type="text" id="adminEmail" value="admin@test.com" placeholder="admin@test.com">
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" id="password" value="password123" placeholder="password123">
+            </div>
+        </div>
+        
+        <div class="test-controls">
+            <button onclick="runAllTests()" id="runAllBtn">🚀 Run All Tests</button>
+            <button onclick="runProductTests()" id="runProductBtn">🧪 Test Products</button>
+            <button onclick="runNewsTests()" id="runNewsBtn">📰 Test News</button>
+            <button onclick="runGalleryTests()" id="runGalleryBtn">🖼️ Test Gallery</button>
+            <button onclick="runMayorTests()" id="runMayorBtn">🏛️ Test Mayor Messages</button>
+            <button onclick="clearResults()" id="clearBtn">🗑️ Clear Results</button>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        
+        <div class="summary" id="summary">
+            <div class="summary-item">
+                <div class="summary-number" id="totalTests">0</div>
+                <div class="summary-label">Total Tests</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-number" id="passedTests">0</div>
+                <div class="summary-label">Passed</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-number" id="failedTests">0</div>
+                <div class="summary-label">Failed</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-number" id="warningTests">0</div>
+                <div class="summary-label">Warnings</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-number" id="successRate">0%</div>
+                <div class="summary-label">Success Rate</div>
+            </div>
+        </div>
+        
+        <div class="test-results" id="testResults">
+            <div class="test-item">
+                <div>Ready to run tests...</div>
+                <div class="test-status">READY</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test configuration
+        let testResults = [];
+        let totalTests = 0;
+        let currentTest = 0;
+        let tokens = {};
+
+        // Test data templates
+        const TEST_DATA = {
+            product: {
+                english: {
+                    name: { en: "Fresh Organic Tomatoes", ne: "" },
+                    description: { en: "Premium quality organic tomatoes grown without pesticides", ne: "" },
+                    category: { en: "Vegetables", ne: "" },
+                    price: 150,
+                    stock: 50,
+                    unit: "kg",
+                    images: ["https://example.com/tomato1.jpg"],
+                    status: "PUBLISHED"
+                },
+                nepali: {
+                    name: { en: "Fresh Organic Tomatoes", ne: "ताजा जैविक गोलभेडा" },
+                    description: { en: "Premium quality organic tomatoes grown without pesticides", ne: "कीटनाशक बिना उत्पादित उच्च गुणस्तरीय जैविक गोलभेडा" },
+                    category: { en: "Vegetables", ne: "तरकारीहरू" },
+                    price: 150,
+                    stock: 50,
+                    unit: "kg",
+                    images: ["https://example.com/tomato1.jpg"],
+                    status: "PUBLISHED"
+                },
+                update: {
+                    english: {
+                        name: { en: "Premium Organic Tomatoes - Updated", ne: "" },
+                        description: { en: "Updated: Premium quality organic tomatoes with enhanced freshness", ne: "" },
+                        price: 175,
+                        stock: 75
+                    },
+                    nepali: {
+                        name: { en: "Premium Organic Tomatoes - Updated", ne: "प्रिमियम जैविक गोलभेडा - अपडेट गरिएको" },
+                        description: { en: "Updated: Premium quality organic tomatoes with enhanced freshness", ne: "अपडेट गरिएको: बढी ताजगीसहित उच्च गुणस्तरीय जैविक गोलभेडा" },
+                        price: 175,
+                        stock: 75
+                    }
+                }
+            },
+            news: {
+                english: {
+                    headline: { en: "New Agricultural Technology Introduced", ne: "" },
+                    content: { en: "The government has introduced new agricultural technology to help farmers increase their productivity.", ne: "" },
+                    summary: { en: "Government introduces new agricultural technology for farmers", ne: "" },
+                    priority: "MEDIUM",
+                    isActive: true
+                },
+                nepali: {
+                    headline: { en: "New Agricultural Technology Introduced", ne: "नयाँ कृषि प्रविधि सुरु गरिएको" },
+                    content: { en: "The government has introduced new agricultural technology to help farmers increase their productivity.", ne: "सरकारले किसानहरूको उत्पादकत्व बढाउन नयाँ कृषि प्रविधि सुरु गरेको छ।" },
+                    summary: { en: "Government introduces new agricultural technology for farmers", ne: "सरकारले किसानहरूका लागि नयाँ कृषि प्रविधि सुरु गर्यो" },
+                    priority: "MEDIUM",
+                    isActive: true
+                },
+                update: {
+                    english: {
+                        headline: { en: "Updated: New Agricultural Technology Shows Results", ne: "" },
+                        content: { en: "Updated: The new agricultural technology has shown promising results in increasing farmer productivity.", ne: "" },
+                        priority: "HIGH"
+                    },
+                    nepali: {
+                        headline: { en: "Updated: New Agricultural Technology Shows Results", ne: "अपडेट: नयाँ कृषि प्रविधिले परिणाम देखाएको" },
+                        content: { en: "Updated: The new agricultural technology has shown promising results in increasing farmer productivity.", ne: "अपडेट: नयाँ कृषि प्रविधिले किसानहरूको उत्पादकत्व बढाउनमा आशा

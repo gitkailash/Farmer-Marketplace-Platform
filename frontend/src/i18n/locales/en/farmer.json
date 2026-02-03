@@ -1,0 +1,318 @@
+{
+  "dashboard": {
+    "title": "Farmer Dashboard",
+    "subtitle": "Manage your farming business",
+    "welcome": "Welcome back, {{name}}! 👋",
+    "overview": "Here's an overview of your farming business on the marketplace",
+    "loading": "Loading dashboard...",
+    "errorLoading": "Failed to load dashboard data"
+  },
+  "navigation": {
+    "overview": "Overview",
+    "overviewDesc": "Dashboard overview and statistics",
+    "products": "Products",
+    "productsDesc": "Manage your product listings",
+    "orders": "Orders",
+    "ordersDesc": "View and manage incoming orders",
+    "messages": "Messages",
+    "messagesDesc": "Communicate with buyers",
+    "reviews": "Reviews",
+    "reviewsDesc": "View customer reviews and ratings",
+    "home": "Home"
+  },
+  "header": {
+    "farmerMarket": "Farmer Market",
+    "dashboard": "Dashboard",
+    "myProducts": "My Products",
+    "orders": "Orders",
+    "messages": "Messages",
+    "reviews": "Reviews",
+    "settings": "Settings",
+    "logout": "Logout",
+    "signedInAs": "Hi, {{name}}",
+    "accountType": "{{role}} account",
+    "language": "Language / भाषा",
+    "openMenu": "Open main menu",
+    "closeMenu": "Close main menu"
+  },
+  "stats": {
+    "totalProducts": "Total Products",
+    "publishedProducts": "Published",
+    "draftProducts": "Drafts",
+    "activeProducts": "Active Products",
+    "pendingOrders": "Pending Orders",
+    "unreadMessages": "Unread Messages",
+    "inventoryValue": "Inventory Value",
+    "lowStockProducts": "Low Stock Products"
+  },
+  "quickStats": {
+    "title": "Quick Stats",
+    "activeProducts": "Active Products",
+    "pendingOrders": "Pending Orders",
+    "unreadMessages": "Unread Messages"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "manageProducts": "Manage Products",
+    "viewOrders": "View Orders",
+    "messages": "Messages",
+    "checkReviews": "Check Reviews",
+    "addProduct": "+ Add Product",
+    "reviewOrders": "📋 Review Orders ({{count}})",
+    "checkMessages": "💬 Check Messages ({{count}})"
+  },
+  "products": {
+    "title": "My Products",
+    "subtitle": "Manage your product listings and inventory",
+    "addNew": "Add New Product",
+    "searchPlaceholder": "Search products by name or category...",
+    "filters": {
+      "all": "All",
+      "published": "Published",
+      "draft": "Draft",
+      "inactive": "Inactive"
+    },
+    "status": {
+      "published": "Published",
+      "draft": "Draft",
+      "inactive": "Inactive",
+      "all": "All"
+    },
+    "form": {
+      "name": "Product Name",
+      "description": "Description",
+      "category": "Category",
+      "price": "Price",
+      "unit": "Unit",
+      "stock": "Stock Quantity",
+      "stockHelp": "Number of units available for sale",
+      "images": "Product Images",
+      "imagesHelp": "Add up to 5 image URLs. The first image will be used as the main product image.",
+      "imageUrlPlaceholder": "Enter image URL",
+      "addProduct": "Create Product",
+      "editProduct": "Update Product",
+      "cancel": "Cancel",
+      "addAnotherImage": "Add Another Image",
+      "validation": {
+        "nameRequired": "Product name is required",
+        "nameMinLength": "Product name must be at least 2 characters",
+        "descriptionRequired": "Product description is required",
+        "descriptionMinLength": "Description must be at least 10 characters",
+        "categoryRequired": "Please select a category",
+        "priceRequired": "Please enter a valid price",
+        "pricePositive": "Price must be greater than 0",
+        "unitRequired": "Please select a unit",
+        "stockRequired": "Please enter a valid stock quantity",
+        "stockNonNegative": "Stock cannot be negative",
+        "imagesRequired": "At least one product image is required"
+      }
+    },
+    "categories": {
+      "vegetables": "Vegetables",
+      "fruits": "Fruits",
+      "grains": "Grains & Cereals",
+      "dairy": "Dairy Products",
+      "meat": "Meat & Poultry",
+      "herbs": "Herbs & Spices",
+      "other": "Other"
+    },
+    "units": {
+      "kg": "Kilogram (kg)",
+      "g": "Gram (g)",
+      "lb": "Pound (lb)",
+      "piece": "Piece",
+      "dozen": "Dozen",
+      "liter": "Liter",
+      "ml": "Milliliter (ml)",
+      "bunch": "Bunch",
+      "bag": "Bag",
+      "box": "Box"
+    },
+    "bulkActions": {
+      "selected": "{{count}} product{{count, plural, one {} other {s}}} selected",
+      "clearSelection": "Clear selection",
+      "publishSelected": "Publish Selected",
+      "unpublishSelected": "Unpublish Selected",
+      "updateStock": "Update Stock",
+      "deleteSelected": "Delete Selected"
+    },
+    "selectAll": "Select all {{count}} products",
+    "card": {
+      "select": "Select",
+      "price": "Price:",
+      "stock": "Stock:",
+      "category": "Category:",
+      "lowStock": "Low Stock",
+      "lowStockWarning": "⚠️ Low stock warning",
+      "update": "Update",
+      "edit": "Edit",
+      "publish": "Publish",
+      "delete": "Delete"
+    },
+    "empty": {
+      "title": "No products yet",
+      "description": "Start by adding your first product to the marketplace",
+      "action": "Add Your First Product",
+      "filtered": "No products found",
+      "filteredDesc": "Try adjusting your search or filter criteria",
+      "clearFilters": "Clear Filters"
+    },
+    "modals": {
+      "addProduct": "Add New Product",
+      "editProduct": "Edit Product",
+      "deleteProduct": "Delete Product",
+      "deleteConfirm": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+      "updateInventory": "Update Inventory",
+      "currentStock": "Current stock: {{stock}} {{unit}}s",
+      "newStockQuantity": "New Stock Quantity",
+      "enterNewStock": "Enter new stock quantity",
+      "bulkAction": "Confirm Bulk Action",
+      "bulkConfirm": "Are you sure you want to {{action}} {{count}} selected product{{count, plural, one {} other {s}}}?",
+      "bulkStockLabel": "New Stock Quantity",
+      "bulkStockPlaceholder": "Enter stock quantity for all selected products",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "updateStock": "Update Stock"
+    },
+    "messages": {
+      "created": "Product created successfully",
+      "updated": "Product updated successfully",
+      "deleted": "Product deleted successfully",
+      "published": "Product published successfully",
+      "inventoryUpdated": "Inventory updated successfully",
+      "bulkPublished": "{{count}} products published successfully",
+      "bulkUnpublished": "{{count}} products unpublished successfully",
+      "bulkDeleted": "{{count}} products deleted successfully",
+      "bulkStockUpdated": "Stock updated for {{count}} products",
+      "selectProductsFirst": "Please select products first",
+      "validStockValue": "Please enter a valid stock value",
+      "bulkOperationFailed": "Bulk operation failed"
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "subtitle": "Manage incoming orders from buyers",
+    "viewAll": "View All Orders",
+    "noOrders": "No orders yet",
+    "waitingForOrders": "Orders from buyers will appear here",
+    "management": {
+      "title": "Order Management",
+      "subtitle": "Manage incoming orders and track their status"
+    },
+    "filters": {
+      "statusFilter": "Status Filter",
+      "dateRange": "Date Range",
+      "searchPlaceholder": "Search by order ID, buyer ID, address, or product...",
+      "all": "All",
+      "allTime": "All Time",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "clearFilters": "Clear Filters"
+    },
+    "status": {
+      "pending": "PENDING",
+      "accepted": "ACCEPTED",
+      "completed": "COMPLETED",
+      "cancelled": "CANCELLED"
+    },
+    "notifications": {
+      "newOrders": "{{count}} New Order{{count, plural, one {} other {s}}}",
+      "newOrdersDesc": "In the last 24 hours",
+      "urgentOrders": "{{count}} Urgent Order{{count, plural, one {} other {s}}}",
+      "urgentOrdersDesc": "Pending for 3+ days"
+    },
+    "stats": {
+      "totalOrders": "Total Orders",
+      "totalRevenue": "Total Revenue",
+      "pendingOrders": "Pending Orders",
+      "completed": "Completed"
+    },
+    "card": {
+      "orderNumber": "Order #{{number}}",
+      "placed": "Placed:",
+      "items": "Items:",
+      "buyerName": "Buyer Name:",
+      "orderAge": "Order Age:",
+      "today": "Today",
+      "days": "{{count}} day{{count, plural, one {} other {s}}}",
+      "deliveryAddress": "Delivery Address:",
+      "orderItems": "Order Items:",
+      "moreItems": "+{{count}} more items",
+      "specialInstructions": "Special Instructions:",
+      "viewDetails": "View Details",
+      "acceptOrder": "Accept Order",
+      "accepting": "Accepting...",
+      "markCompleted": "Mark Completed",
+      "completing": "Completing...",
+      "cancelOrder": "Cancel Order",
+      "cancelling": "Cancelling...",
+      "urgent": "⚠️ Urgent ({{days}} days)",
+      "new": "🆕 New"
+    },
+    "modal": {
+      "orderDetails": "Order Details",
+      "orderStatus": "Order Status",
+      "placedOn": "Placed on {{date}} at {{time}}",
+      "buyerInformation": "Buyer Information",
+      "orderItems": "Order Items",
+      "deliveryInformation": "Delivery Information",
+      "specialInstructions": "Special Instructions",
+      "close": "Close",
+      "acceptOrder": "Accept Order",
+      "markAsCompleted": "Mark as Completed",
+      "cancelOrder": "Cancel Order",
+      "quantity": "Quantity: {{quantity}}",
+      "subtotal": "Subtotal: ${{amount}}",
+      "perUnit": "per {{unit}}",
+      "productError": "⚠️ {{message}}"
+    },
+    "messages": {
+      "acceptSuccess": "Order accepted successfully!",
+      "completeSuccess": "Order marked as completed!",
+      "cancelSuccess": "Order cancelled successfully",
+      "acceptFailed": "Failed to accept order",
+      "completeFailed": "Failed to complete order",
+      "cancelFailed": "Failed to cancel order",
+      "cancelConfirm": "Are you sure you want to cancel this order? This action cannot be undone.",
+      "loadFailed": "Failed to load orders"
+    },
+    "empty": {
+      "title": "No orders yet",
+      "description": "Orders from buyers will appear here. Make sure your products are published and visible to attract customers.",
+      "filtered": "No orders found",
+      "filteredDesc": "No orders match your current filters. Try adjusting your search criteria or date range.",
+      "manageProducts": "Manage Products"
+    }
+  },
+  "recentProducts": {
+    "title": "Recent Products",
+    "viewAll": "View All →",
+    "noProducts": "No products yet",
+    "addFirst": "Start by adding your first product to the marketplace",
+    "addFirstAction": "Add Your First Product",
+    "inStock": "in stock",
+    "lowStock": "Low Stock"
+  },
+  "alerts": {
+    "lowStock": {
+      "title": "Low Stock Alert",
+      "message": "You have {{count}} product{{count, plural, one {} other {s}}} with low stock (10 or fewer units).",
+      "action": "Update inventory →"
+    }
+  },
+  "messages": {
+    "title": "Messages",
+    "subtitle": "Communicate with buyers",
+    "viewAll": "View All Messages",
+    "noMessages": "No messages yet",
+    "startMessaging": "Messages from buyers will appear here"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "subtitle": "Customer feedback and ratings",
+    "viewAll": "View All Reviews",
+    "noReviews": "No reviews yet",
+    "waitingForReviews": "Customer reviews will appear here"
+  }
+}

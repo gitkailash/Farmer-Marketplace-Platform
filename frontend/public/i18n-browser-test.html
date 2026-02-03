@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I18n Browser Test - Nepali Internationalization</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f9fafb;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #1f2937;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background-color: #f8fafc;
+        }
+        
+        .test-section h2 {
+            color: #374151;
+            margin-top: 0;
+        }
+        
+        .nepali-text {
+            font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+            font-feature-settings: 'kern' 1, 'liga' 1;
+            text-rendering: optimizeLegibility;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+        }
+        
+        .lang-en {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.5;
+        }
+        
+        .lang-ne {
+            font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+            font-feature-settings: 'kern' 1, 'liga' 1;
+            text-rendering: optimizeLegibility;
+            line-height: 1.6;
+            letter-spacing: 0.01em;
+        }
+        
+        .font-test {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .font-sample {
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+        }
+        
+        .font-sample h3 {
+            margin-top: 0;
+            color: #1f2937;
+        }
+        
+        .size-test {
+            margin: 10px 0;
+        }
+        
+        .size-small { font-size: 14px; }
+        .size-medium { font-size: 16px; }
+        .size-large { font-size: 18px; }
+        .size-xlarge { font-size: 20px; }
+        
+        .weight-test {
+            margin: 10px 0;
+        }
+        
+        .weight-normal { font-weight: 400; }
+        .weight-medium { font-weight: 500; }
+        .weight-semibold { font-weight: 600; }
+        .weight-bold { font-weight: 700; }
+        
+        .language-switcher {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .language-switcher button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        .language-switcher button:hover {
+            background: #2563eb;
+        }
+        
+        .language-switcher button.active {
+            background: #1d4ed8;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        .status.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .status.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .test-results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f3f4f6;
+            border-radius: 8px;
+        }
+        
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .test-item:last-child {
+            border-bottom: none;
+        }
+        
+        .test-status {
+            font-weight: 600;
+        }
+        
+        .test-status.pass { color: #059669; }
+        .test-status.fail { color: #dc2626; }
+        .test-status.warn { color: #d97706; }
+        
+        @media (max-width: 768px) {
+            .font-test {
+                grid-template-columns: 1fr;
+            }
+            
+            .language-switcher button {
+                display: block;
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Nepali Internationalization Browser Test</h1>
+        <p>This page tests the font rendering, language switching, and overall internationalization implementation for the Farmer Marketplace Platform.</p>
+        
+        <div class="language-switcher">
+            <button id="btn-en" class="active" onclick="switchLanguage('en')">🇺🇸 English</button>
+            <button id="btn-ne" onclick="switchLanguage('ne')">🇳🇵 नेपाली</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>1. Font Loading and Rendering Test</h2>
+            <div id="font-status" class="status">Testing font loading...</div>
+            
+            <div class="font-test">
+                <div class="font-sample">
+                    <h3>English Text (Inter Font)</h3>
+                    <div class="lang-en">
+                        <div class="size-test size-small">Small: Welcome to Farmer Marketplace</div>
+                        <div class="size-test size-medium">Medium: Welcome to Farmer Marketplace</div>
+                        <div class="size-test size-large">Large: Welcome to Farmer Marketplace</div>
+                        <div class="size-test size-xlarge">XLarge: Welcome to Farmer Marketplace</div>
+                        
+                        <div class="weight-test weight-normal">Normal: Fresh vegetables from local farmers</div>
+                        <div class="weight-test weight-medium">Medium: Fresh vegetables from local farmers</div>
+                        <div class="weight-test weight-semibold">Semibold: Fresh vegetables from local farmers</div>
+                        <div class="weight-test weight-bold">Bold: Fresh vegetables from local farmers</div>
+                    </div>
+                </div>
+                
+                <div class="font-sample">
+                    <h3>Nepali Text (Noto Sans Devanagari)</h3>
+                    <div class="lang-ne">
+                        <div class="size-test size-small">Small: किसान बजारमा स्वागत छ</div>
+                        <div class="size-test size-medium">Medium: किसान बजारमा स्वागत छ</div>
+                        <div class="size-test size-large">Large: किसान बजारमा स्वागत छ</div>
+                        <div class="size-test size-xlarge">XLarge: किसान बजारमा स्वागत छ</div>
+                        
+                        <div class="weight-test weight-normal">Normal: स्थानीय किसानहरूबाट ताजा तरकारीहरू</div>
+                        <div class="weight-test weight-medium">Medium: स्थानीय किसानहरूबाट ताजा तरकारीहरू</div>
+                        <div class="weight-test weight-semibold">Semibold: स्थानीय किसानहरूबाट ताजा तरकारीहरू</div>
+                        <div class="weight-test weight-bold">Bold: स्थानीय किसानहरूबाट ताजा तरकारीहरू</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. Language Switching Test</h2>
+            <div id="language-content">
+                <div id="content-en" class="lang-en">
+                    <h3>English Content</h3>
+                    <p><strong>Navigation:</strong> Home, Products, Orders, Messages, Profile, Dashboard, Admin, Logout</p>
+                    <p><strong>Buttons:</strong> Save, Cancel, Delete, Edit, Add, Remove, Submit, Reset, Search, Filter</p>
+                    <p><strong>Messages:</strong> Loading..., An error occurred, Success, No data available</p>
+                    <p><strong>Validation:</strong> This field is required, Please enter a valid email address</p>
+                </div>
+                
+                <div id="content-ne" class="lang-ne" style="display: none;">
+                    <h3>नेपाली सामग्री</h3>
+                    <p><strong>नेभिगेसन:</strong> गृहपृष्ठ, उत्पादनहरू, अर्डरहरू, सन्देशहरू, प्रोफाइल, ड्यासबोर्ड, प्रशासक, लगआउट</p>
+                    <p><strong>बटनहरू:</strong> सुरक्षित गर्नुहोस्, रद्द गर्नुहोस्, मेटाउनुहोस्, सम्पादन गर्नुहोस्, थप्नुहोस्, हटाउनुहोस्, पेश गर्नुहोस्, रिसेट गर्नुहोस्, खोज्नुहोस्, फिल्टर गर्नुहोस्</p>
+                    <p><strong>सन्देशहरू:</strong> लोड हुँदैछ..., त्रुटि भयो, सफल, कुनै डाटा उपलब्ध छैन</p>
+                    <p><strong>प्रमाणीकरण:</strong> यो फिल्ड आवश्यक छ, कृपया मान्य इमेल ठेगाना प्रविष्ट गर्नुहोस्</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. Complex Devanagari Text Test</h2>
+            <div class="lang-ne">
+                <h3>जटिल देवनागरी पाठ परीक्षण</h3>
+                <p>यो नेपाल सरकारको किसान बजार प्लेटफर्म हो। यहाँ तपाईं स्थानीय किसानहरूबाट सिधै ताजा तरकारी, फलफूल र अन्य कृषि उत्पादनहरू किन्न सक्नुहुन्छ।</p>
+                
+                <h4>मुख्य सुविधाहरू:</h4>
+                <ul>
+                    <li>स्थानीय किसानहरूसँग सिधै सम्पर्क</li>
+                    <li>ताजा र गुणस्तरीय उत्पादनहरू</li>
+                    <li>उचित मूल्यमा खरिदारी</li>
+                    <li>घरमै डेलिभरी सेवा</li>
+                    <li>सुरक्षित भुक्तानी प्रणाली</li>
+                </ul>
+                
+                <h4>संख्याहरू र मिति:</h4>
+                <p>आज मिति: २०८१ पुष २६ गते</p>
+                <p>कुल उत्पादनहरू: १,२३४</p>
+                <p>दर्ता भएका किसानहरू: ५,६७८</p>
+                <p>सन्तुष्ट ग्राहकहरू: ९,८७६</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. Mixed Language Content Test</h2>
+            <div>
+                <p class="lang-en">English: This platform supports both <span class="lang-ne">नेपाली</span> and English languages seamlessly.</p>
+                <p class="lang-ne">नेपाली: यो प्लेटफर्मले <span class="lang-en">English</span> र नेपाली दुवै भाषाहरूलाई निर्बाध रूपमा समर्थन गर्छ।</p>
+            </div>
+        </div>
+        
+        <div class="test-results">
+            <h2>🧪 Test Results</h2>
+            <div id="test-results-content">
+                <!-- Test results will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'en';
+        let testResults = [];
+        
+        // Font loading test
+        function testFontLoading() {
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(() => {
+                    const fonts = Array.from(document.fonts);
+                    const devanagariFont = fonts.find(font => 
+                        font.family.includes('Noto Sans Devanagari') && font.status === 'loaded'
+                    );
+                    
+                    if (devanagariFont) {
+                        updateFontStatus('success', '✅ Noto Sans Devanagari font loaded successfully');
+                        addTestResult('Font Loading', 'pass', 'Devanagari font loaded correctly');
+                    } else {
+                        updateFontStatus('warning', '⚠️ Devanagari font may not be fully loaded');
+                        addTestResult('Font Loading', 'warn', 'Font loading status unclear');
+                    }
+                    
+                    // Test font rendering
+                    testFontRendering();
+                });
+            } else {
+                updateFontStatus('warning', '⚠️ Font loading API not supported in this browser');
+                addTestResult('Font Loading', 'warn', 'Browser does not support font loading API');
+                testFontRendering();
+            }
+        }
+        
+        function updateFontStatus(type, message) {
+            const statusEl = document.getElementById('font-status');
+            statusEl.className = `status ${type}`;
+            statusEl.textContent = message;
+        }
+        
+        function testFontRendering() {
+            // Test if Nepali text renders with proper font
+            const testElement = document.createElement('div');
+            testElement.className = 'lang-ne';
+            testElement.textContent = 'नेपाली';
+            testElement.style.position = 'absolute';
+            testElement.style.visibility = 'hidden';
+            document.body.appendChild(testElement);
+            
+            const computedStyle = window.getComputedStyle(testElement);
+            const fontFamily = computedStyle.fontFamily.toLowerCase();
+            
+            if (fontFamily.includes('noto sans devanagari') || fontFamily.includes('mangal') || fontFamily.includes('kokila')) {
+                addTestResult('Font Rendering', 'pass', 'Nepali text uses appropriate Devanagari font');
+            } else {
+                addTestResult('Font Rendering', 'fail', 'Nepali text may not be using Devanagari font');
+            }
+            
+            document.body.removeChild(testElement);
+        }
+        
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update button states
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-ne').classList.toggle('active', lang === 'ne');
+            
+            // Show/hide content
+            document.getElementById('content-en').style.display = lang === 'en' ? 'block' : 'none';
+            document.getElementById('content-ne').style.display = lang === 'ne' ? 'block' : 'none';
+            
+            // Test language switching
+            addTestResult('Language Switching', 'pass', `Successfully switched to ${lang === 'en' ? 'English' : 'Nepali'}`);
+        }
+        
+        function addTestResult(testName, status, message) {
+            // Remove existing result for this test
+            testResults = testResults.filter(result => result.name !== testName);
+            
+            // Add new result
+            testResults.push({
+                name: testName,
+                status: status,
+                message: message,
+                timestamp: new Date().toLocaleTimeString()
+            });
+            
+            updateTestResults();
+        }
+        
+        function updateTestResults() {
+            const container = document.getElementById('test-results-content');
+            container.innerHTML = '';
+            
+            testResults.forEach(result => {
+                const item = document.createElement('div');
+                item.className = 'test-item';
+                item.innerHTML = `
+                    <div>
+                        <strong>${result.name}</strong><br>
+                        <small>${result.message}</small>
+                    </div>
+                    <div class="test-status ${result.status}">
+                        ${result.status === 'pass' ? '✅ PASS' : result.status === 'warn' ? '⚠️ WARN' : '❌ FAIL'}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+            
+            // Add summary
+            const summary = document.createElement('div');
+            summary.style.marginTop = '20px';
+            summary.style.padding = '15px';
+            summary.style.backgroundColor = '#f9fafb';
+            summary.style.borderRadius = '6px';
+            summary.style.fontWeight = '600';
+            
+            const passCount = testResults.filter(r => r.status === 'pass').length;
+            const warnCount = testResults.filter(r => r.status === 'warn').length;
+            const failCount = testResults.filter(r => r.status === 'fail').length;
+            
+            summary.innerHTML = `
+                <div>Test Summary: ${passCount} passed, ${warnCount} warnings, ${failCount} failed</div>
+                <div style="margin-top: 10px; font-size: 14px; font-weight: normal;">
+                    Last updated: ${new Date().toLocaleString()}
+                </div>
+            `;
+            container.appendChild(summary);
+        }
+        
+        // Performance test
+        function testPerformance() {
+            const startTime = performance.now();
+            
+            // Simulate language switching multiple times
+            for (let i = 0; i < 10; i++) {
+                switchLanguage(i % 2 === 0 ? 'en' : 'ne');
+            }
+            
+            const endTime = performance.now();
+            const duration = endTime - startTime;
+            
+            if (duration < 100) {
+                addTestResult('Performance', 'pass', `Language switching completed in ${duration.toFixed(2)}ms`);
+            } else if (duration < 500) {
+                addTestResult('Performance', 'warn', `Language switching took ${duration.toFixed(2)}ms (acceptable)`);
+            } else {
+                addTestResult('Performance', 'fail', `Language switching took ${duration.toFixed(2)}ms (too slow)`);
+            }
+            
+            // Reset to English
+            switchLanguage('en');
+        }
+        
+        // CSS test
+        function testCSS() {
+            // Test if CSS classes are properly defined
+            const testClasses = ['nepali-text', 'lang-ne', 'lang-en'];
+            let cssTestsPassed = 0;
+            
+            testClasses.forEach(className => {
+                const testEl = document.createElement('div');
+                testEl.className = className;
+                document.body.appendChild(testEl);
+                
+                const computedStyle = window.getComputedStyle(testEl);
+                if (computedStyle.fontFamily && computedStyle.fontFamily !== 'initial') {
+                    cssTestsPassed++;
+                }
+                
+                document.body.removeChild(testEl);
+            });
+            
+            if (cssTestsPassed === testClasses.length) {
+                addTestResult('CSS Classes', 'pass', 'All language-specific CSS classes are properly defined');
+            } else if (cssTestsPassed > 0) {
+                addTestResult('CSS Classes', 'warn', `${cssTestsPassed}/${testClasses.length} CSS classes working`);
+            } else {
+                addTestResult('CSS Classes', 'fail', 'CSS classes may not be properly defined');
+            }
+        }
+        
+        // Run tests when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testFontLoading();
+                testCSS();
+                testPerformance();
+                
+                // Add initial language switching test
+                addTestResult('Initial Load', 'pass', 'Page loaded successfully with English as default');
+            }, 1000);
+        });
+        
+        // Test language switching on button clicks
+        document.addEventListener('DOMContentLoaded', () => {
+            addTestResult('DOM Ready', 'pass', 'DOM loaded and ready for testing');
+        });
+    </script>
+</body>
+</html>

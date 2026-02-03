@@ -1,0 +1,1340 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles for low-digital-literacy design */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #111827;
+  background-color: #f9fafb;
+  /* Improve text rendering on mobile */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+}
+
+/* Devanagari font support for Nepali text */
+.nepali-text {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  /* Ensure proper line height for Devanagari characters */
+  line-height: 1.6;
+  /* Better spacing for complex scripts */
+  letter-spacing: 0.01em;
+}
+
+/* Shorthand class for Nepali font */
+.font-nepali {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* Nepali text variants for different weights */
+.nepali-text-light {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-weight: 400;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.nepali-text-medium {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-weight: 500;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.nepali-text-semibold {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-weight: 600;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.nepali-text-bold {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-weight: 700;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* Font loading optimization */
+.font-loading {
+  font-display: swap;
+}
+
+/* Fallback for when Devanagari fonts are loading */
+.nepali-text-loading {
+  font-family: sans-serif;
+  visibility: hidden;
+}
+
+.nepali-text-loaded {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  visibility: visible;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* Language-specific styling classes */
+.lang-en {
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.lang-ne {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* Text direction and alignment handling */
+.text-direction-ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+.text-direction-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Language-aware text alignment */
+.text-align-start {
+  text-align: start;
+}
+
+.text-align-end {
+  text-align: end;
+}
+
+/* Responsive design for different text lengths */
+.text-responsive {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Nepali text tends to be longer, so we need more space */
+.text-responsive-ne {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: none; /* Nepali doesn't use hyphens */
+  /* Extra line height for better readability */
+  line-height: 1.7;
+}
+
+/* Language-specific button sizing */
+.btn-lang-en {
+  min-width: auto;
+  padding: 12px 24px;
+}
+
+.btn-lang-ne {
+  /* Nepali text often needs more horizontal space */
+  min-width: auto;
+  padding: 14px 32px;
+  line-height: 1.4;
+}
+
+/* Language-specific form input adjustments */
+.form-input-lang-en {
+  line-height: 1.5;
+}
+
+.form-input-lang-ne {
+  line-height: 1.6;
+  /* Slightly more padding for Devanagari characters */
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/* Language-specific typography scaling */
+.heading-lang-en {
+  line-height: 1.2;
+}
+
+.heading-lang-ne {
+  line-height: 1.4;
+  /* Devanagari characters need more vertical space */
+  margin-bottom: 1.2em;
+}
+
+/* Responsive text sizing for multilingual content */
+.text-multilingual-sm {
+  font-size: 14px;
+}
+
+.text-multilingual-base {
+  font-size: 16px;
+}
+
+.text-multilingual-lg {
+  font-size: 18px;
+}
+
+.text-multilingual-xl {
+  font-size: 20px;
+}
+
+/* Mobile-first responsive adjustments for multilingual text */
+@media (max-width: 640px) {
+  .text-multilingual-sm {
+    font-size: 16px; /* Larger on mobile for better readability */
+  }
+  
+  .text-multilingual-base {
+    font-size: 18px;
+  }
+  
+  .text-multilingual-lg {
+    font-size: 20px;
+  }
+  
+  .text-multilingual-xl {
+    font-size: 22px;
+  }
+  
+  /* Nepali text needs even more space on mobile */
+  .lang-ne {
+    line-height: 1.8;
+  }
+  
+  .btn-lang-ne {
+    padding: 16px 36px;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .text-multilingual-sm {
+    font-size: 15px;
+  }
+  
+  .text-multilingual-base {
+    font-size: 17px;
+  }
+  
+  .text-multilingual-lg {
+    font-size: 19px;
+  }
+  
+  .text-multilingual-xl {
+    font-size: 21px;
+  }
+}
+
+/* Language switching animation */
+.lang-transition {
+  transition: font-family 0.2s ease-in-out, line-height 0.2s ease-in-out;
+}
+
+/* Mixed language content handling */
+.mixed-lang-content {
+  /* Ensure consistent baseline alignment */
+  vertical-align: baseline;
+}
+
+.mixed-lang-content .lang-en {
+  display: inline;
+}
+
+.mixed-lang-content .lang-ne {
+  display: inline;
+}
+
+/* Language indicator badges */
+.lang-indicator {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-left: 8px;
+}
+
+.lang-indicator-en {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.lang-indicator-ne {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+/* Accessibility improvements for multilingual content */
+.multilingual-content[lang="en"] {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.multilingual-content[lang="ne"] {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Print styles for multilingual content */
+@media print {
+  .lang-ne {
+    font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', serif;
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+  
+  .lang-en {
+    font-family: 'Inter', 'Times New Roman', serif;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  
+  .lang-indicator {
+    display: none;
+  }
+}
+
+/* Enhanced mobile-first responsive typography */
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 40px;
+  }
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+@media (min-width: 640px) {
+  h2 {
+    font-size: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  h2 {
+    font-size: 28px;
+  }
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+@media (min-width: 640px) {
+  h3 {
+    font-size: 20px;
+  }
+}
+
+/* Enhanced touch-friendly buttons with better mobile sizing */
+.btn-primary {
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+  padding: 18px 28px;
+  border-radius: 16px;
+  font-size: 18px;
+  min-height: 64px;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* Better touch targets */
+  min-width: 48px;
+  /* Prevent text selection on touch */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  /* Improve tap responsiveness */
+  -webkit-tap-highlight-color: transparent;
+  /* Better touch feedback */
+  touch-action: manipulation;
+}
+
+@media (min-width: 640px) {
+  .btn-primary {
+    padding: 14px 28px;
+    font-size: 18px;
+    min-height: 52px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .btn-primary {
+    padding: 12px 24px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+  background-color: #e5e7eb;
+  color: #374151;
+  font-weight: 600;
+  padding: 18px 28px;
+  border-radius: 16px;
+  font-size: 18px;
+  min-height: 64px;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 48px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+@media (min-width: 640px) {
+  .btn-secondary {
+    padding: 14px 28px;
+    font-size: 18px;
+    min-height: 52px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .btn-secondary {
+    padding: 12px 24px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+}
+
+.btn-secondary:hover {
+  background-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced form inputs with better mobile experience */
+.form-input {
+  width: 100%;
+  padding: 20px 24px;
+  font-size: 18px;
+  border: 2px solid #d1d5db;
+  border-radius: 16px;
+  min-height: 64px;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  /* Prevent zoom on iOS */
+  -webkit-appearance: none;
+  appearance: none;
+  /* Better touch experience */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+@media (min-width: 640px) {
+  .form-input {
+    padding: 16px 20px;
+    font-size: 18px;
+    min-height: 56px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-input {
+    padding: 12px 16px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Enhanced card hover effects with better performance */
+.card-hover {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) translateZ(0);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+@media (hover: none) {
+  .card-hover:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better focus indicators for accessibility */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Optimized animations with reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Enhanced mobile navigation */
+.mobile-nav-item {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.mobile-nav-item:active {
+  background-color: rgba(59, 130, 246, 0.1);
+  transform: scale(0.98);
+}
+
+@media (min-width: 640px) {
+  .mobile-nav-item {
+    min-height: 56px;
+    padding: 16px 20px;
+    font-size: 16px;
+  }
+}
+
+/* Better loading states with optimized animations */
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: opacity;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Optimized fade animations */
+.fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth slide animations */
+.slide-up {
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Performance optimized scale animation */
+.scale-in {
+  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Improved grid layouts for mobile */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Safe area support for mobile devices */
+.safe-area-padding {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+.safe-area-padding-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Enhanced touch interactions */
+.touch-friendly {
+  min-height: 48px;
+  min-width: 48px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Better mobile scrolling */
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Mobile-first card layouts */
+.mobile-card {
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+@media (min-width: 640px) {
+  .mobile-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+}
+
+.mobile-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Improved mobile typography */
+.mobile-text-lg {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+@media (min-width: 640px) {
+  .mobile-text-lg {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+}
+
+.mobile-text-base {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+  .mobile-text-base {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+/* Better mobile spacing */
+.mobile-spacing {
+  padding: 20px 16px;
+}
+
+@media (min-width: 640px) {
+  .mobile-spacing {
+    padding: 24px 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-spacing {
+    padding: 32px 24px;
+  }
+}
+
+/* Enhanced mobile grid */
+.mobile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .mobile-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .mobile-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+}
+
+/* Mobile-first container utilities */
+.mobile-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 640px) {
+  .mobile-container {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-container {
+    max-width: 1200px;
+    padding: 0 32px;
+  }
+}
+
+/* Better mobile image handling */
+.mobile-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.mobile-image-square {
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.mobile-image-wide {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+/* Enhanced mobile interactions */
+.mobile-tap-target {
+  min-height: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile-optimized shadows */
+.mobile-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+  .mobile-shadow {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.mobile-shadow-lg {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media (min-width: 640px) {
+  .mobile-shadow-lg {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* Improved mobile focus states */
+.mobile-focus:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Mobile-friendly sticky positioning */
+.mobile-sticky {
+  position: sticky;
+  top: 80px; /* Account for mobile header height */
+  z-index: 30;
+}
+
+@media (min-width: 640px) {
+  .mobile-sticky {
+    top: 80px;
+  }
+}
+
+/* Better mobile overflow handling */
+.mobile-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.mobile-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile-optimized text truncation */
+.mobile-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-truncate-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.mobile-truncate-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+/* Accessibility improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip to content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Enhanced focus indicators */
+.focus-visible:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-primary {
+    border: 2px solid currentColor;
+  }
+  
+  .form-input {
+    border-width: 3px;
+  }
+  
+  .card-hover {
+    border: 2px solid #374151;
+  }
+}
+
+/* Keyboard navigation indicators */
+.keyboard-nav:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
+}
+
+/* Loading state accessibility */
+.loading-accessible {
+  position: relative;
+}
+
+.loading-accessible::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error state accessibility */
+.error-accessible {
+  border-left: 4px solid #ef4444;
+  background-color: #fef2f2;
+  padding: 12px 16px;
+  border-radius: 6px;
+}
+
+.error-accessible .error-icon {
+  color: #ef4444;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/* Success state accessibility */
+.success-accessible {
+  border-left: 4px solid #10b981;
+  background-color: #f0fdf4;
+  padding: 12px 16px;
+  border-radius: 6px;
+}
+
+.success-accessible .success-icon {
+  color: #10b981;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/* Improved button states for accessibility */
+.btn-accessible {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-accessible:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.btn-accessible:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-accessible[aria-pressed="true"] {
+  background-color: #1d4ed8;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Screen reader improvements */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Announce changes to screen readers */
+.sr-live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Better color contrast for text */
+.text-accessible {
+  color: #111827;
+  font-weight: 500;
+}
+
+.text-accessible-muted {
+  color: #374151;
+  font-weight: 400;
+}
+
+/* Accessible form labels */
+.label-accessible {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Required field indicator */
+.required-indicator {
+  color: #ef4444;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+.required-indicator::after {
+  content: ' (required)';
+  font-weight: normal;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Accessible tooltips */
+.tooltip-accessible {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-accessible .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #111827;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 1000;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.tooltip-accessible:hover .tooltip-text,
+.tooltip-accessible:focus .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+/* Rich Text Editor Styles */
+.ProseMirror {
+  outline: none;
+  padding: 12px;
+  min-height: 120px;
+  border: none;
+  background: transparent;
+}
+
+.ProseMirror p {
+  margin: 0.5em 0;
+}
+
+.ProseMirror h1 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 1em 0 0.5em 0;
+  line-height: 1.2;
+}
+
+.ProseMirror h2 {
+  font-size: 1.3em;
+  font-weight: 600;
+  margin: 0.8em 0 0.4em 0;
+  line-height: 1.3;
+}
+
+.ProseMirror h3 {
+  font-size: 1.1em;
+  font-weight: 500;
+  margin: 0.6em 0 0.3em 0;
+  line-height: 1.4;
+}
+
+.ProseMirror ul, .ProseMirror ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.ProseMirror li {
+  margin: 0.25em 0;
+}
+
+.ProseMirror blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+  color: #6b7280;
+}
+
+.ProseMirror hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 1.5em 0;
+}
+
+.ProseMirror strong {
+  font-weight: 700;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
+.ProseMirror s {
+  text-decoration: line-through;
+}
+
+/* Placeholder styling for rich text editor */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9ca3af;
+  pointer-events: none;
+  height: 0;
+}
+
+/* Nepali text styling in rich text editor */
+.ProseMirror.font-nepali {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Kokila', 'Utsaah', 'Kalimati', 'Preeti', sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.ProseMirror.font-nepali h1,
+.ProseMirror.font-nepali h2,
+.ProseMirror.font-nepali h3 {
+  line-height: 1.4;
+}
+
+/* Rich text editor toolbar styling */
+.rich-text-toolbar {
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.rich-text-toolbar button {
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.rich-text-toolbar button:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.rich-text-toolbar button.is-active {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+
+.rich-text-toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rich-text-toolbar .toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #d1d5db;
+  margin: 0 4px;
+}
+
+/* Focus styles for rich text editor */
+.rich-text-editor-container:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Error state for rich text editor */
+.rich-text-editor-container.has-error {
+  border-color: #ef4444;
+}
+
+.rich-text-editor-container.has-error:focus-within {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Mobile responsive adjustments for rich text editor */
+@media (max-width: 640px) {
+  .rich-text-toolbar {
+    padding: 6px;
+    gap: 2px;
+  }
+  
+  .rich-text-toolbar button {
+    min-width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+  
+  .ProseMirror {
+    padding: 16px;
+    min-height: 150px;
+  }
+}
+
+/* Print styles for rich text content */
+@media print {
+  .rich-text-toolbar {
+    display: none;
+  }
+  
+  .ProseMirror {
+    border: none;
+    padding: 0;
+  }
+}

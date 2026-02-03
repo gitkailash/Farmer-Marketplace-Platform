@@ -1,0 +1,170 @@
+{
+  "title": "Explore Products",
+  "subtitle": "Discover fresh produce from local farmers",
+  "search": {
+    "label": "Search Products",
+    "placeholder": "Search by product name or description..."
+  },
+  "category": {
+    "label": "Category"
+  },
+  "price": {
+    "label": "Price Range",
+    "minPlaceholder": "Min price",
+    "maxPlaceholder": "Max price"
+  },
+  "filters": {
+    "clear": "Clear all filters"
+  },
+  "results": {
+    "count": "{{count}} products found"
+  },
+  "empty": {
+    "title": "No products found",
+    "description": "Try adjusting your search criteria or browse different categories.",
+    "action": "Clear Filters"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "products": "Products"
+  },
+  "availability": {
+    "label": "Availability:",
+    "inStock": "{{stock}} {{unit}} available",
+    "outOfStock": "Out of Stock"
+  },
+  "quantity": {
+    "label": "Quantity:"
+  },
+  "buttons": {
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "adding": "Adding...",
+    "processing": "Processing..."
+  },
+  "cart": {
+    "added": "Added {{quantity}} {{unit}} of {{name}} to cart!"
+  },
+  "farmer": {
+    "title": "About the Farmer",
+    "id": "Farmer ID:",
+    "name": "Farmer Name:",
+    "address": "Address:",
+    "phone": "Phone Number:",
+    "rating": "Rating:",
+    "ratingNote": "Rating available after purchase",
+    "reviewsCount": "{{count}} reviews",
+    "description": "This product is sold directly by a verified local farmer. Contact them for more information about farming practices, harvest dates, and bulk orders.",
+    "callButton": "Call Farmer",
+    "callingFarmer": "Calling {{name}}...",
+    "callFailed": "Unable to initiate call. Please try again.",
+    "noPhoneAvailable": "Phone number not available for this farmer"
+  },
+  "details": {
+    "title": "Product Details",
+    "category": "Category:",
+    "unit": "Unit:",
+    "listed": "Listed:",
+    "updated": "Last Updated:"
+  },
+  "related": {
+    "title": "More from this category",
+    "comingSoon": "Related products functionality will be implemented in future updates.",
+    "browseAll": "Browse All Products"
+  },
+  "errors": {
+    "buyerOnly": "Only buyers can add products to cart",
+    "addToCart": "Failed to add item to cart",
+    "buyNow": "Failed to proceed to checkout",
+    "notFound": "Product not found"
+  },
+  "list": {
+    "title": "Products",
+    "searchPlaceholder": "Search products...",
+    "filterByCategory": "Filter by category",
+    "sortBy": "Sort by",
+    "sortOptions": {
+      "name": "Name",
+      "price": "Price",
+      "date": "Date Added",
+      "rating": "Rating"
+    },
+    "noProducts": "No products found",
+    "loadMore": "Load More"
+  },
+  "form": {
+    "title": "Product Information",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "name": "Product Name",
+    "description": "Description",
+    "price": "Price",
+    "unit": "Unit",
+    "category": "Category",
+    "images": "Product Images",
+    "availability": "Availability",
+    "tags": "Tags",
+    "submit": "Save Product",
+    "validation": {
+      "nameRequired": "Product name is required",
+      "nameMinLength": "Product name must be at least 2 characters",
+      "descriptionRequired": "Product description is required",
+      "descriptionMinLength": "Description must be at least 10 characters",
+      "categoryRequired": "Please select a category",
+      "priceRequired": "Please enter a valid price",
+      "pricePositive": "Price must be greater than 0",
+      "unitRequired": "Please select a unit",
+      "stockRequired": "Please enter a valid stock quantity",
+      "stockNonNegative": "Stock cannot be negative",
+      "imagesRequired": "At least one product image is required"
+    }
+  },
+  "categories": {
+    "all": "All",
+    "vegetables": "Vegetables",
+    "fruits": "Fruits",
+    "grains": "Grains",
+    "dairy": "Dairy",
+    "meat": "Meat",
+    "herbs": "Herbs",
+    "other": "Other"
+  },
+  "units": {
+    "kg": "Kilogram",
+    "g": "Gram",
+    "liter": "Liter",
+    "piece": "Piece",
+    "dozen": "Dozen",
+    "bundle": "Bundle"
+  },
+  "messages": {
+    "addedToCart": "Product added to cart",
+    "productSaved": "Product saved successfully",
+    "productDeleted": "Product deleted successfully",
+    "contactSent": "Message sent to farmer"
+  },
+  "orders": {
+    "title": "My Orders",
+    "orderNumber": "Order #{{number}}",
+    "orderDate": "Order Date",
+    "deliveryDate": "Delivery Date",
+    "orderStatus": "Order Status",
+    "orderTotal": "Order Total",
+    "viewDetails": "View Details",
+    "trackOrder": "Track Order",
+    "cancelOrder": "Cancel Order",
+    "reorder": "Reorder",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+  }
+}

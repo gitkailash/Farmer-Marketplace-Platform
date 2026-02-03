@@ -1,0 +1,160 @@
+{
+  "dashboard": {
+    "title": "Admin Dashboard",
+    "overview": "Overview",
+    "statistics": "Statistics",
+    "recentActivity": "Recent Activity"
+  },
+  "users": {
+    "title": "User Management",
+    "list": "Users",
+    "add": "Add User",
+    "edit": "Edit User",
+    "delete": "Delete User",
+    "search": "Search users...",
+    "filters": {
+      "all": "All Users",
+      "farmers": "Farmers",
+      "buyers": "Buyers",
+      "admins": "Administrators",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "details": {
+      "personalInfo": "Personal Information",
+      "accountInfo": "Account Information",
+      "activity": "Activity Log",
+      "role": "Role",
+      "status": "Status",
+      "joinDate": "Join Date",
+      "lastLogin": "Last Login"
+    }
+  },
+  "content": {
+    "title": "Content Management",
+    "news": "News",
+    "mayorMessages": "Mayor Messages",
+    "gallery": "Gallery",
+    "announcements": "Announcements",
+    "add": "Add Content",
+    "edit": "Edit Content",
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "draft": "Draft",
+    "published": "Published"
+  },
+  "mayor": {
+    "form": {
+      "useRichText": "Use rich text editor (for formatted content)",
+      "messageText": "Message Text",
+      "messagePlaceholder": "Enter the mayor's message..."
+    },
+    "errors": {
+      "textRequired": "English message text is required",
+      "validationFailed": "Please fix the validation errors",
+      "scrollSpeedRange": "Scroll speed must be between 10 and 500 pixels per second",
+      "updateFailed": "Failed to update mayor message",
+      "createFailed": "Failed to create mayor message",
+      "saveFailed": "Failed to save mayor message"
+    },
+    "success": {
+      "created": "Mayor message created successfully",
+      "updated": "Mayor message updated successfully"
+    }
+  },
+  "news": {
+    "form": {
+      "headline": "Headline",
+      "headlinePlaceholder": "Enter news headline",
+      "useRichText": "Use rich text editor (for formatted content)",
+      "content": "Content (Optional)",
+      "contentPlaceholder": "Enter detailed content (optional)",
+      "summary": "Summary (Optional)",
+      "summaryPlaceholder": "Enter brief summary (optional)",
+      "externalLink": "External Link (Optional)",
+      "priority": "Priority",
+      "primaryLanguage": "Primary Language",
+      "publishDate": "Publish Date & Time",
+      "scheduleHelp": "Set a future date to schedule publication",
+      "active": "Active (visible in news ticker)",
+      "criticalContentWarning": "High priority news requires Nepali translation"
+    },
+    "errors": {
+      "headlineRequired": "English headline is required",
+      "criticalContentNepali": "Nepali translation required for high priority news",
+      "validationFailed": "Please fix the validation errors",
+      "updateFailed": "Failed to update news item",
+      "createFailed": "Failed to create news item",
+      "saveFailed": "Failed to save news item"
+    },
+    "success": {
+      "created": "News item created successfully",
+      "updated": "News item updated successfully"
+    }
+  },
+  "common": {
+    "bilingual": "Bilingual",
+    "cancel": "Cancel",
+    "create": "Create",
+    "update": "Update",
+    "saving": "Saving..."
+  },
+  "translations": {
+    "title": "Translation Management",
+    "completeness": "Translation Completeness",
+    "missingKeys": "Missing Keys",
+    "export": "Export Translations",
+    "import": "Import Translations",
+    "validate": "Validate Translations",
+    "languages": {
+      "english": "English",
+      "nepali": "Nepali"
+    },
+    "namespaces": {
+      "common": "Common",
+      "auth": "Authentication",
+      "products": "Products",
+      "admin": "Administration"
+    }
+  },
+  "moderation": {
+    "title": "Content Moderation",
+    "flagged": "Flagged Content",
+    "reports": "Reports",
+    "approve": "Approve",
+    "reject": "Reject",
+    "hide": "Hide",
+    "review": "Review"
+  },
+  "messages": {
+    "userCreated": "User created successfully",
+    "userUpdated": "User updated successfully",
+    "userDeleted": "User deleted successfully",
+    "contentPublished": "Content published successfully",
+    "contentUnpublished": "Content unpublished successfully",
+    "translationsExported": "Translations exported successfully",
+    "translationsImported": "Translations imported successfully"
+  },
+  "messaging": {
+    "title": "Messages",
+    "newMessage": "New Message",
+    "sendMessage": "Send Message",
+    "messageThread": "Message Thread",
+    "recipient": "Recipient",
+    "subject": "Subject",
+    "messageBody": "Message",
+    "send": "Send",
+    "reply": "Reply",
+    "forward": "Forward",
+    "delete": "Delete",
+    "markAsRead": "Mark as Read",
+    "markAsUnread": "Mark as Unread",
+    "noMessages": "No messages found",
+    "messageSent": "Message sent successfully",
+    "messageDeleted": "Message deleted successfully",
+    "typing": "Typing...",
+    "online": "Online",
+    "offline": "Offline",
+    "lastSeen": "Last seen {{time}}"
+  }
+}
