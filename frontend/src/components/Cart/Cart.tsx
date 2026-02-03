@@ -72,7 +72,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
   }
 
   return (
-    <CartErrorBoundary userId={user?._id}>
+    <CartErrorBoundary userId={user?.id}>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -88,7 +88,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                 <button
                   onClick={clearError}
                   className="text-red-500 hover:text-red-700"
-                  aria-label={(t('cart.dismissError') as string) || 'Dismiss error'}
+                  aria-label={(t('cart.messages.dismissError') as string) || 'Dismiss error'}
                 >
                   ×
                 </button>
@@ -98,7 +98,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                   onClick={handleRecoverCart}
                   className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
                 >
-                  {(t('cart.recoverFromBackup') as string) || 'Recover from backup'}
+                  {(t('cart.messages.recoverFromBackup') as string) || 'Recover from backup'}
                 </button>
               )}
             </div>
@@ -109,7 +109,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
             <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <div className="flex items-center space-x-2">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                <p className="text-sm text-blue-700">{(t('cart.updatingCart') as string) || 'Updating cart...'}</p>
+                <p className="text-sm text-blue-700">{(t('cart.messages.updatingCart') as string) || 'Updating cart...'}</p>
               </div>
             </div>
           )}
@@ -133,7 +133,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                     size="sm"
                     disabled={isLoading}
                   >
-                    {(t('cart.recoverPreviousCart') as string) || 'Recover Previous Cart'}
+                    {(t('cart.empty.recoverPrevious') as string) || 'Recover Previous Cart'}
                   </Button>
                 </div>
               )}
@@ -166,7 +166,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
               <div className="border-t border-gray-200 pt-4">
                 <div className="flex justify-between items-center mb-4">
                   <span className={`text-lg font-medium text-gray-900 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                    {(t('cart.total') as string) || 'Total'} ({totalItems} {(t('cart.items') as string) || 'items'}):
+                    {(t('cart.button.total') as string) || 'Total'} ({(t('cart.button.items', { count: totalItems }) as string) || `${totalItems} items`}):
                   </span>
                   <span className="text-xl font-bold text-primary-600">
                     ${totalAmount.toFixed(2)}
@@ -182,7 +182,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                     fullWidth
                     disabled={isLoading}
                   >
-                    {(t('cart.proceedToCheckout') as string) || 'Proceed to Checkout'}
+                    {(t('cart.page.proceedToCheckout') as string) || 'Proceed to Checkout'}
                   </Button>
                   <Button
                     onClick={handleViewFullCart}
@@ -191,7 +191,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                     fullWidth
                     disabled={isLoading}
                   >
-                    {(t('cart.viewFullCart') as string) || 'View Full Cart'}
+                    {(t('cart.button.viewFullCart') as string) || 'View Full Cart'}
                   </Button>
                   <div className="flex space-x-3">
                     <Button
@@ -201,7 +201,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                       fullWidth
                       disabled={isLoading}
                     >
-                      {(t('cart.continueShopping') as string) || 'Continue Shopping'}
+                      {(t('cart.page.continueShopping') as string) || 'Continue Shopping'}
                     </Button>
                     <Button
                       onClick={handleClearCart}
@@ -210,7 +210,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                       fullWidth
                       disabled={isLoading}
                     >
-                      {(t('cart.clearCart') as string) || 'Clear Cart'}
+                      {(t('cart.page.clearCart') as string) || 'Clear Cart'}
                     </Button>
                   </div>
                 </div>
@@ -279,7 +279,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onUpdateQuantity, onRemove, i
           ${item.price}/{item.unit}
         </p>
         <p className={`text-xs text-gray-500 ${language === 'ne' ? 'font-nepali' : ''}`}>
-          {(t('cart.byFarmer', { farmerId: item.farmerId.slice(-6) }) as string) || `by Farmer #${item.farmerId.slice(-6)}`}
+          {(t('cart.item.byFarmer', { farmerId: item.farmerId.slice(-6) }) as string) || `by Farmer #${item.farmerId.slice(-6)}`}
         </p>
       </div>
 
@@ -289,7 +289,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onUpdateQuantity, onRemove, i
           onClick={() => handleQuantityChange(item.quantity - 1)}
           disabled={item.quantity <= 1 || isLoading}
           className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label={(t('cart.decreaseQuantity') as string) || 'Decrease quantity'}
+          aria-label={(t('cart.item.decreaseQuantity') as string) || 'Decrease quantity'}
         >
           -
         </button>
@@ -300,7 +300,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onUpdateQuantity, onRemove, i
           onClick={() => handleQuantityChange(item.quantity + 1)}
           disabled={item.quantity >= maxQuantity || isLoading}
           className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label={(t('cart.increaseQuantity') as string) || 'Increase quantity'}
+          aria-label={(t('cart.item.increaseQuantity') as string) || 'Increase quantity'}
         >
           +
         </button>
@@ -316,7 +316,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onUpdateQuantity, onRemove, i
           disabled={isLoading}
           className={`text-xs text-red-600 hover:text-red-800 mt-1 disabled:opacity-50 disabled:cursor-not-allowed ${language === 'ne' ? 'font-nepali' : ''}`}
         >
-          {(t('cart.remove') as string) || 'Remove'}
+          {(t('cart.item.remove') as string) || 'Remove'}
         </button>
       </div>
     </div>

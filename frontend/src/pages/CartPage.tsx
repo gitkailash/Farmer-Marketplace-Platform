@@ -58,7 +58,7 @@ const CartPage: React.FC = () => {
   }
 
   return (
-    <CartErrorBoundary userId={user?._id}>
+    <CartErrorBoundary userId={user?.id}>
       <Layout>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}

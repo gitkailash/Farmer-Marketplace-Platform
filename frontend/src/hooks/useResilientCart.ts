@@ -44,7 +44,7 @@ export const useResilientCart = () => {
       },
       {
         operationName: 'addToCart',
-        userId: user?._id,
+        userId: user?.id,
         fallbackValue: false,
         maxRetries: 2
       }
@@ -61,7 +61,7 @@ export const useResilientCart = () => {
       showError(errorMessage)
       return false
     }
-  }, [dispatch, user?._id, showError, showSuccess])
+  }, [dispatch, user?.id, showError, showSuccess])
 
   /**
    * Enhanced remove from cart with error handling
@@ -80,7 +80,7 @@ export const useResilientCart = () => {
       },
       {
         operationName: 'removeFromCart',
-        userId: user?._id,
+        userId: user?.id,
         fallbackValue: false,
         maxRetries: 2
       }
@@ -104,7 +104,7 @@ export const useResilientCart = () => {
       
       return false
     }
-  }, [dispatch, user?._id, items, showError, showSuccess])
+  }, [dispatch, user?.id, items, showError, showSuccess])
 
   /**
    * Enhanced update quantity with error handling
@@ -123,7 +123,7 @@ export const useResilientCart = () => {
       },
       {
         operationName: 'updateQuantity',
-        userId: user?._id,
+        userId: user?.id,
         fallbackValue: false,
         maxRetries: 2
       }
@@ -146,7 +146,7 @@ export const useResilientCart = () => {
       
       return false
     }
-  }, [dispatch, user?._id, items, showError])
+  }, [dispatch, user?.id, items, showError])
 
   /**
    * Enhanced clear cart with confirmation and error handling
@@ -165,11 +165,13 @@ export const useResilientCart = () => {
     const result = await cartErrorHandler.handleCartOperation(
       () => {
         dispatch(clearCartAction())
+        // Set a flag to prevent auto-recovery after manual clear
+        localStorage.setItem('cartManuallyCleared', 'true')
         return true
       },
       {
         operationName: 'clearCart',
-        userId: user?._id,
+        userId: user?.id,
         fallbackValue: false,
         maxRetries: 1
       }
@@ -193,7 +195,7 @@ export const useResilientCart = () => {
       
       return false
     }
-  }, [dispatch, user?._id, items, showError, showSuccess])
+  }, [dispatch, user?.id, items, showError, showSuccess])
 
   /**
    * Recover cart from backup
@@ -222,7 +224,7 @@ export const useResilientCart = () => {
         {
           component: 'Cart',
           operation: 'recoverCart',
-          userId: user?._id
+          userId: user?.id
         },
         'medium'
       )
@@ -231,7 +233,7 @@ export const useResilientCart = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [dispatch, user?._id, showError, showSuccess])
+  }, [dispatch, user?.id, showError, showSuccess])
 
   /**
    * Validate cart integrity and fix issues
@@ -277,7 +279,7 @@ export const useResilientCart = () => {
         {
           component: 'Cart',
           operation: 'validateCart',
-          userId: user?._id
+          userId: user?.id
         },
         'medium'
       )
@@ -286,18 +288,26 @@ export const useResilientCart = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [items, dispatch, user?._id, showError, showSuccess])
+  }, [items, dispatch, user?.id, showError, showSuccess])
 
   /**
    * Auto-recovery on mount if cart is empty but backup exists
    */
   useEffect(() => {
-    if (items.length === 0) {
+    // Check if cart was manually cleared
+    const wasManuallyCleared = localStorage.getItem('cartManuallyCleared')
+    
+    if (items.length === 0 && !wasManuallyCleared) {
       const restoredItems = cartErrorHandler.restoreCartState()
       if (restoredItems && restoredItems.length > 0) {
         // Auto-recover silently
         dispatch(syncCartItems(restoredItems))
       }
+    }
+    
+    // Clear the manual clear flag after checking
+    if (wasManuallyCleared) {
+      localStorage.removeItem('cartManuallyCleared')
     }
   }, []) // Only run on mount
 

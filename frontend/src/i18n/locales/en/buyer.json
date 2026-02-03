@@ -275,12 +275,14 @@
       "maxStockReached": "Max stock reached",
       "stock": "Stock: {{count}}",
       "byFarmer": "by Farmer #{{farmerId}}",
-      "removeFromCart": "Remove {{name}} from cart"
+      "removeFromCart": "Remove {{name}} from cart",
+      "remove": "Remove"
     },
     "messages": {
       "updatingCart": "Updating cart...",
       "recoverFromBackup": "Recover from backup",
-      "onlyBuyersCheckout": "Only buyers can checkout"
+      "onlyBuyersCheckout": "Only buyers can checkout",
+      "dismissError": "Dismiss error"
     },
     "errors": {
       "updateFailed": "Failed to update cart",
