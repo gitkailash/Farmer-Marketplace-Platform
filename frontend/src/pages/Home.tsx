@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Layout } from '../components/UI'
 import { Gallery, type GalleryItem } from '../components/Gallery'
@@ -20,8 +20,18 @@ import { ShoppingCart, AlertTriangle, HomeIcon, Star, Tractor, Leaf, Headphones,
 
 const Home: React.FC = () => {
   const { isAuthenticated, user } = useAuth()
-  const { t } = useAppTranslation('common')
+  const { t, isReady, isLoading } = useAppTranslation('home')
   const { language } = useAppTranslation('common')
+
+  // Helper function to ensure translation returns a string
+  const getTranslation = useCallback((key: string, fallback: string): string => {
+    if (!isReady || isLoading) {
+      return fallback; // Return fallback immediately if not ready
+    }
+    
+    const result = t(key, fallback)
+    return typeof result === 'string' ? result : fallback
+  }, [t, isReady, isLoading])
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([])
   const [mayorMessage, setMayorMessage] = useState<MayorMessageData | null>(null)
   const [newsItems, setNewsItems] = useState<NewsItem[]>([])
@@ -160,10 +170,10 @@ const Home: React.FC = () => {
                   </div>
                 </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight">
-                  {t('navigation.home', 'Farmer Marketplace')}
+                  {getTranslation('hero.title', 'Farmer Marketplace')}
                 </h1>
                 <p className="text-lg sm:text-xl lg:text-2xl mb-8 max-w-2xl mx-auto opacity-90 leading-relaxed">
-                  Connect farmers directly with buyers for fresh, quality produce at fair prices.
+                  {getTranslation('hero.subtitle', 'Connect farmers directly with buyers for fresh, quality produce at fair prices.')}
                 </p>
                 
                 {/* Call-to-Action Buttons */}
@@ -174,13 +184,13 @@ const Home: React.FC = () => {
                         to="/products" 
                         className="bg-white text-green-600 hover:bg-gray-100 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
-                        <ShoppingCart className="w-5 h-5 mr-2 inline" /> Explore Products
+                        <ShoppingCart className="w-5 h-5 mr-2 inline" /> {getTranslation('hero.exploreProducts', 'Explore Products')}
                       </Link>
                       <Link 
                         to="/register" 
                         className="border-2 border-white text-white hover:bg-white hover:text-green-600 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
-                        <Leaf className="w-5 h-5 mr-2 inline" /> Join as Farmer
+                        <Leaf className="w-5 h-5 mr-2 inline" /> {getTranslation('hero.joinAsFarmer', 'Join as Farmer')}
                       </Link>
                     </>
                   ) : (
@@ -261,10 +271,10 @@ const Home: React.FC = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-8">
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                  {t('products.featured', 'Featured Products')}
+                  {getTranslation('products.featured', 'Featured Products')}
                 </h2>
                 <p className="text-gray-600">
-                  {t('products.featuredSubtitle', 'Fresh from local farmers to your table')}
+                  {getTranslation('products.featuredSubtitle', 'Fresh from local farmers to your table')}
                 </p>
               </div>
               
@@ -315,58 +325,89 @@ const Home: React.FC = () => {
                   to="/products" 
                   className="btn-primary inline-block px-8 py-3"
                 >
-                  {t('products.viewAll', 'View All Products')}
+                  {getTranslation('products.viewAll', 'View All Products')}
                 </Link>
               </div>
             </div>
           </section>
         )}
 
-<section className="py-16 bg-gray-50">
+        {/* Featured Categories Section */}
+        <section className="py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Shop by Category
+                {getTranslation('categories.title', 'Shop by Category')}
               </h2>
               <p className="text-xl text-gray-600">
-                Fresh products directly from local farmers
+                {getTranslation('categories.subtitle', 'Fresh products directly from local farmers')}
               </p>
             </div>
             
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 text-center">
                 <div className="text-6xl mb-4">🥬</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Vegetables & Fruits</h3>
-                <p className="text-gray-600 text-sm mb-4">Fresh seasonal produce</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('categories.vegetables.title', 'Vegetables & Fruits')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{getTranslation('categories.vegetables.description', 'Fresh seasonal produce')}</p>
                 <Link to="/products?category=Vegetables" className="text-green-600 hover:text-green-700 font-medium">
-                  Browse <ChevronRight className="w-4 h-4 inline ml-1" />
+                  {getTranslation('categories.browse', 'Browse')} <ChevronRight className="w-4 h-4 inline ml-1" />
                 </Link>
               </div>
               
               <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 text-center">
                 <div className="text-6xl mb-4">🥛</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Dairy Products</h3>
-                <p className="text-gray-600 text-sm mb-4">Fresh milk, cheese & more</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('categories.dairy.title', 'Dairy Products')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{getTranslation('categories.dairy.description', 'Fresh milk, cheese & more')}</p>
                 <Link to="/products?category=Dairy" className="text-green-600 hover:text-green-700 font-medium">
-                  Browse <ChevronRight className="w-4 h-4 inline ml-1" />
+                  {getTranslation('categories.browse', 'Browse')} <ChevronRight className="w-4 h-4 inline ml-1" />
                 </Link>
               </div>
               
               <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 text-center">
                 <div className="text-6xl mb-4">🌾</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Grains & Cereals</h3>
-                <p className="text-gray-600 text-sm mb-4">Rice, wheat, lentils</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('categories.grains.title', 'Grains & Cereals')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{getTranslation('categories.grains.description', 'Rice, wheat, lentils')}</p>
                 <Link to="/products?category=Grains" className="text-green-600 hover:text-green-700 font-medium">
-                  Browse <ChevronRight className="w-4 h-4 inline ml-1" />
+                  {getTranslation('categories.browse', 'Browse')} <ChevronRight className="w-4 h-4 inline ml-1" />
                 </Link>
               </div>
               
               <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 text-center">
                 <div className="text-6xl mb-4">🌿</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Organic Products</h3>
-                <p className="text-gray-600 text-sm mb-4">Certified organic items</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('categories.organic.title', 'Organic Products')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{getTranslation('categories.organic.description', 'Certified organic items')}</p>
                 <Link to="/products?category=Other" className="text-green-600 hover:text-green-700 font-medium">
-                  Browse <ChevronRight className="w-4 h-4 inline ml-1" />
+                  {getTranslation('categories.browse', 'Browse')} <ChevronRight className="w-4 h-4 inline ml-1" />
+                </Link>
+              </div>
+            </div>
+            
+            {/* Additional Categories Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+              <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 text-center">
+                <div className="text-6xl mb-4">🌶️</div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('categories.spices.title', 'Spices & Seasonings')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{getTranslation('categories.spices.description', 'Aromatic spices and seasonings')}</p>
+                <Link to="/products?category=Spices" className="text-green-600 hover:text-green-700 font-medium">
+                  {getTranslation('categories.browse', 'Browse')} <ChevronRight className="w-4 h-4 inline ml-1" />
+                </Link>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 text-center">
+                <div className="text-6xl mb-4">🥜</div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('categories.nuts.title', 'Nuts & Dry Fruits')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{getTranslation('categories.nuts.description', 'Premium nuts and dried fruits')}</p>
+                <Link to="/products?category=Nuts" className="text-green-600 hover:text-green-700 font-medium">
+                  {getTranslation('categories.browse', 'Browse')} <ChevronRight className="w-4 h-4 inline ml-1" />
+                </Link>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 text-center">
+                <div className="text-6xl mb-4">🌱</div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('categories.seeds.title', 'Seeds & Grains')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{getTranslation('categories.seeds.description', 'Quality seeds for planting and consumption')}</p>
+                <Link to="/products?category=Seeds" className="text-green-600 hover:text-green-700 font-medium">
+                  {getTranslation('categories.browse', 'Browse')} <ChevronRight className="w-4 h-4 inline ml-1" />
                 </Link>
               </div>
             </div>
@@ -378,10 +419,10 @@ const Home: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                {t('gallery.title', 'Featured Gallery')}
+                {getTranslation('gallery.title', 'Featured Gallery')}
               </h2>
               <p className="text-gray-600">
-                {t('gallery.subtitle', 'Discover the beauty of local farming and fresh produce')}
+                {getTranslation('gallery.subtitle', 'Discover the beauty of local farming and fresh produce')}
               </p>
             </div>
             
@@ -401,10 +442,10 @@ const Home: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Market Impact
+                {getTranslation('statistics.title', 'Market Impact')}
               </h2>
               <p className="text-xl text-gray-600">
-                Growing together with our farming community
+                {getTranslation('statistics.subtitle', 'Growing together with our farming community')}
               </p>
             </div>
             
@@ -414,7 +455,7 @@ const Home: React.FC = () => {
                   <Users className="w-8 h-8 text-green-600" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-2">500+</div>
-                <div className="text-gray-600">Active Farmers</div>
+                <div className="text-gray-600">{getTranslation('statistics.activeFarmers', 'Active Farmers')}</div>
               </div>
               
               <div className="text-center">
@@ -422,7 +463,7 @@ const Home: React.FC = () => {
                   <ShoppingCart className="w-8 h-8 text-blue-600" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-2">2,000+</div>
-                <div className="text-gray-600">Happy Customers</div>
+                <div className="text-gray-600">{getTranslation('statistics.happyCustomers', 'Happy Customers')}</div>
               </div>
               
               <div className="text-center">
@@ -430,7 +471,7 @@ const Home: React.FC = () => {
                   <TrendingUp className="w-8 h-8 text-yellow-600" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-2">10,000+</div>
-                <div className="text-gray-600">Products Sold</div>
+                <div className="text-gray-600">{getTranslation('statistics.productsSold', 'Products Sold')}</div>
               </div>
               
               <div className="text-center">
@@ -438,7 +479,7 @@ const Home: React.FC = () => {
                   <Star className="w-8 h-8 text-purple-600" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-2">95%</div>
-                <div className="text-gray-600">Customer Satisfaction</div>
+                <div className="text-gray-600">{getTranslation('statistics.customerSatisfaction', 'Customer Satisfaction')}</div>
               </div>
             </div>
           </div>
@@ -451,10 +492,10 @@ const Home: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Success Stories
+                {getTranslation('testimonials.title', 'Success Stories')}
               </h2>
               <p className="text-xl text-gray-600">
-                What our farmers and customers say about us
+                {getTranslation('testimonials.subtitle', 'What our farmers and customers say about us')}
               </p>
             </div>
             
@@ -466,8 +507,8 @@ const Home: React.FC = () => {
                     S
                   </div>
                   <div className="ml-4">
-                    <h4 className="font-semibold text-gray-900">Sita Sharma</h4>
-                    <p className="text-gray-600 text-sm">Customer from Kathmandu</p>
+                    <h4 className="font-semibold text-gray-900">{getTranslation('testimonials.customer1.name', 'Sita Sharma')}</h4>
+                    <p className="text-gray-600 text-sm">{getTranslation('testimonials.customer1.location', 'Customer from Kathmandu')}</p>
                   </div>
                 </div>
                 <div className="flex mb-4">
@@ -476,7 +517,7 @@ const Home: React.FC = () => {
                   ))}
                 </div>
                 <p className="text-gray-700">
-                  "Fresh vegetables delivered right to my door! The quality is amazing and prices are very reasonable. Highly recommended!"
+                  "{getTranslation('testimonials.customer1.review', 'Fresh vegetables delivered right to my door! The quality is amazing and prices are very reasonable. Highly recommended!')}"
                 </p>
               </div>
               
@@ -487,15 +528,15 @@ const Home: React.FC = () => {
                     R
                   </div>
                   <div className="ml-4">
-                    <h4 className="font-semibold text-gray-900">Ram Bahadur</h4>
-                    <p className="text-gray-600 text-sm">Farmer from Chitwan</p>
+                    <h4 className="font-semibold text-gray-900">{getTranslation('testimonials.farmer1.name', 'Ram Bahadur')}</h4>
+                    <p className="text-gray-600 text-sm">{getTranslation('testimonials.farmer1.location', 'Farmer from Chitwan')}</p>
                   </div>
                 </div>
                 <div className="bg-green-100 rounded-lg p-3 mb-4">
-                  <p className="text-green-800 font-semibold">Income increased by 40%</p>
+                  <p className="text-green-800 font-semibold">{getTranslation('testimonials.incomeIncrease', 'Income increased by 40%')}</p>
                 </div>
                 <p className="text-gray-700">
-                  "Since joining this platform, I can sell directly to customers. No middleman, better prices, and steady income!"
+                  "{getTranslation('testimonials.farmer1.review', 'Since joining this platform, I can sell directly to customers. No middleman, better prices, and steady income!')}"
                 </p>
               </div>
               
@@ -506,8 +547,8 @@ const Home: React.FC = () => {
                     A
                   </div>
                   <div className="ml-4">
-                    <h4 className="font-semibold text-gray-900">Anita Poudel</h4>
-                    <p className="text-gray-600 text-sm">Customer from Pokhara</p>
+                    <h4 className="font-semibold text-gray-900">{getTranslation('testimonials.customer2.name', 'Anita Poudel')}</h4>
+                    <p className="text-gray-600 text-sm">{getTranslation('testimonials.customer2.location', 'Customer from Pokhara')}</p>
                   </div>
                 </div>
                 <div className="flex mb-4">
@@ -516,7 +557,7 @@ const Home: React.FC = () => {
                   ))}
                 </div>
                 <p className="text-gray-700">
-                  "Love supporting local farmers! The app is easy to use and delivery is always on time. Great service!"
+                  "{getTranslation('testimonials.customer2.review', 'Love supporting local farmers! The app is easy to use and delivery is always on time. Great service!')}"
                 </p>
               </div>
             </div>
@@ -528,10 +569,10 @@ const Home: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Latest News & Updates
+                {getTranslation('news.title', 'Latest News & Updates')}
               </h2>
               <p className="text-xl text-gray-600">
-                Stay informed about farming tips, market trends, and agricultural innovations
+                {getTranslation('news.subtitle', 'Stay informed about farming tips, market trends, and agricultural innovations')}
               </p>
             </div>
             
@@ -733,32 +774,32 @@ const Home: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="text-white">
                 <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-                  Get Our Mobile App
+                  {getTranslation('mobileApp.title', 'Get Our Mobile App')}
                 </h2>
                 <p className="text-xl mb-8 opacity-90">
-                  Shop on the go with our mobile app. Available for iOS and Android devices.
+                  {getTranslation('mobileApp.subtitle', 'Shop on the go with our mobile app. Available for iOS and Android devices.')}
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <button className="bg-black text-white px-6 py-3 rounded-lg flex items-center justify-center hover:bg-gray-800 transition-colors">
                     <Download className="w-6 h-6 mr-3" />
                     <div className="text-left">
-                      <div className="text-xs">Download on the</div>
-                      <div className="text-lg font-semibold">App Store</div>
+                      <div className="text-xs">{getTranslation('mobileApp.downloadOn', 'Download on the')}</div>
+                      <div className="text-lg font-semibold">{getTranslation('mobileApp.appStore', 'App Store')}</div>
                     </div>
                   </button>
                   
                   <button className="bg-black text-white px-6 py-3 rounded-lg flex items-center justify-center hover:bg-gray-800 transition-colors">
                     <Download className="w-6 h-6 mr-3" />
                     <div className="text-left">
-                      <div className="text-xs">Get it on</div>
-                      <div className="text-lg font-semibold">Google Play</div>
+                      <div className="text-xs">{getTranslation('mobileApp.getItOn', 'Get it on')}</div>
+                      <div className="text-lg font-semibold">{getTranslation('mobileApp.googlePlay', 'Google Play')}</div>
                     </div>
                   </button>
                 </div>
                 
                 <div className="bg-white bg-opacity-20 rounded-lg p-4 inline-block">
-                  <p className="text-sm mb-2">Scan QR Code to Download</p>
+                  <p className="text-sm mb-2">{getTranslation('mobileApp.scanQR', 'Scan QR Code to Download')}</p>
                   <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center">
                     <div className="text-4xl">📱</div>
                   </div>
@@ -768,24 +809,24 @@ const Home: React.FC = () => {
               <div className="text-center">
                 <div className="text-8xl mb-4">📱</div>
                 <h3 className="text-2xl font-semibold text-white mb-4">
-                  Features in Mobile App
+                  {getTranslation('mobileApp.features.title', 'Features in Mobile App')}
                 </h3>
                 <ul className="text-white space-y-2">
                   <li className="flex items-center">
                     <div className="w-2 h-2 bg-white rounded-full mr-3"></div>
-                    Easy product browsing
+                    {getTranslation('mobileApp.features.easyBrowsing', 'Easy product browsing')}
                   </li>
                   <li className="flex items-center">
                     <div className="w-2 h-2 bg-white rounded-full mr-3"></div>
-                    One-click ordering
+                    {getTranslation('mobileApp.features.oneClickOrdering', 'One-click ordering')}
                   </li>
                   <li className="flex items-center">
                     <div className="w-2 h-2 bg-white rounded-full mr-3"></div>
-                    Real-time order tracking
+                    {getTranslation('mobileApp.features.orderTracking', 'Real-time order tracking')}
                   </li>
                   <li className="flex items-center">
                     <div className="w-2 h-2 bg-white rounded-full mr-3"></div>
-                    Push notifications
+                    {getTranslation('mobileApp.features.notifications', 'Push notifications')}
                   </li>
                 </ul>
               </div>
@@ -920,10 +961,10 @@ const Home: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Need Help?
+                {getTranslation('contact.title', 'Need Help?')}
               </h2>
               <p className="text-xl text-gray-600">
-                We're here to support you every step of the way
+                {getTranslation('contact.subtitle', 'We\'re here to support you every step of the way')}
               </p>
             </div>
             
@@ -932,36 +973,36 @@ const Home: React.FC = () => {
                 <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <Phone className="w-8 h-8 text-green-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Call Us</h3>
-                <p className="text-gray-600 mb-2">+977-1-4567890</p>
-                <p className="text-sm text-gray-500">Mon-Fri 9AM-6PM</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('contact.callUs.title', 'Call Us')}</h3>
+                <p className="text-gray-600 mb-2">{getTranslation('contact.callUs.phone', '+977-1-4567890')}</p>
+                <p className="text-sm text-gray-500">{getTranslation('contact.callUs.hours', 'Mon-Fri 9AM-6PM')}</p>
               </div>
               
               <div className="text-center">
                 <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Us</h3>
-                <p className="text-gray-600 mb-2">support@farmermarket.com</p>
-                <p className="text-sm text-gray-500">24/7 Response</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('contact.emailUs.title', 'Email Us')}</h3>
+                <p className="text-gray-600 mb-2">{getTranslation('contact.emailUs.email', 'support@farmermarket.com')}</p>
+                <p className="text-sm text-gray-500">{getTranslation('contact.emailUs.response', '24/7 Response')}</p>
               </div>
               
               <div className="text-center">
                 <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <MessageCircle className="w-8 h-8 text-green-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">WhatsApp</h3>
-                <p className="text-gray-600 mb-2">+977-98-12345678</p>
-                <p className="text-sm text-gray-500">Quick Support</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('contact.whatsapp.title', 'WhatsApp')}</h3>
+                <p className="text-gray-600 mb-2">{getTranslation('contact.whatsapp.phone', '+977-98-12345678')}</p>
+                <p className="text-sm text-gray-500">{getTranslation('contact.whatsapp.description', 'Quick Support')}</p>
               </div>
               
               <div className="text-center">
                 <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <Headphones className="w-8 h-8 text-purple-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Live Chat</h3>
-                <p className="text-gray-600 mb-2">Available on website</p>
-                <p className="text-sm text-gray-500">Instant Help</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{getTranslation('contact.liveChat.title', 'Live Chat')}</h3>
+                <p className="text-gray-600 mb-2">{getTranslation('contact.liveChat.availability', 'Available on website')}</p>
+                <p className="text-sm text-gray-500">{getTranslation('contact.liveChat.description', 'Instant Help')}</p>
               </div>
             </div>
             

@@ -23,7 +23,7 @@ export const SUPPORTED_LANGUAGES = ['en', 'ne'] as const;
 export type { SupportedLanguage };
 
 // Define namespaces
-export const NAMESPACES = ['common', 'auth', 'products', 'admin', 'buyer', 'farmer', 'reviews'] as const;
+export const NAMESPACES = ['common', 'auth', 'products', 'admin', 'buyer', 'farmer', 'reviews', 'home'] as const;
 export type { Namespace };
 
 // Translation loading cache with debouncing
@@ -396,7 +396,7 @@ const loadInitialTranslations = async () => {
     }
     
     // Load all critical namespaces for the detected language
-    const namespacesToLoad = ['common', 'auth', 'buyer', 'farmer', 'reviews'];
+    const namespacesToLoad = ['common', 'auth', 'buyer', 'farmer', 'reviews', 'home'];
     console.log('📥 Loading namespaces for', languageToLoad, ':', namespacesToLoad);
     
     const loadPromises = namespacesToLoad.map(async (namespace) => {

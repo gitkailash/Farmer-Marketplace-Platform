@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthProvider'
 import { useAppTranslation } from '../../contexts/I18nProvider'
@@ -22,7 +22,17 @@ const Header: React.FC = () => {
     }
   }
 
-  const { t } = useAppTranslation(getTranslationNamespace())
+  const { t, isReady, isLoading } = useAppTranslation(getTranslationNamespace())
+
+  // Helper function to ensure translation returns a string
+  const getTranslation = useCallback((key: string, fallback: string): string => {
+    if (!isReady || isLoading) {
+      return fallback; // Return fallback immediately if not ready
+    }
+    
+    const result = t(key, fallback)
+    return typeof result === 'string' ? result : fallback
+  }, [t, isReady, isLoading])
 
   const handleLogout = async () => {
     await logout()
@@ -39,47 +49,43 @@ const Header: React.FC = () => {
   }
 
   // Navigation items based on user role
-const getNavigationItems = () => {
-  if (!isAuthenticated || !user) {
-    return [
-      { name: 'Explore Products', href: '/products', icon: <ShoppingCart className="text-xl" /> },
-      { name: 'Login', href: '/login', icon: <LogIn className="text-xl" /> },
-      { name: 'Register', href: '/register', icon: <UserPlus className="text-xl" /> },
+  const getNavigationItems = () => {
+    if (!isAuthenticated || !user) {
+      return [
+        { name: getTranslation('common.navigation.exploreProducts', 'Explore Products'), href: '/products', icon: <ShoppingCart className="text-xl" /> },
+        { name: getTranslation('common.navigation.login', 'Login'), href: '/login', icon: <LogIn className="text-xl" /> },
+        { name: getTranslation('common.navigation.register', 'Register'), href: '/register', icon: <UserPlus className="text-xl" /> },
+      ]
+    }
+
+    const commonItems = [
+      { name: getTranslation('header.dashboard', 'Dashboard'), href: '/dashboard', icon: <Home className="text-xl" /> },
     ]
-  }
 
-  const commonItems = [
-    { name: t('header.dashboard', 'Dashboard'), href: '/dashboard', icon: <Home className="text-xl" /> },
-    // { name: 'Messages', href: '/messages', icon: <MessageSquare className="text-xl" /> },
-  ]
-
-  switch (user.role) {
-    case 'BUYER':
-      return [
-        ...commonItems,
-        { name: t('header.products', 'Products'), href: '/products', icon: <ShoppingCart className="text-xl" /> },
-        { name: t('header.myOrders', 'My Orders'), href: '/orders', icon: <Box className="text-xl" /> },
-        // Cart is handled separately with CartButton component
-      ]
-    case 'FARMER':
-      return [
-        ...commonItems,
-        { name: t('header.myProducts', 'My Products'), href: '/farmer/products', icon: <Package className="text-xl" /> },
-        { name: t('header.orders', 'Orders'), href: '/farmer/orders', icon: <Box className="text-xl" /> },
-        // { name: t('header.messages', 'Messages'), href: '/farmer/messages', icon: <MessageSquare className="text-xl" /> },
-        // { name: t('header.reviews', 'Reviews'), href: '/farmer/reviews', icon: <Star className="text-xl" /> },
-      ]
-    case 'ADMIN':
-      return [
-        { name: 'Dashboard', href: '/admin', icon: <Home className="text-xl" /> },
-        { name: 'Users', href: '/admin/users', icon: <Users className="text-xl" /> },
-        { name: 'Content', href: '/admin/content', icon: <FileText className="text-xl" /> },
-        { name: 'Analytics', href: '/admin/analytics', icon: <BarChart2 className="text-xl" /> },
-      ]
-    default:
-      return commonItems
+    switch (user.role) {
+      case 'BUYER':
+        return [
+          ...commonItems,
+          { name: getTranslation('header.products', 'Products'), href: '/products', icon: <ShoppingCart className="text-xl" /> },
+          { name: getTranslation('header.myOrders', 'My Orders'), href: '/orders', icon: <Box className="text-xl" /> },
+        ]
+      case 'FARMER':
+        return [
+          ...commonItems,
+          { name: getTranslation('header.myProducts', 'My Products'), href: '/farmer/products', icon: <Package className="text-xl" /> },
+          { name: getTranslation('header.orders', 'Orders'), href: '/farmer/orders', icon: <Box className="text-xl" /> },
+        ]
+      case 'ADMIN':
+        return [
+          { name: 'Dashboard', href: '/admin', icon: <Home className="text-xl" /> },
+          { name: 'Users', href: '/admin/users', icon: <Users className="text-xl" /> },
+          { name: 'Content', href: '/admin/content', icon: <FileText className="text-xl" /> },
+          { name: 'Analytics', href: '/admin/analytics', icon: <BarChart2 className="text-xl" /> },
+        ]
+      default:
+        return commonItems
+    }
   }
-}
 
 
   const navigationItems = getNavigationItems()
@@ -100,7 +106,7 @@ const getNavigationItems = () => {
                 <Tractor className="text-green-600" />
               </span>
               <span className="text-2xl sm:text-xl font-bold text-primary-600">
-                Farmer Market
+                {getTranslation('common.navigation.farmerMarket', 'Farmer Market')}
               </span>
             </Link>
           </div>
@@ -166,7 +172,7 @@ const getNavigationItems = () => {
                   <span className="hidden lg:block">Settings</span>
                 </Link> */}
                 <span className="text-xs text-gray-600 hidden lg:block" aria-live="polite">
-                  {t('header.signedInAs', 'Hi, {{name}}').replace('{{name}}', user?.profile?.name || user?.email || '')}
+                  {getTranslation('header.signedInAs', 'Hi, {{name}}').replace('{{name}}', user?.profile?.name || user?.email || '')}
                 </span>
                 <button
                   onClick={handleLogout}
@@ -176,7 +182,7 @@ const getNavigationItems = () => {
                   <span className="text-xl" aria-hidden="true">
                     <LogOut className="text-2xl" />
                   </span>
-                  <span>{t('header.logout', 'Logout')}</span>
+                  <span>{getTranslation('header.logout', 'Logout')}</span>
                 </button>
               </div>
             )}
@@ -190,7 +196,7 @@ const getNavigationItems = () => {
               className="inline-flex items-center justify-center p-3 rounded-xl text-gray-700 hover:text-primary-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 touch-friendly keyboard-nav"
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
-              aria-label={isMobileMenuOpen ? t('header.closeMenu', 'Close main menu') : t('header.openMenu', 'Open main menu')}
+              aria-label={isMobileMenuOpen ? getTranslation('header.closeMenu', 'Close main menu') : getTranslation('header.openMenu', 'Open main menu')}
             >
               {isMobileMenuOpen ? (
                 <svg className="block h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -239,7 +245,7 @@ const getNavigationItems = () => {
             {/* Language Switcher - Mobile */}
             <div className="border-t border-gray-200 pt-4 mt-4">
               <div className="px-4 py-2">
-                <p className="text-sm font-medium text-gray-700 mb-2">{t('header.language', 'Language / भाषा')}</p>
+                <p className="text-sm font-medium text-gray-700 mb-2">{getTranslation('header.language', 'Language / भाषा')}</p>
                 <LanguageSwitcher 
                   variant="buttons" 
                   size="md" 
@@ -254,10 +260,10 @@ const getNavigationItems = () => {
               <div className="border-t border-gray-200 pt-6 mt-6" role="region" aria-label="User account">
                 <div className="px-4 py-3">
                   <p className="text-lg text-gray-600">
-                    {t('header.signedInAs', 'Signed in as {{name}}').replace('{{name}}', user?.profile?.name || user?.email || '')}
+                    {getTranslation('header.signedInAs', 'Signed in as {{name}}').replace('{{name}}', user?.profile?.name || user?.email || '')}
                   </p>
                   <p className="text-base text-gray-500 capitalize">
-                    {t('header.accountType', '{{role}} account').replace('{{role}}', user?.role?.toLowerCase() || '')}
+                    {getTranslation('header.accountType', '{{role}} account').replace('{{role}}', user?.role?.toLowerCase() || '')}
                   </p>
                 </div>
                 <Link
@@ -268,7 +274,7 @@ const getNavigationItems = () => {
                 >
                   <span className="flex items-center space-x-2">
                     <Settings className="text-2xl" />
-                    <span>{t('header.settings', 'Settings')}</span>
+                    <span>{getTranslation('header.settings', 'Settings')}</span>
                   </span>
                 </Link>
                 <button
@@ -278,7 +284,7 @@ const getNavigationItems = () => {
                 >
                   <span className="flex items-center space-x-2">
                     <LogOut className="text-2xl" />
-                    <span>{t('header.logout', 'Logout')}</span>
+                    <span>{getTranslation('header.logout', 'Logout')}</span>
                   </span>
                 </button>
               </div>

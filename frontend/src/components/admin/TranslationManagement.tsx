@@ -23,22 +23,23 @@ import {
 } from 'lucide-react'
 
 const NAMESPACES = [
-  'common',
-  'auth', 
-  'products',
   'admin',
-  'navigation',
-  'forms',
-  'errors',
-  'messages',
-  'notifications',
-  'gallery',
-  'news',
-  'reviews',
-  'orders',
-  'dashboard',
+  'auth',
   'buyer',
-  'farmer'
+  'common',
+  'dashboard',
+  'errors',
+  'farmer',
+  'forms',
+  'gallery',
+  'home',
+  'messages',
+  'navigation',
+  'news',
+  'notifications',
+  'orders',
+  'products',
+  'reviews'
 ] as const
 
 type Namespace = typeof NAMESPACES[number]

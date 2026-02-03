@@ -61,8 +61,8 @@ export const validateTranslationData = [
   
   body('namespace')
     .isString()
-    .isIn(['common', 'auth', 'products', 'admin', 'navigation', 'forms', 'errors', 'messages', 'notifications', 'gallery', 'news', 'reviews', 'orders', 'dashboard', 'buyer', 'farmer'])
-    .withMessage('Namespace must be one of: common, auth, products, admin, navigation, forms, errors, messages, notifications, gallery, news, reviews, orders, dashboard, buyer, farmer'),
+    .isIn(['common', 'auth', 'products', 'admin', 'navigation', 'forms', 'errors', 'messages', 'notifications', 'gallery', 'news', 'reviews', 'orders', 'dashboard', 'buyer', 'farmer', 'home'])
+    .withMessage('Namespace must be one of: common, auth, products, admin, navigation, forms, errors, messages, notifications, gallery, news, reviews, orders, dashboard, buyer, farmer, home'),
   
   body('translations.en')
     .isString()
@@ -224,7 +224,7 @@ export const validateLanguage = (req: Request, res: Response, next: NextFunction
  */
 export const validateNamespace = (req: Request, res: Response, next: NextFunction): void => {
   const { namespace } = req.query;
-  const validNamespaces = ['common', 'auth', 'products', 'admin', 'navigation', 'forms', 'errors', 'messages', 'notifications', 'gallery', 'news', 'reviews', 'orders', 'dashboard', 'buyer', 'farmer'];
+  const validNamespaces = ['common', 'auth', 'products', 'admin', 'navigation', 'forms', 'errors', 'messages', 'notifications', 'gallery', 'news', 'reviews', 'orders', 'dashboard', 'buyer', 'farmer', 'home'];
   
   if (namespace && !validNamespaces.includes(namespace as string)) {
     res.status(400).json({

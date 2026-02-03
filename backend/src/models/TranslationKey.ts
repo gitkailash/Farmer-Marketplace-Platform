@@ -44,7 +44,8 @@ export const VALID_NAMESPACES = [
   'orders',
   'dashboard',
   'buyer',
-  'farmer'
+  'farmer',
+  'home'
 ] as const;
 
 export type TranslationNamespace = typeof VALID_NAMESPACES[number];

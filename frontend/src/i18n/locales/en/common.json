@@ -231,5 +231,147 @@
       "deliveryArrangements": "🚚 Delivery arrangements will be made directly with farmers", 
       "messageFarmers": "💬 You can message farmers about your orders after placement"
     }
+  },
+  "home": {
+    "hero": {
+      "title": "Farmer Marketplace",
+      "subtitle": "Connect farmers directly with buyers for fresh, quality produce at fair prices.",
+      "exploreProducts": "Explore Products",
+      "joinAsFarmer": "Join as Farmer"
+    },
+    "categories": {
+      "title": "Shop by Category",
+      "subtitle": "Fresh products directly from local farmers",
+      "vegetables": {
+        "title": "Vegetables & Fruits",
+        "description": "Fresh seasonal produce"
+      },
+      "dairy": {
+        "title": "Dairy Products", 
+        "description": "Fresh milk, cheese & more"
+      },
+      "grains": {
+        "title": "Grains & Cereals",
+        "description": "Rice, wheat, lentils"
+      },
+      "organic": {
+        "title": "Organic Products",
+        "description": "Certified organic items"
+      },
+      "browse": "Browse"
+    },
+    "statistics": {
+      "title": "Market Impact",
+      "subtitle": "Growing together with our farming community",
+      "activeFarmers": "Active Farmers",
+      "happyCustomers": "Happy Customers", 
+      "productsSold": "Products Sold",
+      "customerSatisfaction": "Customer Satisfaction"
+    },
+    "testimonials": {
+      "title": "Success Stories",
+      "subtitle": "What our farmers and customers say about us",
+      "incomeIncrease": "Income increased by 40%",
+      "customer1": {
+        "name": "Sita Sharma",
+        "location": "Customer from Kathmandu",
+        "review": "Fresh vegetables delivered right to my door! The quality is amazing and prices are very reasonable. Highly recommended!"
+      },
+      "farmer1": {
+        "name": "Ram Bahadur", 
+        "location": "Farmer from Chitwan",
+        "review": "Since joining this platform, I can sell directly to customers. No middleman, better prices, and steady income!"
+      },
+      "customer2": {
+        "name": "Anita Poudel",
+        "location": "Customer from Pokhara", 
+        "review": "Love supporting local farmers! The app is easy to use and delivery is always on time. Great service!"
+      }
+    },
+    "news": {
+      "title": "Latest News & Updates",
+      "subtitle": "Stay informed about farming tips, market trends, and agricultural innovations",
+      "viewAllArticles": "View All Articles",
+      "articles": {
+        "winterFarming": {
+          "title": "Winter Farming: Best Practices for Cold Season Crops",
+          "description": "Discover the most effective techniques for growing vegetables during winter months. Learn about soil preparation, crop selection, and protection methods that can help farmers maximize their yield even in challenging weather conditions.",
+          "category": "Farming Tips",
+          "readTime": "5 min read"
+        },
+        "marketPrices": {
+          "title": "Market Prices: Vegetable Rates This Week",
+          "description": "Weekly update on current market prices for major vegetables and seasonal produce.",
+          "category": "Market Update",
+          "action": "View Prices"
+        },
+        "organicFarming": {
+          "title": "Organic Farming: Getting Started Guide", 
+          "description": "Complete beginner's guide to transitioning from conventional to organic farming methods.",
+          "category": "Organic",
+          "action": "Learn More"
+        },
+        "agriTech": {
+          "title": "New Agricultural Technology Trends",
+          "description": "Explore the latest farming technologies that are revolutionizing agriculture.",
+          "action": "Read Article"
+        },
+        "waterConservation": {
+          "title": "Water Conservation in Farming",
+          "description": "Effective irrigation techniques to save water and improve crop yield.",
+          "action": "Learn More"
+        },
+        "pestControl": {
+          "title": "Pest Control: Natural Methods",
+          "description": "Chemical-free approaches to protect your crops from common pests.",
+          "action": "Discover"
+        },
+        "cropPlanning": {
+          "title": "Seasonal Crop Planning Guide",
+          "description": "Plan your crops according to seasons for maximum profitability.",
+          "action": "Plan Now"
+        }
+      }
+    },
+    "mobileApp": {
+      "title": "Get Our Mobile App",
+      "subtitle": "Shop on the go with our mobile app. Available for iOS and Android devices.",
+      "downloadOn": "Download on the",
+      "appStore": "App Store",
+      "getItOn": "Get it on", 
+      "googlePlay": "Google Play",
+      "scanQR": "Scan QR Code to Download",
+      "features": {
+        "title": "Features in Mobile App",
+        "easyBrowsing": "Easy product browsing",
+        "oneClickOrdering": "One-click ordering",
+        "orderTracking": "Real-time order tracking",
+        "notifications": "Push notifications"
+      }
+    },
+    "contact": {
+      "title": "Need Help?",
+      "subtitle": "We're here to support you every step of the way",
+      "callUs": {
+        "title": "Call Us",
+        "phone": "+977-1-4567890",
+        "hours": "Mon-Fri 9AM-6PM"
+      },
+      "emailUs": {
+        "title": "Email Us",
+        "email": "support@farmermarket.com",
+        "response": "24/7 Response"
+      },
+      "whatsapp": {
+        "title": "WhatsApp",
+        "phone": "+977-98-12345678",
+        "description": "Quick Support"
+      },
+      "liveChat": {
+        "title": "Live Chat",
+        "availability": "Available on website",
+        "description": "Instant Help"
+      }
+    }
   }
 }
