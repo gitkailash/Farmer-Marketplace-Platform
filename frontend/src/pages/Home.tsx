@@ -114,71 +114,142 @@ const Home: React.FC = () => {
       />
 
       {/* Main Content */}
-      <div className="pt-1 sm:pt-1"> {/* Space for header + news ticker + mayor message */}
+      <div className="pt-0"> {/* Reduced top padding */}
 
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-green-600 to-green-800 py-20 sm:py-24">
+        <section className="relative bg-gradient-to-r from-green-600 to-green-800 py-8 sm:py-12">
           {/* Background Image Overlay */}
           <div className="absolute inset-0 bg-black opacity-20"></div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center text-white">
-              <div className="flex justify-center mb-4">
-                <div className="bg-white bg-opacity-20 rounded-full p-3">
-                  <Tractor className="w-12 h-12 text-white" />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              {/* Left Side - Nepal Government/Gaupalika Logo */}
+              <div className="lg:col-span-3 flex justify-center lg:justify-start">
+                <div className="group relative">
+                  {/* Decorative background glow */}
+                  <div className="absolute -inset-4 bg-gradient-to-r from-yellow-400/20 to-red-400/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                  
+                  <div className="relative bg-white/15 backdrop-blur-lg rounded-2xl p-8 sm:p-10 lg:p-12 border-2 border-white/30 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105">
+                    <div className="text-center">
+                      <div className="mb-3 relative">
+                        <img
+                          src="https://gorkhamun.gov.np/sites/gorkhamun.gov.np/files/field/image/87529732_202672434266258_451609600651689984_n.jpg"
+                          alt="Nepal Government - Gaupalika"
+                          className="w-full h-full object-cover rounded-xl"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement
+                            // Enhanced fallback with Nepal emblem design
+                            target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9Ijc1IiBjeT0iNzUiIHI9IjcwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNEQzE0M0MiIHN0cm9rZS13aWR0aD0iNCIvPgo8Y2lyY2xlIGN4PSI3NSIgY3k9Ijc1IiByPSI1NSIgZmlsbD0iI0RDMTQzQyIvPgo8cG9seWdvbiBwb2ludHM9Ijc1LDM11LDU1IDEwNSw1NSA5MCw3MCA5NSw5MCA3NSw4MCA1NSw5MCA2MCw3MCA0NSw1NSA2NSw1NSIgZmlsbD0iI0ZGRkZGRiIvPgo8Y2lyY2xlIGN4PSI3NSIgY3k9IjEwNSIgcj0iOCIgZmlsbD0iI0ZGRkZGRiIvPgo8dGV4dCB4PSI3NSIgeT0iMTQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjRENFNDNDIj5HQVVQQU1JS0E8L3RleHQ+Cjwvc3ZnPg=='
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-white text-sm sm:text-base font-bold tracking-wide">
+                          🏛️ GAUPALIKA
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-                {t('navigation.home', 'Farmer Marketplace')}
-              </h1>
-              <p className="text-xl sm:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
-                Connect farmers directly with buyers for fresh, quality produce at fair prices.
-              </p>
-              
-              
-              
-              {/* Call-to-Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                {!isAuthenticated ? (
-                  <>
-                    <Link 
-                      to="/products" 
-                      className="bg-white text-green-600 hover:bg-gray-100 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-colors duration-200"
-                    >
-                      <ShoppingCart className="w-5 h-5 mr-2 inline" /> Explore Products
-                    </Link>
-                    <Link 
-                      to="/register" 
-                      className="border-2 border-white text-white hover:bg-white hover:text-green-600 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-colors duration-200"
-                    >
-                      <Leaf className="w-5 h-5 mr-2 inline" /> Join as Farmer
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link 
-                      to="/dashboard" 
-                      className="bg-white text-green-600 hover:bg-gray-100 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-colors duration-200"
-                    >
-                       <HomeIcon className="w-5 h-5 mr-2 inline" /> {t('navigation.dashboard')}
-                    </Link>
-                    {user?.role === 'BUYER' && (
+
+              {/* Center - Main Content */}
+              <div className="lg:col-span-6 text-center text-white px-4">
+                <div className="flex justify-center mb-6">
+                  <div className="bg-white bg-opacity-20 rounded-full p-4 shadow-lg">
+                    <Tractor className="w-14 h-14 sm:w-16 sm:h-16 text-white" />
+                  </div>
+                </div>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight">
+                  {t('navigation.home', 'Farmer Marketplace')}
+                </h1>
+                <p className="text-lg sm:text-xl lg:text-2xl mb-8 max-w-2xl mx-auto opacity-90 leading-relaxed">
+                  Connect farmers directly with buyers for fresh, quality produce at fair prices.
+                </p>
+                
+                {/* Call-to-Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  {!isAuthenticated ? (
+                    <>
                       <Link 
                         to="/products" 
-                        className="border-2 border-white text-white hover:bg-white hover:text-green-600 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-colors duration-200"
+                        className="bg-white text-green-600 hover:bg-gray-100 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
-                        <ShoppingCart className="w-5 h-5 mr-2 inline" /> {t('navigation.products')}
+                        <ShoppingCart className="w-5 h-5 mr-2 inline" /> Explore Products
                       </Link>
-                    )}
-                    {user?.role === 'FARMER' && (
                       <Link 
-                        to="/farmer/products" 
-                        className="border-2 border-white text-white hover:bg-white hover:text-green-600 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-colors duration-200"
+                        to="/register" 
+                        className="border-2 border-white text-white hover:bg-white hover:text-green-600 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
-                        <Tractor className="w-5 h-5 mr-2 inline" /> {t('navigation.products')}
+                        <Leaf className="w-5 h-5 mr-2 inline" /> Join as Farmer
                       </Link>
-                    )}
-                  </>
-                )}
+                    </>
+                  ) : (
+                    <>
+                      <Link 
+                        to="/dashboard" 
+                        className="bg-white text-green-600 hover:bg-gray-100 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                      >
+                         <HomeIcon className="w-5 h-5 mr-2 inline" /> {t('navigation.dashboard')}
+                      </Link>
+                      {user?.role === 'BUYER' && (
+                        <Link 
+                          to="/products" 
+                          className="border-2 border-white text-white hover:bg-white hover:text-green-600 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                        >
+                          <ShoppingCart className="w-5 h-5 mr-2 inline" /> {t('navigation.products')}
+                        </Link>
+                      )}
+                      {user?.role === 'FARMER' && (
+                        <Link 
+                          to="/farmer/products" 
+                          className="border-2 border-white text-white hover:bg-white hover:text-green-600 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                        >
+                          <Tractor className="w-5 h-5 mr-2 inline" /> {t('navigation.products')}
+                        </Link>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Right Side - Mayor Image */}
+              <div className="lg:col-span-3 flex justify-center lg:justify-end">
+                <div className="group relative">
+                  {/* Decorative background glow */}
+                  <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                  
+                  <div className="relative bg-white/15 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border-2 border-white/30 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105">
+                    <div className="text-center">
+                      <div className="mb-3 relative">
+                        {mayorMessage?.imageUrl ? (
+                          <img
+                            src={mayorMessage.imageUrl}
+                            alt="Mayor"
+                            className="w-full h-full object-cover rounded-xl"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement
+                              // Simple fallback
+                              target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDIwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iIzYzNjZGMSIvPgo8cGF0aCBkPSJNNzAgOTBjMC0xNSAxMy0yNSAzMC0yNXMzMCAxMCAzMCAyNSIgZmlsbD0iIzYzNjZGMSIvPgo8dGV4dCB4PSIxMDAiIHk9IjEzMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzYzNjZGMSI+TUFZT1I8L3RleHQ+Cjwvc3ZnPg=='
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-400/30 to-purple-400/30 flex items-center justify-center rounded-xl">
+                            <User className="w-16 h-16 text-white" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="text-white text-sm sm:text-base font-bold tracking-wide">
+                          MAYOR
+                        </h3>
+                        <p className="text-white/70 text-xs sm:text-sm">
+                          Kathaari Gaupalika
+                        </p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
