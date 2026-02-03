@@ -218,7 +218,7 @@ const Home: React.FC = () => {
                   {/* Decorative background glow */}
                   <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
                   
-                  <div className="relative bg-white/15 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border-2 border-white/30 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105">
+                  <div className="relative bg-white/15 backdrop-blur-lg rounded-2xl p-8 sm:p-10 lg:p-12 border-2 border-white/30 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105">
                     <div className="text-center">
                       <div className="mb-3 relative">
                         {mayorMessage?.imageUrl ? (

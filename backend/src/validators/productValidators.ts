@@ -9,9 +9,12 @@ export const PRODUCT_CATEGORIES = [
   'Vegetables',
   'Fruits',
   'Grains',
-  'Herbs',
   'Dairy',
   'Meat',
+  'Herbs',
+  'Spices',
+  'Nuts',
+  'Seeds',
   'Other'
 ] as const;
 

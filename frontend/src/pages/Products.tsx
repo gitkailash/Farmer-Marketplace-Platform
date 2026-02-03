@@ -11,9 +11,12 @@ const CATEGORIES = [
   'Vegetables',
   'Fruits',
   'Grains',
-  'Herbs',
   'Dairy',
   'Meat',
+  'Herbs',
+  'Spices',
+  'Nuts',
+  'Seeds',
   'Other'
 ]
 

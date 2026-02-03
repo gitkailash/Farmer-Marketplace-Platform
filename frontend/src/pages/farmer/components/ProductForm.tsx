@@ -56,7 +56,10 @@ const CATEGORIES = [
   { value: 'Grains', label: 'Grains & Cereals' },
   { value: 'Dairy', label: 'Dairy Products' },
   { value: 'Meat', label: 'Meat & Poultry' },
-  { value: 'Herbs', label: 'Herbs & Spices' },
+  { value: 'Herbs', label: 'Herbs' },
+  { value: 'Spices', label: 'Spices' },
+  { value: 'Nuts', label: 'Nuts' },
+  { value: 'Seeds', label: 'Seeds' },
   { value: 'Other', label: 'Other' }
 ]
 

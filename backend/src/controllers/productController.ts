@@ -166,7 +166,7 @@ export const getProducts = async (req: ProductSearchRequest, res: Response): Pro
 
     // Category filter
     if (category && category !== '' && category !== 'All') {
-      query.category = category;
+      query['category.en'] = category;
     }
 
     // Farmer filter
