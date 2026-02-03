@@ -169,7 +169,14 @@ export const createOrder = async (req: CreateOrderAuthRequest, res: Response): P
     // Populate order data for response
     const populatedOrder = await Order.findById(order._id)
       .populate('buyer', 'profile.name email')
-      .populate('farmer', 'location rating reviewCount')
+      .populate({
+        path: 'farmer',
+        select: 'location rating reviewCount userId',
+        populate: {
+          path: 'userId',
+          select: 'profile.name'
+        }
+      })
       .populate('items.productId', 'name category unit images');
 
     res.status(201).json({
@@ -271,7 +278,14 @@ export const getOrders = async (req: OrderSearchRequest, res: Response): Promise
     const [orders, total] = await Promise.all([
       Order.find(query)
         .populate('buyer', 'profile.name email')
-        .populate('farmer', 'location rating reviewCount')
+        .populate({
+          path: 'farmer',
+          select: 'location rating reviewCount userId',
+          populate: {
+            path: 'userId',
+            select: 'profile.name'
+          }
+        })
         .populate('items.productId', 'name category unit images')
         .sort(sortOptions)
         .skip(skip)
@@ -334,7 +348,14 @@ export const getOrderById = async (req: AuthenticatedRequest, res: Response): Pr
 
     const order = await Order.findById(id)
       .populate('buyer', 'profile.name email')
-      .populate('farmer', 'location rating reviewCount')
+      .populate({
+        path: 'farmer',
+        select: 'location rating reviewCount userId',
+        populate: {
+          path: 'userId',
+          select: 'profile.name'
+        }
+      })
       .populate('items.productId', 'name category unit images');
 
     if (!order) {
@@ -476,7 +497,14 @@ export const updateOrderStatus = async (req: UpdateOrderAuthRequest, res: Respon
     // Populate order data for response
     await order.populate([
       { path: 'buyer', select: 'profile.name email' },
-      { path: 'farmer', select: 'location rating reviewCount' },
+      { 
+        path: 'farmer', 
+        select: 'location rating reviewCount userId',
+        populate: {
+          path: 'userId',
+          select: 'profile.name'
+        }
+      },
       { path: 'items.productId', select: 'name category unit images' }
     ]);
 
@@ -649,7 +677,14 @@ export const getOrderHistory = async (req: OrderSearchRequest, res: Response): P
     const [orders, total] = await Promise.all([
       Order.find(query)
         .populate('buyer', 'profile.name email')
-        .populate('farmer', 'location rating reviewCount')
+        .populate({
+          path: 'farmer',
+          select: 'location rating reviewCount userId',
+          populate: {
+            path: 'userId',
+            select: 'profile.name'
+          }
+        })
         .populate('items.productId', 'name category unit images')
         .sort(sortOptions)
         .skip(skip)

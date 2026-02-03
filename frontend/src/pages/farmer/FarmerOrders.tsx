@@ -15,7 +15,7 @@ import { useAppTranslation } from '../../contexts/I18nProvider'
 import { getLocalizedText } from '../../utils/multilingual'
 import { notificationAwareOrderService } from '../../services/notificationIntegration'
 import { Order } from '../../types/api'
-import { processOrderItem } from '../../utils/orderUtils'
+import { processOrderItem, getShortProductId } from '../../utils/orderUtils'
 
 const ORDER_STATUS_COLORS = {
   PENDING: 'bg-yellow-100 text-yellow-800 border-yellow-200',
@@ -45,6 +45,7 @@ const FarmerOrders: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showOrderModal, setShowOrderModal] = useState(false)
+
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   
   // Enhanced filtering state
@@ -654,14 +655,19 @@ const OrderCard: React.FC<OrderCardProps> = ({
                 {order.items.slice(0, 3).map((item, index) => {
                   // Use the enhanced processing function to safely extract product info
                   const processedItem = processOrderItem ? processOrderItem(item) : {
-                    productName: item.product?.name || `Product #${typeof item.productId === 'string' ? item.productId.slice(-6) : 'Unknown'}`,
+                    productName: item.product?.name || `Product #${getShortProductId(item.productId)}`,
                     quantity: item.quantity,
                     priceAtTime: item.priceAtTime
                   }
                   
+                  // Ensure productName is always a string
+                  const productName = typeof processedItem.productName === 'string' 
+                    ? processedItem.productName 
+                    : getLocalizedText(processedItem.productName, 'en') || `Product #${getShortProductId(item.productId)}`
+                  
                   return (
                     <div key={index} className="flex justify-between">
-                      <span>{processedItem.productName}</span>
+                      <span>{productName}</span>
                       <span>×{processedItem.quantity} @ ${processedItem.priceAtTime}</span>
                     </div>
                   )

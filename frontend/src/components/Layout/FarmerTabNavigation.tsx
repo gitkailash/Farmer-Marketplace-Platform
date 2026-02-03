@@ -27,12 +27,12 @@ const FarmerTabNavigation: React.FC = () => {
       icon: <Clipboard className="text-xl" />,
       shortName: t('navigation.orders', 'Orders')
     },
-    {
-      name: t('navigation.messages', 'Messages'),
-      href: '/farmer/messages',
-      icon: <MessageCircle className="text-xl" />,
-      shortName: t('navigation.messages', 'Messages')
-    },
+    // {
+    //   name: t('navigation.messages', 'Messages'),
+    //   href: '/farmer/messages',
+    //   icon: <MessageCircle className="text-xl" />,
+    //   shortName: t('navigation.messages', 'Messages')
+    // },
     {
       name: t('navigation.reviews', 'Reviews'),
       href: '/farmer/reviews',

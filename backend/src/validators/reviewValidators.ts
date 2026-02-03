@@ -114,6 +114,46 @@ export const validateCreateReview = [
 ];
 
 /**
+ * Validation rules for updating a review
+ */
+export const validateUpdateReview = [
+  // Review ID parameter
+  param('id')
+    .notEmpty()
+    .withMessage('Review ID is required')
+    .isMongoId()
+    .withMessage('Review ID must be a valid MongoDB ObjectId'),
+
+  // Rating validation
+  body('rating')
+    .notEmpty()
+    .withMessage('Rating is required')
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Rating must be an integer between 1 and 5'),
+
+  // Comment validation
+  body('comment')
+    .trim()
+    .notEmpty()
+    .withMessage('Comment is required')
+    .isLength({ min: 10, max: 1000 })
+    .withMessage('Comment must be between 10 and 1000 characters')
+    .custom((value: string) => {
+      // Basic profanity check (this would be more sophisticated in production)
+      const inappropriateWords = ['spam', 'fake', 'scam'];
+      const lowerValue = value.toLowerCase();
+      
+      for (const word of inappropriateWords) {
+        if (lowerValue.includes(word)) {
+          throw new Error('Comment contains inappropriate content');
+        }
+      }
+      
+      return true;
+    }),
+];
+
+/**
  * Validation rules for moderating a review
  */
 export const validateModerateReview = [
@@ -260,6 +300,17 @@ export const validateReviewId = [
     .withMessage('Review ID is required')
     .isMongoId()
     .withMessage('Review ID must be a valid MongoDB ObjectId')
+];
+
+/**
+ * Validation rules for order ID parameter
+ */
+export const validateOrderId = [
+  param('orderId')
+    .notEmpty()
+    .withMessage('Order ID is required')
+    .isMongoId()
+    .withMessage('Order ID must be a valid MongoDB ObjectId')
 ];
 
 /**

@@ -23,7 +23,7 @@ export const SUPPORTED_LANGUAGES = ['en', 'ne'] as const;
 export type { SupportedLanguage };
 
 // Define namespaces
-export const NAMESPACES = ['common', 'auth', 'products', 'admin', 'buyer', 'farmer'] as const;
+export const NAMESPACES = ['common', 'auth', 'products', 'admin', 'buyer', 'farmer', 'reviews'] as const;
 export type { Namespace };
 
 // Translation loading cache with debouncing
@@ -73,6 +73,12 @@ export const translationLoader: TranslationLoader = {
       translationCache.delete(cacheKey);
       loadingStates.delete(cacheKey);
       loadingAttempts.delete(cacheKey);
+      // Also clear browser cache for this specific translation
+      try {
+        await translationCacheService.invalidate(cacheKey);
+      } catch (e) {
+        console.warn('Failed to clear translation cache service:', e);
+      }
     }
     
     // Return existing loading promise if already loading (and not forcing reload)
@@ -103,6 +109,8 @@ export const translationLoader: TranslationLoader = {
           if (namespace && namespace !== 'common') {
             queryParams.append('namespace', namespace);
           }
+          // Add timestamp to force cache refresh
+          queryParams.append('_t', Date.now().toString());
           
           const response = await fetch(`/api/translations?${queryParams.toString()}`, {
             headers: {
@@ -163,6 +171,9 @@ export const translationLoader: TranslationLoader = {
             case 'en/farmer':
               translationModule = await import('./locales/en/farmer.json');
               break;
+            case 'en/reviews':
+              translationModule = await import('./locales/en/reviews.json');
+              break;
             case 'ne/common':
               translationModule = await import('./locales/ne/common.json');
               break;
@@ -180,6 +191,9 @@ export const translationLoader: TranslationLoader = {
               break;
             case 'ne/farmer':
               translationModule = await import('./locales/ne/farmer.json');
+              break;
+            case 'ne/reviews':
+              translationModule = await import('./locales/ne/reviews.json');
               break;
             default:
               console.warn(`No static fallback for: ${language}/${namespace}`);
@@ -382,14 +396,20 @@ const loadInitialTranslations = async () => {
     }
     
     // Load all critical namespaces for the detected language
-    const namespacesToLoad = ['common', 'auth', 'buyer', 'farmer'];
+    const namespacesToLoad = ['common', 'auth', 'buyer', 'farmer', 'reviews'];
     console.log('📥 Loading namespaces for', languageToLoad, ':', namespacesToLoad);
     
     const loadPromises = namespacesToLoad.map(async (namespace) => {
       try {
-        const translations = await translationLoader.loadTranslations(languageToLoad, namespace);
+        const translations = await translationLoader.loadTranslations(languageToLoad, namespace, true); // Force reload
         const keyCount = Object.keys(translations).length;
         console.log(`📦 ${namespace} translations loaded: ${keyCount} keys`);
+        
+        // Special logging for reviews namespace
+        if (namespace === 'reviews') {
+          console.log(`🎯 REVIEWS namespace loaded with keys:`, Object.keys(translations).slice(0, 5));
+        }
+        
         i18n.addResourceBundle(languageToLoad, namespace, translations, true, true);
         return { namespace, success: true, keyCount };
       } catch (error) {

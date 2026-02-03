@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ReviewCreateRequest, reviewService } from '../../services/reviewService';
 import { TextareaField, Button, FormGroup, FormActions, ReviewFormNavigation } from '../UI';
+import { useAppTranslation } from '../../contexts/I18nProvider';
 import useNavigation from '../../hooks/useNavigation';
 
 interface ReviewFormProps {
@@ -29,6 +30,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   onCancel,
   loading = false
 }) => {
+  const { t } = useAppTranslation('reviews');
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState('');
   const [hoveredRating, setHoveredRating] = useState<number>(0);
@@ -54,7 +56,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
           if (existingReview) {
             setErrors(prev => ({
               ...prev,
-              submit: 'You have already submitted a review for this order.'
+              submit: t('form.errors.duplicate')
             }));
           }
         }
@@ -74,19 +76,19 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
 
     // Rating validation
     if (rating === 0) {
-      newErrors.rating = 'Please select a rating from 1 to 5 stars';
+      newErrors.rating = t('form.rating.required');
     } else if (rating < 1 || rating > 5) {
-      newErrors.rating = 'Rating must be between 1 and 5 stars';
+      newErrors.rating = t('form.rating.invalid');
     }
 
     // Comment validation
     const trimmedComment = comment.trim();
     if (!trimmedComment) {
-      newErrors.comment = 'Please write a comment about your experience';
+      newErrors.comment = t('form.comment.required');
     } else if (trimmedComment.length < 10) {
-      newErrors.comment = 'Comment must be at least 10 characters long';
+      newErrors.comment = t('form.comment.minLength');
     } else if (trimmedComment.length > 1000) {
-      newErrors.comment = 'Comment must be less than 1000 characters';
+      newErrors.comment = t('form.comment.maxLength');
     }
 
     // Check for inappropriate content (basic validation)
@@ -96,7 +98,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
     );
     
     if (hasInappropriateContent) {
-      newErrors.comment = 'Please keep your review constructive and appropriate';
+      newErrors.comment = t('form.comment.inappropriate');
     }
 
     setErrors(newErrors);
@@ -150,27 +152,27 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
       if (error.message?.includes('network') || error.message?.includes('Network')) {
         setErrors(prev => ({
           ...prev,
-          network: 'Network error. Please check your connection and try again.'
+          network: t('form.errors.network')
         }));
       } else if (error.message?.includes('duplicate') || error.message?.includes('already reviewed')) {
         setErrors(prev => ({
           ...prev,
-          submit: 'You have already submitted a review for this order.'
+          submit: t('form.errors.duplicate')
         }));
       } else if (error.message?.includes('validation')) {
         setErrors(prev => ({
           ...prev,
-          submit: 'Please check your input and try again.'
+          submit: t('form.errors.validation')
         }));
       } else if (error.message?.includes('server') || error.status >= 500) {
         setErrors(prev => ({
           ...prev,
-          submit: 'Server error. Please try again in a few moments.'
+          submit: t('form.errors.server')
         }));
       } else {
         setErrors(prev => ({
           ...prev,
-          submit: error.message || 'Failed to submit review. Please try again.'
+          submit: error.message || t('form.errors.generic')
         }));
       }
     } finally {
@@ -210,12 +212,12 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         <span className="ml-2 text-sm text-gray-600">
           {rating > 0 && (
             <>
-              {rating} star{rating !== 1 ? 's' : ''}
-              {rating === 1 && ' - Poor'}
-              {rating === 2 && ' - Fair'}
-              {rating === 3 && ' - Good'}
-              {rating === 4 && ' - Very Good'}
-              {rating === 5 && ' - Excellent'}
+              {t('form.rating.stars', { count: rating })}
+              {rating === 1 && ` - ${t('form.rating.poor')}`}
+              {rating === 2 && ` - ${t('form.rating.fair')}`}
+              {rating === 3 && ` - ${t('form.rating.good')}`}
+              {rating === 4 && ` - ${t('form.rating.veryGood')}`}
+              {rating === 5 && ` - ${t('form.rating.excellent')}`}
             </>
           )}
         </span>
@@ -231,10 +233,10 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Rate your experience with {revieweeName}
+          {t('form.title', { revieweeName })}
         </h3>
         <p className="text-sm text-gray-600">
-          Your review will help other {reviewerType === 'BUYER' ? 'buyers' : 'farmers'} make informed decisions
+          {t('form.subtitle', { reviewerType })}
         </p>
       </div>
 
@@ -243,7 +245,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="flex items-center">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-            <span className="text-sm text-blue-700">Checking for existing reviews...</span>
+            <span className="text-sm text-blue-700">{t('form.checkingExisting')}</span>
           </div>
         </div>
       )}
@@ -276,7 +278,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               onClick={handleRetry}
               className="ml-4"
             >
-              Retry
+              {t('form.actions.retry')}
             </Button>
           </div>
         </div>
@@ -285,7 +287,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
       <FormGroup>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Rating *
+            {t('form.rating.label')}
           </label>
           {renderStars()}
           {errors.rating && (
@@ -294,14 +296,14 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         </div>
 
         <TextareaField
-          label="Your Review"
+          label={t('form.comment.label')}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder={`Share your experience with ${revieweeName}. What went well? What could be improved?`}
+          placeholder={t('form.comment.placeholder', { revieweeName })}
           rows={4}
           required
           error={errors.comment}
-          helpText={`${comment.trim().length}/1000 characters. Minimum 10 characters required.`}
+          helpText={t('form.comment.helpText', { count: comment.trim().length })}
           disabled={isFormDisabled}
           maxLength={1000}
         />
@@ -314,7 +316,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
           onClick={handleCancel}
           disabled={isFormDisabled}
         >
-          {onCancel ? 'Cancel' : 'Back to Order'}
+          {onCancel ? t('form.actions.cancel') : t('form.actions.backToOrder')}
         </Button>
         <Button
           type="submit"
@@ -327,7 +329,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             </div>
           )}
           <span className={isSubmitting ? 'opacity-0' : ''}>
-            {isSubmitting ? 'Submitting...' : 'Submit Review'}
+            {isSubmitting ? t('form.actions.submitting') : t('form.actions.submit')}
           </span>
         </Button>
       </FormActions>
@@ -335,7 +337,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
       {/* Retry information */}
       {retryCount > 0 && (
         <div className="text-xs text-gray-500 text-center">
-          Retry attempt: {retryCount}
+          {t('form.retryAttempt', { count: retryCount })}
         </div>
       )}
     </form>

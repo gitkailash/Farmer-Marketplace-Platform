@@ -159,7 +159,14 @@ export interface Order {
   };
   farmer?: {
     _id: string;
-    profile: {
+    userId?: {
+      _id: string;
+      id: string;
+      profile: {
+        name: string;
+      };
+    };
+    profile?: {
       name: string;
     };
     location: {
@@ -175,9 +182,16 @@ export interface OrderItem {
   priceAtTime: number;
   product?: {
     _id: string;
-    name: string;
+    name: MultilingualField | string; // Support both multilingual and simple string
     unit: string;
     images: string[];
+    farmer?: {
+      userId?: {
+        profile: {
+          name: string;
+        };
+      };
+    };
   };
 }
 

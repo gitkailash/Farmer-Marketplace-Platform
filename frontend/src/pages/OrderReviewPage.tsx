@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Layout, LoadingSpinner, ErrorDisplay, Button, OrderBreadcrumb, ReviewGuard, BackNavigation } from '../components/UI'
 import { ReviewForm } from '../components/Reviews/ReviewForm'
 import { useAuth } from '../contexts/AuthProvider'
@@ -7,6 +7,7 @@ import { useToastContext } from '../contexts/ToastProvider'
 import { orderService } from '../services/orderService'
 import { reviewService, ReviewCreateRequest } from '../services/reviewService'
 import { Order, Review } from '../types/api'
+import { processOrderItem } from '../utils/orderUtils'
 
 interface ReviewEligibility {
   canReview: boolean
@@ -64,11 +65,11 @@ const OrderReviewPage: React.FC = () => {
         setOrder(orderData)
 
         // Check review eligibility
-        const eligibilityResult = await checkReviewEligibility(orderId, user._id, orderData)
+        const eligibilityResult = await checkReviewEligibility(orderId, user.id, orderData)
         setEligibility(eligibilityResult)
 
-        // If not eligible, handle redirects
-        if (!eligibilityResult.canReview) {
+        // If not eligible, handle redirects (but only show error once)
+        if (!eligibilityResult.canReview && eligibilityResult.reason !== 'already_reviewed') {
           switch (eligibilityResult.reason) {
             case 'not_completed':
               showError('You can only review completed orders')
@@ -82,7 +83,7 @@ const OrderReviewPage: React.FC = () => {
               showError('Order not found')
               setTimeout(() => navigate('/orders'), 2000)
               break
-            // For 'already_reviewed', we'll show the existing review
+            // For 'already_reviewed', we'll show the existing review without error
           }
         }
       } catch (err) {
@@ -99,6 +100,49 @@ const OrderReviewPage: React.FC = () => {
   }, [orderId, user, isAuthenticated, navigate, showError])
 
   const checkReviewEligibility = async (
+    orderId: string, 
+    userId: string, 
+    order: Order
+  ): Promise<ReviewEligibility> => {
+    try {
+      // Use the new canReviewOrder API endpoint
+      const response = await reviewService.canReviewOrder(orderId);
+      
+      if (response.success && response.data) {
+        if (response.data.canReview) {
+          return { canReview: true };
+        } else {
+          // Map the reason from the API to our local reasons
+          let reason: ReviewEligibility['reason'] = 'order_not_found';
+          
+          if (response.data.reason?.includes('already reviewed')) {
+            reason = 'already_reviewed';
+          } else if (response.data.reason?.includes('completed')) {
+            reason = 'not_completed';
+          } else if (response.data.reason?.includes('only review orders you placed')) {
+            reason = 'not_buyer';
+          } else if (response.data.reason?.includes('not found')) {
+            reason = 'order_not_found';
+          }
+          
+          return { 
+            canReview: false, 
+            reason,
+            // If already reviewed, we could try to fetch the existing review
+            // but for now we'll just indicate it exists
+          };
+        }
+      } else {
+        throw new Error(response.message || 'Failed to check review eligibility');
+      }
+    } catch (err) {
+      console.error('Error checking review eligibility:', err);
+      // Fallback to manual checks if API fails
+      return await checkReviewEligibilityFallback(orderId, userId, order);
+    }
+  };
+
+  const checkReviewEligibilityFallback = async (
     orderId: string, 
     userId: string, 
     order: Order
@@ -182,12 +226,35 @@ const OrderReviewPage: React.FC = () => {
   };
 
   const getFarmerName = (): string => {
+    // Try to get farmer name from populated farmer.userId.profile.name (new backend structure)
+    if (order?.farmer?.userId?.profile?.name) {
+      return order.farmer.userId.profile.name;
+    }
+    
+    // Fallback to old structure if available
     if (order?.farmer?.profile?.name) {
-      return order.farmer.profile.name
+      return order.farmer.profile.name;
     }
-    if (order?.farmerId) {
-      return `Farmer #${order.farmerId.slice(-8)}`
+    
+    // Fallback: try to get from product data (if populated)
+    if (order?.items && order.items.length > 0) {
+      const firstItem = order.items[0];
+      
+      // Check if product is populated and has farmer info
+      if (firstItem.product?.farmer?.userId?.profile?.name) {
+        return firstItem.product.farmer.userId.profile.name;
+      }
+      
+      // Check if productId is populated as object with farmer info
+      if (typeof firstItem.productId === 'object' && firstItem.productId) {
+        const productObj = firstItem.productId as any;
+        if (productObj.farmer?.userId?.profile?.name) {
+          return productObj.farmer.userId.profile.name;
+        }
+      }
     }
+    
+    // Simple fallback
     return 'Farmer'
   }
 
@@ -289,21 +356,31 @@ const OrderReviewPage: React.FC = () => {
           <div>
             <h3 className="font-medium text-gray-700 mb-3">Items Ordered</h3>
             <div className="space-y-2">
-              {order.items.map((item, index) => (
-                <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                  <div>
-                    <span className="text-gray-900">
-                      {item.product?.name || `Product #${item.productId.slice(-8)}`}
-                    </span>
-                    <span className="text-gray-600 ml-2">
-                      × {item.quantity} {item.product?.unit || 'units'}
+              {order.items.map((item, index) => {
+                // Use the utility function to safely process the order item
+                const processedItem = processOrderItem(item, user?.id);
+                
+                return (
+                  <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
+                    <div>
+                      <span className="text-gray-900">
+                        {processedItem.productName}
+                      </span>
+                      {processedItem.hasError && (
+                        <span className="text-xs text-amber-600 ml-2">
+                          (Data issue)
+                        </span>
+                      )}
+                      <span className="text-gray-600 ml-2">
+                        × {processedItem.quantity} {processedItem.unit || 'units'}
+                      </span>
+                    </div>
+                    <span className="font-medium text-gray-900">
+                      ${(processedItem.priceAtTime * processedItem.quantity).toFixed(2)}
                     </span>
                   </div>
-                  <span className="font-medium text-gray-900">
-                    ${(item.priceAtTime * item.quantity).toFixed(2)}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -313,7 +390,7 @@ const OrderReviewPage: React.FC = () => {
           {eligibility.canReview ? (
             <ReviewForm
               orderId={order._id}
-              revieweeId={order.farmerId}
+              revieweeId={order.farmer?.userId?._id || order.farmerId}
               revieweeName={getFarmerName()}
               reviewerType="BUYER"
               onSubmit={handleSubmitReview}

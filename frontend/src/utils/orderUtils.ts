@@ -3,6 +3,27 @@ import { orderErrorHandler, errorLogger } from './errorHandling'
 import { getLocalizedText } from './multilingual'
 
 /**
+ * Safely extract product ID as string from various formats
+ */
+export const getProductIdString = (productId: any): string => {
+  if (typeof productId === 'string') {
+    return productId;
+  }
+  if (productId && typeof productId === 'object') {
+    return productId._id || productId.id || String(productId);
+  }
+  return String(productId || 'unknown');
+};
+
+/**
+ * Get a short display version of product ID (last 8 characters)
+ */
+export const getShortProductId = (productId: any): string => {
+  const fullId = getProductIdString(productId);
+  return fullId.slice(-8);
+};
+
+/**
  * Processed order item with safe string values for display
  */
 export interface ProcessedOrderItem {

@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthProvider'
 import { useToastContext } from '../contexts/ToastProvider'
 import { orderService } from '../services/orderService'
 import { Order } from '../types/api'
+import { getShortProductId, getProductIdString } from '../utils/orderUtils'
 
 const ORDER_STATUS_COLORS = {
   PENDING: 'bg-yellow-100 text-yellow-800',
@@ -293,13 +294,13 @@ const OrderDetail: React.FC = () => {
                   <div key={index} className="flex items-center justify-between py-4 border-b border-gray-100 last:border-b-0">
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900 mb-1">
-                        Product #{item.productId.slice(-8)}
+                        Product #{getShortProductId(item.productId)}
                       </h3>
                       <p className="text-sm text-gray-600">
                         Price at time of order: ${item.priceAtTime.toFixed(2)}
                       </p>
                       <Link
-                        to={`/products/${item.productId}`}
+                        to={`/products/${getProductIdString(item.productId)}`}
                         className="text-sm text-primary-600 hover:text-primary-700"
                       >
                         View Product Details →

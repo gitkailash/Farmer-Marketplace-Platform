@@ -3,19 +3,24 @@ import {
   createReview,
   getReviews,
   getReviewById,
+  updateReview,
   moderateReview,
   getFarmerReviews,
   getPendingReviews,
-  getMyReviews
+  getMyReviews,
+  canReviewOrder,
+  getOrderReview
 } from '../controllers/reviewController';
 import { authenticate, authorize } from '../middleware/auth';
 import { handleValidationErrors, sanitizeInput } from '../middleware/validation';
 import { UserRole } from '../models';
 import {
   validateCreateReview,
+  validateUpdateReview,
   validateModerateReview,
   validateReviewSearch,
   validateReviewId,
+  validateOrderId,
   validateFarmerId
 } from '../validators/reviewValidators';
 
@@ -67,6 +72,32 @@ router.get(
 );
 
 /**
+ * @route   GET /api/reviews/can-review/:orderId
+ * @desc    Check if user can review an order
+ * @access  Private
+ */
+router.get(
+  '/can-review/:orderId',
+  authenticate,
+  validateOrderId,
+  handleValidationErrors,
+  canReviewOrder
+);
+
+/**
+ * @route   GET /api/reviews/order/:orderId
+ * @desc    Get review for a specific order (if exists)
+ * @access  Private
+ */
+router.get(
+  '/order/:orderId',
+  authenticate,
+  validateOrderId,
+  handleValidationErrors,
+  getOrderReview
+);
+
+/**
  * @route   GET /api/reviews/my-reviews
  * @desc    Get user's review history (given or received)
  * @access  Private
@@ -102,6 +133,19 @@ router.get(
   validateReviewId,
   handleValidationErrors,
   getReviewById
+);
+
+/**
+ * @route   PUT /api/reviews/:id
+ * @desc    Update a review (only by reviewer and only if not approved)
+ * @access  Private (Reviewer only)
+ */
+router.put(
+  '/:id',
+  authenticate,
+  validateUpdateReview,
+  handleValidationErrors,
+  updateReview
 );
 
 /**

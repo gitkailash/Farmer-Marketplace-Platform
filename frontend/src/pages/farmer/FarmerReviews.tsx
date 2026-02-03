@@ -1,9 +1,10 @@
- import React, { useState, useEffect, useCallback } from 'react'
-import { ReviewList } from '../../components/Reviews'
-import { LoadingSpinner, ErrorDisplay, EmptyState, FarmerBreadcrumb } from '../../components/UI'
+import React, { useState, useEffect, useCallback } from 'react'
+import { LoadingSpinner, ErrorDisplay, EmptyState } from '../../components/UI'
 import Button from '../../components/UI/Button'
 import { reviewService } from '../../services/reviewService'
 import { useAuth } from '../../contexts/AuthProvider'
+import { useAppTranslation } from '../../contexts/I18nProvider'
+import { getProductFromOrderItem } from '../../utils/productUtils'
 import { 
   processReviewData, 
   handleMalformedReviewData,
@@ -19,10 +20,10 @@ interface ProcessedReviewData {
 
 const FarmerReviews: React.FC = () => {
   const { user, loading: authLoading } = useAuth()
+  const { t: tReviews } = useAppTranslation('reviews') // Use reviews translations for all review-related content
   const [reviewData, setReviewData] = useState<ProcessedReviewData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'received' | 'written'>('received')
   const [retryCount, setRetryCount] = useState(0)
   const [processingErrors, setProcessingErrors] = useState<string[]>([])
 
@@ -114,14 +115,14 @@ const FarmerReviews: React.FC = () => {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Reviews & Ratings</h1>
-          <p className="text-gray-600">View and manage customer reviews about your products and service</p>
+          <h1 className="text-2xl font-bold text-gray-900">{tReviews('page.farmerTitle')}</h1>
+          <p className="text-gray-600">{tReviews('page.farmerSubtitle')}</p>
         </div>
         
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <LoadingSpinner />
-            <p className="mt-4 text-gray-600">Loading your reviews...</p>
+            <p className="mt-4 text-gray-600">{tReviews('status.loading')}</p>
           </div>
         </div>
       </div>
@@ -134,8 +135,8 @@ const FarmerReviews: React.FC = () => {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Reviews & Ratings</h1>
-          <p className="text-gray-600">View and manage customer reviews about your products and service</p>
+          <h1 className="text-2xl font-bold text-gray-900">{tReviews('page.farmerTitle')}</h1>
+          <p className="text-gray-600">{tReviews('page.farmerSubtitle')}</p>
         </div>
         
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -151,26 +152,23 @@ const FarmerReviews: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* Breadcrumb */}
-      <FarmerBreadcrumb section="Reviews" />
-      
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Reviews & Ratings</h1>
-        <p className="text-gray-600">View and manage customer reviews about your products and service</p>
+        <h1 className="text-2xl font-bold text-gray-900">{tReviews('page.farmerTitle')}</h1>
+        <p className="text-gray-600">{tReviews('page.farmerSubtitle')}</p>
       </div>
 
       {/* Rating Overview */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Your Rating Overview</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{tReviews('farmer.overview.title')}</h2>
           <Button
             variant="secondary"
             size="sm"
             onClick={() => loadFarmerReviews(true)}
             disabled={loading}
           >
-            {loading ? '🔄 Loading...' : '🔄 Refresh'}
+            {loading ? tReviews('farmer.overview.loading') : tReviews('farmer.overview.refresh')}
           </Button>
         </div>
         
@@ -183,13 +181,13 @@ const FarmerReviews: React.FC = () => {
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-yellow-700">
-                    {error} (Showing cached data)
+                    {error} {tReviews('status.showingCachedData')}
                   </p>
                   <button
                     onClick={handleRetry}
                     className="text-sm text-yellow-800 underline hover:text-yellow-900"
                   >
-                    Try refreshing
+                    {tReviews('status.tryRefreshing')}
                   </button>
                 </div>
               </div>
@@ -206,10 +204,10 @@ const FarmerReviews: React.FC = () => {
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-orange-700">
-                    Some review data had formatting issues but was processed successfully
+                    {tReviews('status.processingErrors')}
                   </p>
                   <details className="mt-2">
-                    <summary className="text-sm text-orange-800 cursor-pointer">View details</summary>
+                    <summary className="text-sm text-orange-800 cursor-pointer">{tReviews('status.viewDetails')}</summary>
                     <ul className="text-xs text-orange-600 mt-1 list-disc list-inside">
                       {processingErrors.map((error, index) => (
                         <li key={index}>{error}</li>
@@ -230,7 +228,7 @@ const FarmerReviews: React.FC = () => {
               </div>
               {renderStars(reviewData.summary.averageRating)}
               <p className="text-sm text-gray-600 mt-2">
-                Based on {reviewData.summary.totalReviews} review{reviewData.summary.totalReviews !== 1 ? 's' : ''}
+                {tReviews('farmer.overview.averageRating', { count: reviewData.summary.totalReviews })}
               </p>
             </div>
             
@@ -256,8 +254,8 @@ const FarmerReviews: React.FC = () => {
         ) : (
           <EmptyState
             icon="⭐"
-            title="No Reviews Yet"
-            description="You haven't received any reviews yet. Complete some orders to start receiving customer feedback."
+            title={tReviews('farmer.overview.noReviews.title')}
+            description={tReviews('farmer.overview.noReviews.description')}
             action={
               <Button
                 variant="primary"
@@ -265,172 +263,142 @@ const FarmerReviews: React.FC = () => {
                 onClick={() => loadFarmerReviews(true)}
                 disabled={loading}
               >
-                {loading ? 'Checking...' : 'Check for Reviews'}
+                {loading ? tReviews('farmer.overview.noReviews.checking') : tReviews('farmer.overview.noReviews.action')}
               </Button>
             }
           />
         )}
       </div>
 
-      {/* Review Management Tabs */}
+      {/* Customer Reviews Section */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        {/* Tab Navigation */}
-        <div className="border-b border-gray-200">
-          <nav className="flex space-x-8 px-6" aria-label="Tabs">
-            <button
-              onClick={() => setActiveTab('received')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'received'
-                  ? 'border-primary-500 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
+        {/* Header */}
+        <div className="border-b border-gray-200 px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-medium text-gray-900">{tReviews('farmer.customerReviews.title')}</h3>
+              <p className="text-sm text-gray-600 mt-1">
+                {tReviews('farmer.customerReviews.description')}
+              </p>
+            </div>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => loadFarmerReviews(true)}
+              disabled={loading}
             >
-              <div className="flex items-center space-x-2">
-                <span>📥</span>
-                <span>Reviews About Me</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setActiveTab('written')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'written'
-                  ? 'border-primary-500 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <div className="flex items-center space-x-2">
-                <span>📝</span>
-                <span>Reviews I've Written</span>
-              </div>
-            </button>
-          </nav>
+              {loading ? tReviews('farmer.overview.loading') : tReviews('farmer.overview.refresh')}
+            </Button>
+          </div>
         </div>
 
-        {/* Tab Content */}
+        {/* Content */}
         <div className="p-6">
-          {activeTab === 'received' ? (
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Customer Reviews</h3>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => loadFarmerReviews(true)}
-                  disabled={loading}
-                >
-                  {loading ? '🔄 Loading...' : '🔄 Refresh'}
-                </Button>
-              </div>
-              <p className="text-sm text-gray-600 mb-4">
-                Reviews from buyers who have purchased your products. All reviews are moderated before being published.
-              </p>
-              
-              {/* Custom review display using processed data */}
-              {reviewData && reviewData.reviews.length > 0 ? (
-                <div className="space-y-4">
-                  {getDisplaySafeReviews(reviewData.reviews).map((review) => (
-                    <div key={review._id} className="bg-gray-50 rounded-lg border p-4">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <span className="text-lg">👤</span>
-                            <span className="text-sm font-medium text-gray-700">Customer Review</span>
-                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                              review.isApproved 
-                                ? 'bg-green-100 text-green-800' 
-                                : 'bg-yellow-100 text-yellow-800'
-                            }`}>
-                              {review.isApproved ? 'Approved' : 'Pending Approval'}
-                            </span>
-                            {!review.hasValidRating && (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                Invalid Rating
-                              </span>
-                            )}
-                            {!review.isValidDate && (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                                Date Issue
-                              </span>
-                            )}
-                          </div>
-                          
-                          <div className="flex items-center mb-2">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <span
-                                key={star}
-                                className={`text-lg ${
-                                  star <= review.rating ? 'text-yellow-400' : 'text-gray-300'
-                                }`}
-                              >
-                                ★
-                              </span>
-                            ))}
-                            <span className="ml-2 text-sm text-gray-600">
-                              ({review.rating}/5)
-                            </span>
-                          </div>
-                          
-                          <div className="text-sm text-gray-600 mb-3">
-                            <span>
-                              From: {review.reviewerName}
-                            </span>
-                            <span className="mx-2">•</span>
-                            <span>
-                              {review.formattedDate}
-                            </span>
-                          </div>
-                        </div>
+          {/* Custom review display using processed data */}
+          {reviewData && reviewData.reviews.length > 0 ? (
+            <div className="space-y-4">
+              {getDisplaySafeReviews(reviewData.reviews).map((review) => (
+                <div key={review._id} className="bg-gray-50 rounded-lg border p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <span className="text-lg">👤</span>
+                        <span className="text-sm font-medium text-gray-700">{tReviews('farmer.customerReviews.customerReview')}</span>
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                          review.isApproved 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {review.isApproved ? tReviews('myReviews.approved') : tReviews('myReviews.pendingApproval')}
+                        </span>
+                        {!review.hasValidRating && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            {tReviews('farmer.customerReviews.invalidRating')}
+                          </span>
+                        )}
+                        {!review.isValidDate && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                            {tReviews('farmer.customerReviews.dateIssue')}
+                          </span>
+                        )}
                       </div>
-
-                      <div className="mb-3">
-                        <p className="text-gray-900 leading-relaxed">{review.comment}</p>
+                      
+                      <div className="flex items-center mb-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span
+                            key={star}
+                            className={`text-lg ${
+                              star <= review.rating ? 'text-yellow-400' : 'text-gray-300'
+                            }`}
+                          >
+                            ★
+                          </span>
+                        ))}
+                        <span className="ml-2 text-sm text-gray-600">
+                          ({review.rating}/5)
+                        </span>
                       </div>
-
-                      <div className="text-xs text-gray-500 border-t pt-2">
-                        <div>Order: #{review.orderId.slice(-8)}</div>
-                        <div className="text-gray-400 mt-1">
-                          This review helps build trust in the marketplace community
-                        </div>
+                      
+                      <div className="text-sm text-gray-600 mb-3">
+                        <span>
+                          {tReviews('farmer.customerReviews.from')} {review.reviewerName}
+                        </span>
+                        <span className="mx-2">•</span>
+                        <span>
+                          {review.formattedDate}
+                        </span>
                       </div>
                     </div>
-                  ))}
+                  </div>
+
+                  <div className="mb-3">
+                    <p className="text-gray-900 leading-relaxed">{review.comment}</p>
+                  </div>
+
+                  {/* Product Information */}
+                  {review.order?.items && review.order.items.length > 0 && (
+                    <div className="mb-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <h4 className="text-sm font-medium text-blue-900 mb-2">
+                        {tReviews('farmer.customerReviews.productsReviewed')}
+                      </h4>
+                      <div className="space-y-1">
+                        {review.order.items.map((item, index) => {
+                          const product = getProductFromOrderItem(item);
+                          return (
+                            <div key={index} className="text-sm text-blue-800">
+                              <span className="font-medium">
+                                {product.name}
+                              </span>
+                              <span className="text-blue-600 ml-2">
+                                × {item.quantity} {product.unit}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="text-xs text-gray-500 border-t pt-2">
+                    <div>Order: #{review.orderId.slice(-8)}</div>
+                    <div className="text-gray-400 mt-1">
+                      {tReviews('farmer.customerReviews.helpsBuildTrust')}
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <EmptyState
-                  icon="⭐"
-                  title="No Customer Reviews"
-                  description="No customer reviews yet. Complete orders to start receiving reviews from buyers."
-                />
-              )}
+              ))}
             </div>
           ) : (
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Reviews I've Written</h3>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => loadFarmerReviews(true)}
-                  disabled={loading}
-                >
-                  {loading ? '🔄 Loading...' : '🔄 Refresh'}
-                </Button>
-              </div>
-              <p className="text-sm text-gray-600 mb-4">
-                Reviews you've written about buyers after completing orders. Help build trust in the marketplace community.
-              </p>
-              
-              {/* Use ReviewList for written reviews since we need different API call */}
-              <ReviewList
-                type="my-reviews"
-                emptyMessage="You haven't written any reviews yet. After completing orders, you can review your buyers."
-              />
-            </div>
+            <EmptyState
+              icon="⭐"
+              title={tReviews('farmer.customerReviews.empty.title')}
+              description={tReviews('farmer.customerReviews.empty.description')}
+            />
           )}
         </div>
       </div>
 
-      {/* Review Guidelines */}
+      {/* Review System Information */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex">
           <div className="flex-shrink-0">
@@ -438,21 +406,21 @@ const FarmerReviews: React.FC = () => {
           </div>
           <div className="ml-3">
             <h3 className="text-sm font-medium text-blue-800">
-              Review Guidelines
+              {tReviews('farmer.systemInfo.title')}
             </h3>
             <div className="text-sm text-blue-700 mt-1">
               <ul className="list-disc list-inside space-y-1">
-                <li>All reviews are moderated by administrators before publication</li>
-                <li>Be honest and constructive in your feedback</li>
-                <li>Focus on the transaction experience and communication</li>
-                <li>Reviews help build trust and improve the marketplace for everyone</li>
+                <li><strong>{tReviews('farmer.systemInfo.buyersReviewFarmers')}</strong></li>
+                <li><strong>{tReviews('farmer.systemInfo.farmersReviewBuyers')}</strong></li>
+                <li>{tReviews('farmer.systemInfo.moderated')}</li>
+                <li>{tReviews('farmer.systemInfo.buildTrust')}</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Review Response Tips */}
+      {/* Building Reputation Tips */}
       <div className="bg-green-50 border border-green-200 rounded-lg p-4">
         <div className="flex">
           <div className="flex-shrink-0">
@@ -460,14 +428,14 @@ const FarmerReviews: React.FC = () => {
           </div>
           <div className="ml-3">
             <h3 className="text-sm font-medium text-green-800">
-              Building Your Reputation
+              {tReviews('farmer.reputationTips.title')}
             </h3>
             <div className="text-sm text-green-700 mt-1">
               <ul className="list-disc list-inside space-y-1">
-                <li>Provide excellent customer service to earn positive reviews</li>
-                <li>Communicate clearly about product availability and delivery</li>
-                <li>Package products carefully and deliver on time</li>
-                <li>Follow up with buyers to ensure satisfaction</li>
+                <li>{tReviews('farmer.reputationTips.excellentService')}</li>
+                <li>{tReviews('farmer.reputationTips.communicate')}</li>
+                <li>{tReviews('farmer.reputationTips.package')}</li>
+                <li>{tReviews('farmer.reputationTips.followUp')}</li>
               </ul>
             </div>
           </div>

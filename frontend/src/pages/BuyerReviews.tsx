@@ -5,9 +5,11 @@ import { ReviewForm, ReviewEditForm } from '../components/Reviews';
 import { useAuth } from '../contexts/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../components/UI/Toast';
+import { useAppTranslation } from '../contexts/I18nProvider';
 import { reviewService, ReviewCreateRequest } from '../services/reviewService';
 import { orderService } from '../services/orderService';
 import { Order, Review } from '../types/api';
+import { getShortProductId } from '../utils/orderUtils';
 
 interface PendingReview {
   order: Order;
@@ -19,6 +21,8 @@ export const BuyerReviews: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { success, error: showError } = useToast();
+  const { t } = useAppTranslation('buyer'); // Keep buyer translations for existing working parts
+  const { t: tReviews } = useAppTranslation('reviews'); // Add reviews translations for review-specific parts
   const [activeTab, setActiveTab] = useState<'my-reviews' | 'pending'>('my-reviews');
   const [pendingReviews, setPendingReviews] = useState<PendingReview[]>([]);
   const [loading, setLoading] = useState(true);
@@ -103,6 +107,31 @@ export const BuyerReviews: React.FC = () => {
     }
   };
 
+  const getFarmerUserId = (order: Order): string => {
+    // Try to get farmer's user ID from populated farmer.userId._id (correct approach)
+    if (order.farmer?.userId?._id) {
+      return order.farmer.userId._id;
+    }
+    
+    // Fallback: if farmer.userId is a string (ObjectId), use it directly
+    if (typeof order.farmer?.userId === 'string') {
+      return order.farmer.userId;
+    }
+    
+    // Last resort: use farmerId (this might not work for reviews but prevents crashes)
+    return order.farmerId;
+  };
+
+  const getFarmerName = (order: Order): string => {
+    // Try to get farmer name from populated farmer.userId.profile.name
+    if (order.farmer?.userId?.profile?.name) {
+      return order.farmer.userId.profile.name;
+    }
+    
+    // Fallback to farmer ID
+    return `Farmer #${order.farmerId.slice(-8)}`;
+  };
+
   const handleStartReview = (order: Order) => {
     setSelectedOrder(order);
     setShowReviewModal(true);
@@ -114,16 +143,16 @@ export const BuyerReviews: React.FC = () => {
       const response = await reviewService.submitReview(reviewData);
       
       if (response.success) {
-        success('Review submitted successfully! It will be visible after admin approval.', 'Review Submitted');
+        success(tReviews('messages.submitSuccess'), tReviews('messages.submitSuccessTitle'));
         setShowReviewModal(false);
         setSelectedOrder(null);
         loadPendingReviews(); // Refresh pending reviews
         loadMyReviews(); // Refresh my reviews
       } else {
-        throw new Error(response.message || 'Failed to submit review');
+        throw new Error(response.message || tReviews('messages.submitError'));
       }
     } catch (err: any) {
-      showError(err.message || 'Failed to submit review', 'Review Failed');
+      showError(err.message || tReviews('messages.submitError'), tReviews('messages.submitErrorTitle'));
     } finally {
       setSubmittingReview(false);
     }
@@ -144,11 +173,20 @@ export const BuyerReviews: React.FC = () => {
 
     try {
       setSubmittingReview(true);
-      // Note: This would require an update review API endpoint
-      // For now, we'll show a message that editing is not yet implemented
-      showError('Review editing is not yet implemented in the backend API', 'Feature Not Available');
+      
+      const response = await reviewService.updateReview(selectedReview._id, updateData);
+      
+      if (response.success) {
+        success(tReviews('messages.updateSuccess'), tReviews('messages.updateSuccessTitle'));
+        setShowEditModal(false);
+        setSelectedReview(null);
+        loadMyReviews(); // Refresh the reviews list
+      } else {
+        throw new Error(response.message || tReviews('messages.updateFailed'));
+      }
     } catch (err: any) {
-      showError(err.message || 'Failed to update review', 'Update Failed');
+      console.error('Failed to update review:', err);
+      showError(err.message || tReviews('messages.updateFailed'), tReviews('messages.updateFailedTitle'));
     } finally {
       setSubmittingReview(false);
     }
@@ -171,9 +209,9 @@ export const BuyerReviews: React.FC = () => {
       setSubmittingReview(true);
       // Note: This would require a delete review API endpoint
       // For now, we'll show a message that deletion is not yet implemented
-      showError('Review deletion is not yet implemented in the backend API', 'Feature Not Available');
+      showError(tReviews('messages.deleteNotImplemented'), tReviews('messages.featureNotAvailable'));
     } catch (err: any) {
-      showError(err.message || 'Failed to delete review', 'Delete Failed');
+      showError(err.message || tReviews('messages.deleteFailed'), tReviews('messages.deleteFailedTitle'));
     } finally {
       setSubmittingReview(false);
       setShowDeleteModal(false);
@@ -191,8 +229,8 @@ export const BuyerReviews: React.FC = () => {
   }
 
   const tabs = [
-    { id: 'my-reviews', label: 'My Reviews', icon: '⭐' },
-    { id: 'pending', label: 'Pending Reviews', icon: '⏳', count: pendingReviews.filter(p => p.canReview).length }
+    { id: 'my-reviews', label: tReviews('tabs.myReviews'), icon: '⭐' },
+    { id: 'pending', label: tReviews('tabs.pending'), icon: '⏳', count: pendingReviews.filter(p => p.canReview).length }
   ];
 
   return (
@@ -202,9 +240,9 @@ export const BuyerReviews: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">My Reviews</h1>
+              <h1 className="text-3xl font-bold text-gray-900">{t('reviews.title')}</h1>
               <p className="mt-2 text-gray-600">
-                Manage your reviews and rate your experiences with farmers
+                {t('reviews.subtitle')}
               </p>
             </div>
             <Button
@@ -212,7 +250,7 @@ export const BuyerReviews: React.FC = () => {
               variant="outline"
               icon="📦"
             >
-              View Orders
+              {t('reviews.viewOrders')}
             </Button>
           </div>
         </div>
@@ -258,9 +296,9 @@ export const BuyerReviews: React.FC = () => {
               {myReviews.length === 0 ? (
                 <EmptyState
                   icon="⭐"
-                  title="No Reviews Yet"
-                  description="You haven't written any reviews yet. Complete some orders and share your experience with farmers!"
-                  actionLabel="Browse Products"
+                  title={tReviews('myReviews.empty.title')}
+                  description={tReviews('myReviews.empty.description')}
+                  actionLabel={tReviews('myReviews.empty.action')}
                   onAction={() => navigate('/products')}
                 />
               ) : (
@@ -270,13 +308,13 @@ export const BuyerReviews: React.FC = () => {
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
                           <span className="text-lg">👤</span>
-                          <span className="text-sm font-medium text-gray-700">Your Review</span>
+                          <span className="text-sm font-medium text-gray-700">{tReviews('myReviews.yourReview')}</span>
                           <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                             review.isApproved 
                               ? 'bg-green-100 text-green-800' 
                               : 'bg-yellow-100 text-yellow-800'
                           }`}>
-                            {review.isApproved ? 'Approved' : 'Pending Approval'}
+                            {review.isApproved ? tReviews('myReviews.approved') : tReviews('myReviews.pendingApproval')}
                           </span>
                         </div>
                         
@@ -297,7 +335,7 @@ export const BuyerReviews: React.FC = () => {
                         </div>
                         
                         <div className="text-sm text-gray-600 mb-3">
-                          <span>Review for Farmer #{review.revieweeId.slice(-8)}</span>
+                          <span>{tReviews('myReviews.reviewFor', { farmerId: review.revieweeId.slice(-8) })}</span>
                           <span className="mx-2">•</span>
                           <span>{new Date(review.createdAt).toLocaleDateString()}</span>
                         </div>
@@ -310,7 +348,7 @@ export const BuyerReviews: React.FC = () => {
 
                     <div className="text-xs text-gray-500 border-t pt-2">
                       <div className="flex items-center justify-between">
-                        <div>Order: #{review.orderId.slice(-8)}</div>
+                        <div>{tReviews('myReviews.order', { orderId: review.orderId.slice(-8) })}</div>
                         
                         {!review.isApproved && (
                           <div className="flex items-center space-x-2">
@@ -319,14 +357,14 @@ export const BuyerReviews: React.FC = () => {
                               variant="outline"
                               onClick={() => handleEditReview(review)}
                             >
-                              Edit
+                              {tReviews('myReviews.edit')}
                             </Button>
                             <Button
                               size="sm"
                               variant="secondary"
                               onClick={() => handleDeleteReview(review)}
                             >
-                              Delete
+                              {tReviews('myReviews.delete')}
                             </Button>
                           </div>
                         )}
@@ -334,7 +372,7 @@ export const BuyerReviews: React.FC = () => {
                       
                       {review.isApproved && (
                         <div className="text-yellow-600 text-xs mt-1">
-                          ℹ️ Approved reviews cannot be edited or deleted
+                          {tReviews('myReviews.cannotEdit')}
                         </div>
                       )}
                     </div>
@@ -354,20 +392,19 @@ export const BuyerReviews: React.FC = () => {
             ) : pendingReviews.filter(p => p.canReview).length === 0 ? (
               <EmptyState
                 icon="⭐"
-                title="No Pending Reviews"
-                description="You don't have any completed orders waiting for reviews. Complete some orders to start leaving reviews!"
-                actionLabel="Browse Products"
+                title={tReviews('pending.empty.title')}
+                description={tReviews('pending.empty.description')}
+                actionLabel={tReviews('pending.empty.action')}
                 onAction={() => navigate('/products')}
               />
             ) : (
               <div className="space-y-6">
                 <div className="bg-blue-50 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                    📝 Ready to Review
+                    {tReviews('pending.readyToReview.title')}
                   </h3>
                   <p className="text-blue-800 text-sm">
-                    Share your experience with farmers to help other buyers make informed decisions. 
-                    Your reviews will be published after admin approval.
+                    {tReviews('pending.readyToReview.description')}
                   </p>
                 </div>
 
@@ -391,14 +428,14 @@ export const BuyerReviews: React.FC = () => {
         <Modal
           isOpen={showReviewModal}
           onClose={handleCloseReviewModal}
-          title="Write Review"
+          title={tReviews('modals.writeReview')}
           size="lg"
         >
           {selectedOrder && (
             <ReviewForm
               orderId={selectedOrder._id}
-              revieweeId={selectedOrder.farmerId}
-              revieweeName={`Farmer #${selectedOrder.farmerId.slice(-8)}`}
+              revieweeId={getFarmerUserId(selectedOrder)}
+              revieweeName={getFarmerName(selectedOrder)}
               reviewerType="BUYER"
               onSubmit={handleSubmitReview}
               onCancel={handleCloseReviewModal}
@@ -411,7 +448,7 @@ export const BuyerReviews: React.FC = () => {
         <Modal
           isOpen={showEditModal}
           onClose={handleCloseEditModal}
-          title="Edit Review"
+          title={tReviews('modals.editReview')}
           size="lg"
         >
           {selectedReview && (
@@ -429,10 +466,10 @@ export const BuyerReviews: React.FC = () => {
           isOpen={showDeleteModal}
           onClose={handleCloseDeleteModal}
           onConfirm={handleConfirmDelete}
-          title="Delete Review"
-          message="Are you sure you want to delete this review? This action cannot be undone."
-          confirmLabel="Delete"
-          cancelLabel="Cancel"
+          title={tReviews('modals.deleteReview')}
+          message={tReviews('modals.deleteConfirm')}
+          confirmLabel={tReviews('modals.deleteButton')}
+          cancelLabel={tReviews('modals.cancel')}
           type="danger"
         />
       </div>
@@ -450,49 +487,65 @@ const PendingReviewCard: React.FC<PendingReviewCardProps> = ({
   order,
   onStartReview
 }) => {
+  const { t: tReviews } = useAppTranslation('reviews'); // Add reviews translations
+  
+  const getFarmerName = (order: Order): string => {
+    // Try to get farmer name from populated farmer.userId.profile.name
+    if (order.farmer?.userId?.profile?.name) {
+      return order.farmer.userId.profile.name;
+    }
+    
+    // Fallback to farmer ID
+    return `Farmer #${order.farmerId.slice(-8)}`;
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center space-x-4 mb-3">
             <h3 className="text-lg font-semibold text-gray-900">
-              Order #{order._id.slice(-8)}
+              {tReviews('pending.orderCard.order', { orderId: order._id.slice(-8) })}
             </h3>
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-              ✅ Completed
+              {tReviews('pending.orderCard.completed')}
             </span>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
             <div>
-              <span className="font-medium">Farmer:</span>
-              <span className="ml-2">#{order.farmerId.slice(-8)}</span>
+              <span className="font-medium">{tReviews('pending.orderCard.farmer')}</span>
+              <span className="ml-2">{getFarmerName(order)}</span>
             </div>
             <div>
-              <span className="font-medium">Completed:</span>
+              <span className="font-medium">{tReviews('pending.orderCard.completedDate')}</span>
               <span className="ml-2">{new Date(order.updatedAt).toLocaleDateString()}</span>
             </div>
             <div>
-              <span className="font-medium">Total:</span>
+              <span className="font-medium">{tReviews('pending.orderCard.total')}</span>
               <span className="ml-2 font-semibold text-primary-600">${order.totalAmount.toFixed(2)}</span>
             </div>
             <div>
-              <span className="font-medium">Items:</span>
-              <span className="ml-2">{order.items.length} item{order.items.length !== 1 ? 's' : ''}</span>
+              <span className="font-medium">{tReviews('pending.orderCard.items')}</span>
+              <span className="ml-2">{tReviews('pending.orderCard.itemCount', { count: order.items.length })}</span>
             </div>
           </div>
 
           <div className="mb-4">
-            <h4 className="font-medium text-gray-900 mb-2">Order Items:</h4>
+            <h4 className="font-medium text-gray-900 mb-2">{tReviews('pending.orderCard.orderItems')}</h4>
             <div className="space-y-1">
               {order.items.slice(0, 3).map((item, index) => (
                 <div key={index} className="text-sm text-gray-600">
-                  Product #{item.productId.slice(-8)} - Qty: {item.quantity} @ ${item.priceAtTime.toFixed(2)}
+                  {tReviews('pending.orderCard.productItem', { 
+                    productId: getShortProductId(item.productId), 
+                    quantity: item.quantity, 
+                    price: item.priceAtTime.toFixed(2) 
+                  })}
                 </div>
               ))}
               {order.items.length > 3 && (
                 <div className="text-sm text-gray-500">
-                  +{order.items.length - 3} more item{order.items.length - 3 !== 1 ? 's' : ''}
+                  {tReviews('pending.orderCard.moreItems', { count: order.items.length - 3 })}
                 </div>
               )}
             </div>
@@ -505,7 +558,7 @@ const PendingReviewCard: React.FC<PendingReviewCardProps> = ({
             variant="primary"
             icon="⭐"
           >
-            Write Review
+            {tReviews('pending.orderCard.writeReview')}
           </Button>
         </div>
       </div>

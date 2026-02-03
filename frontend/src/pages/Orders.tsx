@@ -7,7 +7,7 @@ import { useAppTranslation } from '../contexts/I18nProvider'
 import { getLocalizedText } from '../utils/multilingual'
 import { notificationAwareOrderService } from '../services/notificationIntegration'
 import { Order } from '../types/api'
-import { processOrderItems, processOrderWithRetry } from '../utils/orderUtils'
+import { processOrderItems, processOrderWithRetry, getShortProductId } from '../utils/orderUtils'
 import OrderErrorBoundary from '../components/Orders/OrderErrorBoundary'
 import { errorLogger } from '../utils/errorHandling'
 
@@ -71,14 +71,14 @@ const Orders: React.FC = () => {
         {
           component: 'Orders',
           operation: 'loadOrders',
-          userId: user?._id
+          userId: user?.id
         },
         'medium'
       )
     } finally {
       setLoading(false)
     }
-  }, [user?._id])
+  }, [user?.id])
 
   useEffect(() => {
     if (isAuthenticated && (user?.role === 'BUYER' || user?.role === 'FARMER')) {
@@ -105,7 +105,7 @@ const Orders: React.FC = () => {
         {
           component: 'Orders',
           operation: 'acceptOrder',
-          userId: user?._id
+          userId: user?.id
         },
         'medium'
       )
@@ -131,7 +131,7 @@ const Orders: React.FC = () => {
         {
           component: 'Orders',
           operation: 'completeOrder',
-          userId: user?._id
+          userId: user?.id
         },
         'medium'
       )
@@ -161,7 +161,7 @@ const Orders: React.FC = () => {
         {
           component: 'Orders',
           operation: 'cancelOrder',
-          userId: user?._id
+          userId: user?.id
         },
         'medium'
       )
@@ -188,7 +188,7 @@ const Orders: React.FC = () => {
   }
 
   return (
-    <OrderErrorBoundary userId={user?._id}>
+    <OrderErrorBoundary userId={user?.id}>
       <Layout>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
@@ -265,7 +265,7 @@ const Orders: React.FC = () => {
                   key={order._id}
                   order={order}
                   userRole={user?.role as 'BUYER' | 'FARMER'}
-                  userId={user?._id}
+                  userId={user?.id}
                   language={language}
                   onAccept={() => handleAcceptOrder(order._id)}
                   onComplete={() => handleCompleteOrder(order._id)}
@@ -383,13 +383,13 @@ const OrderCard: React.FC<OrderCardProps> = ({
         
         if (typeof item.productId === 'string') {
           productId = item.productId
-          productName = `Product #${item.productId.slice(-8)}`
+          productName = `Product #${getShortProductId(item.productId)}`
         } else if (item.productId && typeof item.productId === 'object') {
-          productId = item.productId._id || item.productId.id || 'unknown'
-          productName = getLocalizedText(item.productId.name, lang) || `Product #${productId.slice(-8)}`
+          productId = item.productId.id || item.productId.id || 'unknown'
+          productName = getLocalizedText(item.productId.name, lang) || `Product #${getShortProductId(productId)}`
         } else if (item.product) {
-          productId = item.product._id || 'unknown'
-          productName = getLocalizedText(item.product.name, lang) || `Product #${productId.slice(-8)}`
+          productId = item.product.id || 'unknown'
+          productName = getLocalizedText(item.product.name, lang) || `Product #${getShortProductId(productId)}`
         }
         
         return {
@@ -567,7 +567,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
                             {/* Product ID for debugging/support */}
                             {item.productId !== 'unknown' && item.productId !== 'emergency-fallback' && (
                               <p className="text-xs text-gray-400 font-mono">
-                                {t('orders.card.productId', { id: item.productId.slice(-8) })}
+                                {t('orders.card.productId', { id: getShortProductId(item.productId) })}
                               </p>
                             )}
                           </div>

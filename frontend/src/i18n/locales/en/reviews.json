@@ -1,0 +1,207 @@
+{
+  "page": {
+    "title": "My Reviews",
+    "subtitle": "Manage your reviews and rate your experiences with farmers",
+    "farmerTitle": "Customer Reviews",
+    "farmerSubtitle": "View customer reviews about your products and service"
+  },
+  "tabs": {
+    "myReviews": "My Reviews",
+    "pending": "Pending Reviews"
+  },
+  "navigation": {
+    "viewOrders": "View Orders",
+    "checkReviews": "Check Reviews",
+    "writeReview": "Write Review",
+    "viewReviews": "View Reviews"
+  },
+  "myReviews": {
+    "empty": {
+      "title": "No Reviews Yet",
+      "description": "You haven't written any reviews yet. Complete some orders and share your experience with farmers!",
+      "action": "Browse Products"
+    },
+    "yourReview": "Your Review",
+    "approved": "Approved",
+    "pendingApproval": "Pending Approval",
+    "reviewFor": "Review for Farmer #{{farmerId}}",
+    "order": "Order: #{{orderId}}",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cannotEdit": "ℹ️ Approved reviews cannot be edited or deleted"
+  },
+  "pending": {
+    "empty": {
+      "title": "No Pending Reviews",
+      "description": "You don't have any completed orders waiting for reviews. Complete some orders to start leaving reviews!",
+      "action": "Browse Products"
+    },
+    "readyToReview": {
+      "title": "📝 Ready to Review",
+      "description": "Share your experience with farmers to help other buyers make informed decisions. Your reviews will be published after admin approval."
+    },
+    "orderCard": {
+      "order": "Order #{{orderId}}",
+      "completed": "✅ Completed",
+      "farmer": "Farmer:",
+      "completedDate": "Completed:",
+      "total": "Total:",
+      "items": "Items:",
+      "itemCount": "{{count}} item{{count, plural, one {} other {s}}}",
+      "orderItems": "Order Items:",
+      "productItem": "Product #{{productId}} - Qty: {{quantity}} @ ${{price}}",
+      "moreItems": "+{{count}} more item{{count, plural, one {} other {s}}}",
+      "writeReview": "Write Review"
+    }
+  },
+  "farmer": {
+    "overview": {
+      "title": "Your Rating Overview",
+      "refresh": "🔄 Refresh",
+      "loading": "🔄 Loading...",
+      "averageRating": "Based on {{count}} review{{count, plural, one {} other {s}}}",
+      "noReviews": {
+        "title": "No Reviews Yet",
+        "description": "You haven't received any reviews yet. Complete some orders to start receiving customer feedback.",
+        "action": "Check for Reviews",
+        "checking": "Checking..."
+      }
+    },
+    "customerReviews": {
+      "title": "Customer Reviews",
+      "description": "Reviews from buyers who have purchased your products. All reviews are moderated before being published.",
+      "customerReview": "Customer Review",
+      "from": "From:",
+      "productsReviewed": "📦 Products Reviewed:",
+      "helpsBuildTrust": "This review helps build trust in the marketplace community",
+      "invalidRating": "Invalid Rating",
+      "dateIssue": "Date Issue",
+      "empty": {
+        "title": "No Customer Reviews",
+        "description": "No customer reviews yet. Complete orders to start receiving reviews from buyers."
+      }
+    },
+    "systemInfo": {
+      "title": "Review System Information",
+      "buyersReviewFarmers": "Buyers review farmers - Customers rate your products and service quality",
+      "farmersReviewBuyers": "Farmers review buyers - You can rate buyers' payment reliability and communication (available after order completion)",
+      "moderated": "All reviews are moderated by administrators before publication",
+      "buildTrust": "Reviews help build trust and improve the marketplace for everyone"
+    },
+    "reputationTips": {
+      "title": "Building Your Reputation",
+      "excellentService": "Provide excellent customer service to earn positive reviews",
+      "communicate": "Communicate clearly about product availability and delivery",
+      "package": "Package products carefully and deliver on time",
+      "followUp": "Follow up with buyers to ensure satisfaction"
+    },
+    "reviewBuyer": {
+      "title": "Review Buyer - Order #{{orderId}}",
+      "buyerInfo": "Buyer Information",
+      "completedOn": "Order completed on {{date}}",
+      "ratingLabel": "Rating (Payment & Communication)",
+      "commentLabel": "Review Comment",
+      "commentPlaceholder": "Share your experience with this buyer's payment reliability and communication...",
+      "characterCount": "{{count}}/1000 characters (minimum 10)",
+      "guidelines": {
+        "title": "Review Guidelines",
+        "rateReliability": "• Rate the buyer's payment reliability and communication",
+        "honest": "• Be honest and constructive in your feedback",
+        "focusTransaction": "• Focus on the transaction experience",
+        "moderated": "• Reviews are moderated before publication"
+      },
+      "cancel": "Cancel",
+      "submit": "Submit Review",
+      "submitting": "Submitting..."
+    }
+  },
+  "form": {
+    "title": "Rate your experience with {{revieweeName}}",
+    "subtitle": "Your review will help other {{reviewerType, select, BUYER {buyers} FARMER {farmers} other {users}} make informed decisions",
+    "checkingExisting": "Checking for existing reviews...",
+    "rating": {
+      "label": "Rating *",
+      "required": "Please select a rating from 1 to 5 stars",
+      "invalid": "Rating must be between 1 and 5 stars",
+      "poor": "Poor",
+      "fair": "Fair",
+      "good": "Good",
+      "veryGood": "Very Good",
+      "excellent": "Excellent",
+      "stars": "{{count}} star{{count, plural, one {} other {s}}}"
+    },
+    "comment": {
+      "label": "Your Review",
+      "placeholder": "Share your experience with {{revieweeName}}. What went well? What could be improved?",
+      "required": "Please write a comment about your experience",
+      "minLength": "Comment must be at least 10 characters long",
+      "maxLength": "Comment must be less than 1000 characters",
+      "inappropriate": "Please keep your review constructive and appropriate",
+      "helpText": "{{count}}/1000 characters. Minimum 10 characters required."
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "backToOrder": "Back to Order",
+      "submit": "Submit Review",
+      "submitting": "Submitting...",
+      "retry": "Retry"
+    },
+    "errors": {
+      "duplicate": "You have already submitted a review for this order.",
+      "network": "Network error. Please check your connection and try again.",
+      "validation": "Please check your input and try again.",
+      "server": "Server error. Please try again in a few moments.",
+      "generic": "Failed to submit review. Please try again."
+    },
+    "retryAttempt": "Retry attempt: {{count}}"
+  },
+  "editForm": {
+    "title": "Edit Your Review",
+    "subtitle": "Update your rating and feedback. Changes will need admin approval before being published.",
+    "noChanges": "💡 Make changes to your rating or comment to update your review.",
+    "commentPlaceholder": "Share your updated thoughts about this experience...",
+    "commentHelp": "Minimum 10 characters. Be honest and constructive in your feedback.",
+    "update": "Update Review",
+    "updating": "Updating..."
+  },
+  "modals": {
+    "writeReview": "Write Review",
+    "editReview": "Edit Review",
+    "deleteReview": "Delete Review",
+    "deleteConfirm": "Are you sure you want to delete this review? This action cannot be undone.",
+    "deleteButton": "Delete",
+    "cancel": "Cancel"
+  },
+  "messages": {
+    "submitSuccess": "Review submitted successfully! It will be visible after admin approval.",
+    "submitSuccessTitle": "Review Submitted",
+    "submitError": "Failed to submit review",
+    "submitErrorTitle": "Review Failed",
+    "updateSuccess": "Review updated successfully!",
+    "updateSuccessTitle": "Review Updated",
+    "updateFailed": "Failed to update review",
+    "updateFailedTitle": "Update Failed",
+    "deleteFailed": "Failed to delete review",
+    "deleteFailedTitle": "Delete Failed",
+    "deleteNotImplemented": "Review deletion is not yet implemented in the backend API",
+    "featureNotAvailable": "Feature Not Available",
+    "buyerReviewSuccess": "Review submitted successfully and is pending approval",
+    "buyerReviewFailed": "Failed to submit review"
+  },
+  "status": {
+    "loading": "Loading your reviews...",
+    "errorLoading": "Failed to load reviews",
+    "processingErrors": "Some review data had formatting issues but was processed successfully",
+    "viewDetails": "View details",
+    "dataQualityNotice": "Data Quality Notice",
+    "dataQualityDesc": "Some review data may be incomplete or unavailable. Review totals remain accurate.",
+    "processingNotice": "Processing Notice",
+    "allDetailsLoaded": "All details loaded",
+    "someDetailsUnavailable": "Some details unavailable",
+    "tryRefreshing": "Try refreshing",
+    "showingCachedData": "(Showing cached data)"
+  },
+  "orders": {
+    "reviewBuyerButton": "⭐ Review Buyer"
+  }
+}

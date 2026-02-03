@@ -85,7 +85,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const handleLogout = useCallback((): void => {
     dispatch(logout())
-    navigate('/login', { replace: true })
+    navigate('/login', { 
+      replace: true,
+      state: { fromLogout: true }
+    })
   }, [dispatch, navigate])
 
   const refreshAuth = useCallback(async (): Promise<void> => {

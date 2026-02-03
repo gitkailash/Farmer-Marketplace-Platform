@@ -251,7 +251,14 @@ export const getReviews = async (req: ReviewSearchRequest, res: Response): Promi
       Review.find(query)
         .populate('reviewer', 'profile.name')
         .populate('reviewee', 'profile.name')
-        .populate('order', 'createdAt totalAmount')
+        .populate({
+          path: 'order',
+          select: 'createdAt totalAmount items',
+          populate: {
+            path: 'items.productId',
+            select: 'name category unit images'
+          }
+        })
         .populate('moderator', 'profile.name')
         .sort(sortOptions)
         .skip(skip)
@@ -356,6 +363,100 @@ export const getReviewById = async (req: AuthenticatedRequest, res: Response): P
   }
 };
 
+/**
+ * Update a review (only by the reviewer and only if not approved)
+ * PUT /api/reviews/:id
+ * Requires: Authentication (reviewer only)
+ */
+export const updateReview = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+      return;
+    }
+
+    const { id } = req.params;
+    const userId = req.user?.userId;
+    const { rating, comment } = req.body;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required'
+      });
+      return;
+    }
+
+    // Validate ObjectId
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid review ID'
+      });
+      return;
+    }
+
+    const review = await Review.findById(id);
+    if (!review) {
+      res.status(404).json({
+        success: false,
+        message: 'Review not found'
+      });
+      return;
+    }
+
+    // Check if user is the reviewer
+    if (!review.reviewerId.equals(new mongoose.Types.ObjectId(userId))) {
+      res.status(403).json({
+        success: false,
+        message: 'You can only update your own reviews'
+      });
+      return;
+    }
+
+    // Check if review is already approved (approved reviews cannot be edited)
+    if (review.isApproved) {
+      res.status(400).json({
+        success: false,
+        message: 'Approved reviews cannot be edited'
+      });
+      return;
+    }
+
+    // Update the review
+    review.rating = rating;
+    review.comment = comment.trim();
+    review.updatedAt = new Date();
+
+    await review.save();
+
+    // Populate review data for response
+    await review.populate([
+      { path: 'reviewer', select: 'profile.name email' },
+      { path: 'reviewee', select: 'profile.name email' },
+      { path: 'order', select: 'createdAt totalAmount status' }
+    ]);
+
+    res.json({
+      success: true,
+      message: 'Review updated successfully',
+      data: review
+    });
+  } catch (error) {
+    console.error('Update review error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update review',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+};
 /**
  * Moderate a review (approve or reject)
  * PUT /api/reviews/:id/moderate
@@ -520,7 +621,14 @@ export const getFarmerReviews = async (req: Request, res: Response): Promise<voi
     const [reviews, total] = await Promise.all([
       Review.find(query)
         .populate('reviewer', 'profile.name')
-        .populate('order', 'createdAt')
+        .populate({
+          path: 'order',
+          select: 'createdAt items',
+          populate: {
+            path: 'items.productId',
+            select: 'name category unit images'
+          }
+        })
         .sort(sortOptions)
         .skip(skip)
         .limit(limitNum)
@@ -650,10 +758,162 @@ export const getPendingReviews = async (req: AuthenticatedRequest, res: Response
 };
 
 /**
- * Get user's review history
- * GET /api/reviews/my-reviews
+ * Check if user can review an order
+ * GET /api/reviews/can-review/:orderId
  * Requires: Authentication
  */
+export const canReviewOrder = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    const { orderId } = req.params;
+    const userId = req.user?.userId;
+    const userRole = req.user?.role;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required'
+      });
+      return;
+    }
+
+    // Validate ObjectId
+    if (!orderId || !mongoose.Types.ObjectId.isValid(orderId)) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid order ID'
+      });
+      return;
+    }
+
+    // Determine reviewer type based on user role
+    let reviewerType: ReviewerType;
+    if (userRole === UserRole.BUYER) {
+      reviewerType = ReviewerType.BUYER;
+    } else if (userRole === UserRole.FARMER) {
+      reviewerType = ReviewerType.FARMER;
+    } else {
+      res.status(403).json({
+        success: false,
+        message: 'Only buyers and farmers can review orders'
+      });
+      return;
+    }
+
+    // Check if user can review this order
+    const canReview = await (Review as any).canUserReviewOrder(
+      new mongoose.Types.ObjectId(orderId),
+      new mongoose.Types.ObjectId(userId),
+      reviewerType
+    );
+
+    let reason = '';
+    if (!canReview) {
+      // Get more specific reason
+      const existingReview = await Review.findOne({
+        orderId: new mongoose.Types.ObjectId(orderId),
+        reviewerId: new mongoose.Types.ObjectId(userId),
+        reviewerType
+      });
+
+      if (existingReview) {
+        reason = 'You have already reviewed this order';
+      } else {
+        const Order = mongoose.model('Order');
+        const order = await Order.findById(orderId);
+        
+        if (!order) {
+          reason = 'Order not found';
+        } else if (order.status !== 'COMPLETED') {
+          reason = 'Order must be completed before you can review it';
+        } else {
+          const isValidReviewer = (
+            (reviewerType === ReviewerType.BUYER && order.buyerId.equals(new mongoose.Types.ObjectId(userId))) ||
+            (reviewerType === ReviewerType.FARMER && order.farmerId.equals(new mongoose.Types.ObjectId(userId)))
+          );
+          
+          if (!isValidReviewer) {
+            reason = 'You can only review orders you placed';
+          } else {
+            reason = 'Unable to review this order';
+          }
+        }
+      }
+    }
+
+    res.json({
+      success: true,
+      data: {
+        canReview,
+        reason: canReview ? undefined : reason
+      }
+    });
+  } catch (error) {
+    console.error('Can review order error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check review eligibility',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+};
+
+/**
+ * Get review for a specific order
+ * GET /api/reviews/order/:orderId
+ * Requires: Authentication
+ */
+export const getOrderReview = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    const { orderId } = req.params;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required'
+      });
+      return;
+    }
+
+    // Validate ObjectId
+    if (!orderId || !mongoose.Types.ObjectId.isValid(orderId)) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid order ID'
+      });
+      return;
+    }
+
+    // Find review for this order by the current user
+    const review = await Review.findOne({
+      orderId: new mongoose.Types.ObjectId(orderId),
+      reviewerId: new mongoose.Types.ObjectId(userId)
+    })
+    .populate('reviewer', 'profile.name email')
+    .populate('reviewee', 'profile.name email')
+    .populate('order', 'createdAt totalAmount status');
+
+    if (!review) {
+      res.status(404).json({
+        success: false,
+        message: 'Review not found'
+      });
+      return;
+    }
+
+    res.json({
+      success: true,
+      data: review
+    });
+  } catch (error) {
+    console.error('Get order review error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get order review',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+};
 export const getMyReviews = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.user?.userId;
@@ -696,7 +956,14 @@ export const getMyReviews = async (req: AuthenticatedRequest, res: Response): Pr
       Review.find(query)
         .populate('reviewer', 'profile.name')
         .populate('reviewee', 'profile.name')
-        .populate('order', 'createdAt totalAmount')
+        .populate({
+          path: 'order',
+          select: 'createdAt totalAmount items',
+          populate: {
+            path: 'items.productId',
+            select: 'name category unit images'
+          }
+        })
         .populate('moderator', 'profile.name')
         .sort({ createdAt: -1 })
         .skip(skip)

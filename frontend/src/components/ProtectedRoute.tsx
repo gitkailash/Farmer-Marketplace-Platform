@@ -37,10 +37,20 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   // Handle deep link validation errors
   useEffect(() => {
     if (validation && !validation.canAccess && validation.message && !errorShownRef.current) {
+      // Don't show error messages if we're already on the login page or being redirected to it
+      if (location.pathname === '/login' || validation.redirectTo === '/login') {
+        return
+      }
+      
+      // Don't show error messages during logout process
+      if (location.state?.fromLogout) {
+        return
+      }
+      
       showError(validation.message)
       errorShownRef.current = true
     }
-  }, [validation?.message, showError])
+  }, [validation?.message, showError, location.pathname, location.state])
 
   // Handle role-based access control errors
   useEffect(() => {
@@ -48,6 +58,16 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       const hasRequiredRole = allowedRoles.includes(user.role)
       
       if (!hasRequiredRole && !errorShownRef.current) {
+        // Don't show error messages if we're on the login page
+        if (location.pathname === '/login') {
+          return
+        }
+        
+        // Don't show error messages during logout process
+        if (location.state?.fromLogout) {
+          return
+        }
+        
         if (allowedRoles.includes('BUYER') && user.role !== 'BUYER') {
           showError('This page is only available for buyers')
         } else if (allowedRoles.includes('FARMER') && user.role !== 'FARMER') {
@@ -60,7 +80,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         errorShownRef.current = true
       }
     }
-  }, [isAuthenticated, user, allowedRoles, showError])
+  }, [isAuthenticated, user, allowedRoles, showError, location.pathname, location.state])
 
   // Show loading spinner while checking authentication or restoring
   if (loading || isRestoring) {

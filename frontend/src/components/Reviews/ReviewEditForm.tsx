@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Review } from '../../types/api';
 import { InputField, TextareaField, Button, FormGroup, FormActions } from '../UI';
+import { useAppTranslation } from '../../contexts/I18nProvider';
 
 interface ReviewEditFormProps {
   review: Review;
@@ -15,6 +16,7 @@ export const ReviewEditForm: React.FC<ReviewEditFormProps> = ({
   onCancel,
   loading = false
 }) => {
+  const { t } = useAppTranslation('reviews');
   const [rating, setRating] = useState<number>(review.rating);
   const [comment, setComment] = useState(review.comment);
   const [hoveredRating, setHoveredRating] = useState<number>(0);
@@ -31,13 +33,13 @@ export const ReviewEditForm: React.FC<ReviewEditFormProps> = ({
     const newErrors: { [key: string]: string } = {};
 
     if (rating === 0) {
-      newErrors.rating = 'Please select a rating';
+      newErrors.rating = t('form.rating.required');
     }
 
     if (!comment.trim()) {
-      newErrors.comment = 'Please write a comment';
+      newErrors.comment = t('form.comment.required');
     } else if (comment.trim().length < 10) {
-      newErrors.comment = 'Comment must be at least 10 characters long';
+      newErrors.comment = t('form.comment.minLength');
     }
 
     setErrors(newErrors);

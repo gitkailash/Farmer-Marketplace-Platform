@@ -56,17 +56,17 @@ const FarmerDashboardLayout: React.FC<FarmerDashboardLayoutProps> = ({ children 
       icon: <Clipboard className="text-xl" />,
       description: getTranslation('navigation.ordersDesc', 'View and manage incoming orders')
     },
-    {
-      name: getTranslation('navigation.messages', 'Messages'),
-      href: '/farmer/messages',
-      icon: <MessageCircle className="text-xl" />,
-      description: getTranslation('navigation.messagesDesc', 'Communicate with buyers')
-    },
+    // {
+    //   name: getTranslation('navigation.messages', 'Messages'),
+    //   href: '/farmer/messages',
+    //   icon: <MessageCircle className="text-xl" />,
+    //   description: getTranslation('navigation.messagesDesc', 'Communicate with buyers')
+    // },
     {
       name: getTranslation('navigation.reviews', 'Reviews'),
       href: '/farmer/reviews',
       icon: <Star className="text-xl" />,
-      description: getTranslation('navigation.reviewsDesc', 'View customer reviews and ratings')
+      description: getTranslation('navigation.reviewsDesc', 'View customer reviews about your products')
     }
   ]
 

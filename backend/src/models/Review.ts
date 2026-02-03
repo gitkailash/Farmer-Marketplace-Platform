@@ -186,20 +186,46 @@ reviewSchema.pre('save', async function(next) {
       }
       
       // Validate reviewer is part of the order
-      const isValidReviewer = (
-        (this.reviewerType === ReviewerType.BUYER && order.buyerId.equals(this.reviewerId)) ||
-        (this.reviewerType === ReviewerType.FARMER && order.farmerId.equals(this.reviewerId))
-      );
+      // For BUYER: reviewerId should match order.buyerId (both are User IDs)
+      // For FARMER: reviewerId should match the farmer's userId (need to look up farmer)
+      let isValidReviewer = false;
+      
+      if (this.reviewerType === ReviewerType.BUYER) {
+        // Buyer review - reviewerId should match buyerId
+        if (order.buyerId.equals(this.reviewerId)) {
+          isValidReviewer = true;
+        }
+      } else if (this.reviewerType === ReviewerType.FARMER) {
+        // Farmer review - need to get farmer's userId
+        const Farmer = mongoose.model('Farmer');
+        const farmer = await Farmer.findById(order.farmerId);
+        if (farmer && farmer.userId.equals(this.reviewerId)) {
+          isValidReviewer = true;
+        }
+      }
       
       if (!isValidReviewer) {
         return next(new Error('Reviewer must be part of the order'));
       }
       
       // Validate reviewee is the other party in the order
-      const isValidReviewee = (
-        (this.reviewerType === ReviewerType.BUYER && order.farmerId.equals(this.revieweeId)) ||
-        (this.reviewerType === ReviewerType.FARMER && order.buyerId.equals(this.revieweeId))
-      );
+      // For BUYER reviewing FARMER: revieweeId should be the farmer's userId
+      // For FARMER reviewing BUYER: revieweeId should be the buyer's userId (buyerId is already a User ID)
+      let isValidReviewee = false;
+      
+      if (this.reviewerType === ReviewerType.BUYER) {
+        // Buyer is reviewing farmer - need to get farmer's userId
+        const Farmer = mongoose.model('Farmer');
+        const farmer = await Farmer.findById(order.farmerId);
+        if (farmer && farmer.userId.equals(this.revieweeId)) {
+          isValidReviewee = true;
+        }
+      } else if (this.reviewerType === ReviewerType.FARMER) {
+        // Farmer is reviewing buyer - buyerId is already a User ID
+        if (order.buyerId.equals(this.revieweeId)) {
+          isValidReviewee = true;
+        }
+      }
       
       if (!isValidReviewee) {
         return next(new Error('Reviewee must be the other party in the order'));
@@ -334,10 +360,23 @@ reviewSchema.statics.canUserReviewOrder = async function(
     }
     
     // Check if user is part of the order
-    const isValidReviewer = (
-      (reviewerType === ReviewerType.BUYER && order.buyerId.equals(userId)) ||
-      (reviewerType === ReviewerType.FARMER && order.farmerId.equals(userId))
-    );
+    // For BUYER: userId should match order.buyerId
+    // For FARMER: userId should match the farmer's userId (need to look up farmer)
+    let isValidReviewer = false;
+    
+    if (reviewerType === ReviewerType.BUYER) {
+      // Buyer review - userId should match buyerId
+      if (order.buyerId.equals(userId)) {
+        isValidReviewer = true;
+      }
+    } else if (reviewerType === ReviewerType.FARMER) {
+      // Farmer review - need to get farmer's userId
+      const Farmer = mongoose.model('Farmer');
+      const farmer = await Farmer.findById(order.farmerId);
+      if (farmer && farmer.userId.equals(userId)) {
+        isValidReviewer = true;
+      }
+    }
     
     return isValidReviewer;
   } catch (error) {

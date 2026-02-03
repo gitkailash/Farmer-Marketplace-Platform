@@ -139,7 +139,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
       const results = await loadTranslationNamespaces(lang, [...NAMESPACES], true); // Force reload
       
       // Check if all critical namespaces loaded successfully
-      const criticalNamespaces = ['common', 'auth'];
+      const criticalNamespaces = ['common', 'auth', 'reviews'];
       const criticalLoaded = criticalNamespaces.every(ns => results[ns]);
       
       if (!criticalLoaded) {
@@ -246,12 +246,12 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
         console.log('📚 Loading translations for final language:', finalLanguage);
         
         // Load all critical namespaces
-        const criticalNamespaces = ['common', 'auth', 'buyer', 'farmer', 'products'];
+        const criticalNamespaces = ['common', 'auth', 'buyer', 'farmer', 'products', 'reviews'];
         const results = await loadTranslationNamespaces(finalLanguage, criticalNamespaces);
         console.log('📊 Translation loading results:', results);
         
         // Check if critical namespaces loaded
-        const criticalLoaded = results['common'] && results['auth'];
+        const criticalLoaded = results['common'] && results['auth'] && results['reviews'];
         if (!criticalLoaded) {
           console.warn('⚠️ Critical namespaces failed to load, but continuing...');
         } else {
@@ -450,13 +450,26 @@ export const useI18n = (): I18nContextValue => {
 // Enhanced useTranslation hook with TypeScript support and circuit breaker
 export const useAppTranslation = (namespace?: string) => {
   const { t: originalT, i18n } = useTranslation(namespace);
-  const { language, changeLanguage, isLoading, isReady } = useI18n();
+  const { language, changeLanguage, isLoading, isReady, loadNamespace } = useI18n();
   
   // Circuit breaker to prevent excessive translation attempts - using refs to avoid re-renders
   const translationErrorsRef = useRef(0);
   const lastErrorTimeRef = useRef(0);
   const MAX_ERRORS = 5;
   const ERROR_RESET_TIME = 30000; // 30 seconds
+
+  // Auto-load namespace if not available
+  useEffect(() => {
+    const targetNamespace = namespace || 'common';
+    const currentLang = i18n.language || language;
+    const availableResources = i18n.store.data[currentLang];
+    
+    if (isReady && !isLoading && (!availableResources || !availableResources[targetNamespace])) {
+      console.log(`🔄 Auto-loading missing namespace: ${targetNamespace} for language: ${currentLang}`);
+      console.log(`📊 Available namespaces:`, availableResources ? Object.keys(availableResources) : 'NONE');
+      loadNamespace(targetNamespace);
+    }
+  }, [namespace, language, isReady, isLoading, i18n, loadNamespace]);
 
   // Typed translation function with circuit breaker
   const t = useCallback((key: string, options?: any) => {
@@ -484,7 +497,8 @@ export const useAppTranslation = (namespace?: string) => {
       const targetNamespace = namespace || 'common';
       
       if (!availableResources || !availableResources[targetNamespace]) {
-        console.warn(`Namespace ${targetNamespace} not loaded for language ${currentLang}`);
+        console.warn(`🚫 Namespace ${targetNamespace} not loaded for language ${currentLang}`);
+        console.warn(`📊 Available namespaces:`, availableResources ? Object.keys(availableResources) : 'NONE');
         return options?.defaultValue || key;
       }
 
