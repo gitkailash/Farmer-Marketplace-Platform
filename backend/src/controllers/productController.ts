@@ -6,8 +6,14 @@ import mongoose from 'mongoose';
 
 // Product request interfaces
 interface CreateProductRequest {
-  name: string;
-  description: string;
+  name: {
+    en: string;
+    ne?: string;
+  };
+  description: {
+    en: string;
+    ne?: string;
+  };
   category: string;
   price: number;
   unit: string;
@@ -94,7 +100,11 @@ export const createProduct = async (req: CreateProductAuthRequest, res: Response
     const productData = {
       ...req.body,
       farmerId: farmer._id,
-      status: ProductStatus.DRAFT // Always start as draft
+      status: ProductStatus.DRAFT, // Always start as draft
+      // Convert string category to multilingual object
+      category: typeof req.body.category === 'string' 
+        ? { en: req.body.category } 
+        : req.body.category
     };
 
     const product = new Product(productData);
@@ -397,7 +407,15 @@ export const updateProduct = async (req: UpdateProductAuthRequest, res: Response
     }
 
     // Update product
-    Object.assign(product, req.body);
+    const updateData = {
+      ...req.body,
+      // Convert string category to multilingual object if needed
+      ...(req.body.category && typeof req.body.category === 'string' 
+        ? { category: { en: req.body.category } } 
+        : {})
+    };
+    
+    Object.assign(product, updateData);
     await product.save();
 
     // Populate farmer data for response

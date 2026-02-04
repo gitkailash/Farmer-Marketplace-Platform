@@ -78,7 +78,7 @@ const UNITS = [
 
 const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }) => {
   const { language } = useI18n()
-  const { t } = useAppTranslation('products')
+  const { t } = useAppTranslation('farmer')
   
   const [formData, setFormData] = useState<FormData>({
     name: {
@@ -179,48 +179,48 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
 
     // Name validation (English required, Nepali optional)
     if (!formData.name.en.trim()) {
-      newErrors.name = { en: t('form.validation.nameRequired') as string || 'Product name is required' }
+      newErrors.name = { en: t('products.form.validation.nameRequired') as string || 'Product name is required' }
     } else if (formData.name.en.trim().length < 2) {
-      newErrors.name = { en: t('form.validation.nameMinLength') as string || 'Product name must be at least 2 characters' }
+      newErrors.name = { en: t('products.form.validation.nameMinLength') as string || 'Product name must be at least 2 characters' }
     }
 
     // Description validation (English required, Nepali optional)
     if (!formData.description.en.trim()) {
-      newErrors.description = { en: t('form.validation.descriptionRequired') as string || 'Product description is required' }
+      newErrors.description = { en: t('products.form.validation.descriptionRequired') as string || 'Product description is required' }
     } else if (formData.description.en.trim().length < 10) {
-      newErrors.description = { en: t('form.validation.descriptionMinLength') as string || 'Description must be at least 10 characters' }
+      newErrors.description = { en: t('products.form.validation.descriptionMinLength') as string || 'Description must be at least 10 characters' }
     }
 
     // Category validation
     if (!formData.category) {
-      newErrors.category = t('form.validation.categoryRequired') as string || 'Please select a category'
+      newErrors.category = t('products.form.validation.categoryRequired') as string || 'Please select a category'
     }
 
     // Price validation
     const price = parseFloat(formData.price)
     if (!formData.price || isNaN(price)) {
-      newErrors.price = t('form.validation.priceRequired') as string || 'Please enter a valid price'
+      newErrors.price = t('products.form.validation.priceRequired') as string || 'Please enter a valid price'
     } else if (price <= 0) {
-      newErrors.price = t('form.validation.pricePositive') as string || 'Price must be greater than 0'
+      newErrors.price = t('products.form.validation.pricePositive') as string || 'Price must be greater than 0'
     }
 
     // Unit validation
     if (!formData.unit) {
-      newErrors.unit = t('form.validation.unitRequired') as string || 'Please select a unit'
+      newErrors.unit = t('products.form.validation.unitRequired') as string || 'Please select a unit'
     }
 
     // Stock validation
     const stock = parseInt(formData.stock)
     if (!formData.stock || isNaN(stock)) {
-      newErrors.stock = t('form.validation.stockRequired') as string || 'Please enter a valid stock quantity'
+      newErrors.stock = t('products.form.validation.stockRequired') as string || 'Please enter a valid stock quantity'
     } else if (stock < 0) {
-      newErrors.stock = t('form.validation.stockNonNegative') as string || 'Stock cannot be negative'
+      newErrors.stock = t('products.form.validation.stockNonNegative') as string || 'Stock cannot be negative'
     }
 
     // Image validation (at least one valid URL)
     const validImages = formData.images.filter(img => img.trim())
     if (validImages.length === 0) {
-      newErrors.images = t('form.validation.imagesRequired') as string || 'At least one product image is required'
+      newErrors.images = t('products.form.validation.imagesRequired') as string || 'At least one product image is required'
     }
 
     setErrors(newErrors)
@@ -269,30 +269,30 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
       <FormGroup>
         {/* Product Name - Multilingual */}
         <MultilingualInputField
-          label={(t('form.name') as string) || 'Product Name'}
+          label={(t('products.form.name') as string) || 'Product Name'}
           name="name"
           value={formData.name}
           onChange={(value) => handleMultilingualChange('name', value)}
           error={errors.name}
-          placeholder={(t('form.name') as string) || 'Enter product name'}
+          placeholder={(t('products.form.name') as string) || 'Enter product name'}
           required
         />
 
         {/* Description - Multilingual */}
         <MultilingualTextareaField
-          label={(t('form.description') as string) || 'Description'}
+          label={(t('products.form.description') as string) || 'Description'}
           name="description"
           value={formData.description}
           onChange={(value) => handleMultilingualChange('description', value)}
           error={errors.description}
-          placeholder={(t('form.description') as string) || 'Describe your product...'}
+          placeholder={(t('products.form.description') as string) || 'Describe your product...'}
           rows={4}
           required
         />
 
         {/* Category */}
         <SelectField
-          label={(t('form.category') as string) || 'Category'}
+          label={(t('products.form.category') as string) || 'Category'}
           name="category"
           value={formData.category}
           onChange={(e) => handleInputChange('category', e.target.value)}
@@ -301,7 +301,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
             value: cat.value,
             label: language === 'ne' ? ((t(`categories.${cat.value.toLowerCase()}`) as string) || cat.label) : cat.label
           }))}
-          placeholder={(t('form.category') as string) || 'Select a category'}
+          placeholder={(t('products.form.category') as string) || 'Select a category'}
           required
         />
 
@@ -309,7 +309,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
             <label className="block text-lg font-medium text-secondary-700 sm:text-base">
-              {(t('form.price') as string) || 'Price'}
+              {(t('products.form.price') as string) || 'Price'}
               <span className="text-red-500 ml-1">*</span>
             </label>
             <div className="relative">
@@ -350,7 +350,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
           </div>
 
           <SelectField
-            label={(t('form.unit') as string) || 'Unit'}
+            label={(t('products.form.unit') as string) || 'Unit'}
             name="unit"
             value={formData.unit}
             onChange={(e) => handleInputChange('unit', e.target.value)}
@@ -359,7 +359,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
               value: unit.value,
               label: language === 'ne' ? ((t(`units.${unit.value}`) as string) || unit.label) : unit.label
             }))}
-            placeholder={(t('form.unit') as string) || 'Select unit'}
+            placeholder={(t('products.form.unit') as string) || 'Select unit'}
             required
           />
         </div>
@@ -367,7 +367,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
         {/* Stock */}
         <div className="space-y-3">
           <label className="block text-lg font-medium text-secondary-700 sm:text-base">
-            {(t('form.stock') as string) || 'Stock Quantity'}
+            {(t('products.form.stock') as string) || 'Stock Quantity'}
             <span className="text-red-500 ml-1">*</span>
           </label>
           <input
@@ -376,7 +376,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
             name="stock"
             value={formData.stock}
             onChange={(e) => handleInputChange('stock', e.target.value)}
-            placeholder={(t('form.validation.stockRequired') as string) || 'Enter available quantity'}
+            placeholder={(t('products.form.validation.stockRequired') as string) || 'Enter available quantity'}
             className={`
               w-full px-5 py-5 sm:px-4 sm:py-4 lg:px-3 lg:py-3
               border-2 rounded-2xl text-lg sm:text-lg lg:text-base
@@ -399,14 +399,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
             </p>
           )}
           <p className="text-base text-secondary-500 sm:text-sm">
-            {(t('form.stockHelp') as string) || 'Number of units available for sale'}
+            {(t('products.form.stockHelp') as string) || 'Number of units available for sale'}
           </p>
         </div>
 
         {/* Product Images */}
         <div className="space-y-3">
           <label className="block text-lg font-medium text-secondary-700 sm:text-base">
-            {(t('form.images') as string) || 'Product Images'}
+            {(t('products.form.images') as string) || 'Product Images'}
             <span className="text-red-500 ml-1">*</span>
           </label>
           
@@ -417,7 +417,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
                 name={`image-${index}`}
                 value={image}
                 onChange={(e) => handleImageChange(index, e.target.value)}
-                placeholder={(t('form.imageUrlPlaceholder') as string) || 'Enter image URL'}
+                placeholder={(t('products.form.imageUrlPlaceholder') as string) || 'Enter image URL'}
                 className={`
                   flex-1 px-5 py-5 sm:px-4 sm:py-4 lg:px-3 lg:py-3
                   border-2 rounded-2xl text-lg sm:text-lg lg:text-base
@@ -452,7 +452,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
               size="sm"
               onClick={addImageField}
             >
-              {(t('form.addAnotherImage') as string) || '+ Add Another Image'}
+              {(t('products.form.addAnotherImage') as string) || '+ Add Another Image'}
             </SecondaryButton>
           )}
           
@@ -464,7 +464,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
           )}
           
           <p className="text-sm text-gray-500">
-            {(t('form.imagesHelp') as string) || 'Add up to 5 image URLs. The first image will be used as the main product image.'}
+            {(t('products.form.imagesHelp') as string) || 'Add up to 5 image URLs. The first image will be used as the main product image.'}
           </p>
         </div>
       </FormGroup>
@@ -476,7 +476,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
           onClick={onCancel}
           disabled={isSubmitting}
         >
-          {(t('form.cancel') as string) || 'Cancel'}
+          {(t('products.form.cancel') as string) || 'Cancel'}
         </SecondaryButton>
         
         <PrimaryButton
@@ -484,7 +484,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
           loading={isSubmitting}
           disabled={isSubmitting}
         >
-          {product ? (t('form.editProduct') as string || 'Update Product') : (t('form.addProduct') as string || 'Create Product')}
+          {product ? (t('products.form.editProduct') as string || 'Update Product') : (t('products.form.addProduct') as string || 'Create Product')}
         </PrimaryButton>
       </FormActions>
     </form>

@@ -15,7 +15,7 @@ export interface ProductFilters {
 export interface ProductCreateRequest {
   name: MultilingualField;
   description: MultilingualField;
-  category: string;
+  category: string; // Keep as string for now - backend will convert to multilingual
   price: number;
   unit: string;
   stock: number;

@@ -677,7 +677,7 @@ const FarmerProducts: React.FC = () => {
         onClose={closeDeleteConfirm}
         onConfirm={confirmDelete}
         title={t('products.modals.deleteProduct', 'Delete Product')}
-        message={t('products.modals.deleteConfirm', { name: deleteConfirmModal.product?.name })}
+        message={t('products.modals.deleteConfirm', { name: getLocalizedText(deleteConfirmModal.product?.name, language) || 'Product' })}
         confirmLabel={t('products.card.delete', 'Delete')}
         type="danger"
       />

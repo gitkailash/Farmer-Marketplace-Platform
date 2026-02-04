@@ -34,25 +34,49 @@ export const PRODUCT_STATUS = ['DRAFT', 'PUBLISHED', 'INACTIVE'] as const;
  * Validation rules for creating a product
  */
 export const validateCreateProduct = [
+  // Multilingual name validation
   body('name')
+    .isObject()
+    .withMessage('Product name must be a multilingual object'),
+  
+  body('name.en')
     .trim()
     .notEmpty()
-    .withMessage('Product name is required')
+    .withMessage('Product name (English) is required')
     .isLength({ min: 2, max: 200 })
-    .withMessage('Product name must be between 2 and 200 characters')
+    .withMessage('Product name (English) must be between 2 and 200 characters')
     .matches(/^[a-zA-Z0-9\s\-\.\,\(\)]+$/)
-    .withMessage('Product name contains invalid characters'),
+    .withMessage('Product name (English) contains invalid characters'),
 
+  body('name.ne')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ min: 2, max: 200 })
+    .withMessage('Product name (Nepali) must be between 2 and 200 characters'),
+
+  // Multilingual description validation
   body('description')
+    .isObject()
+    .withMessage('Product description must be a multilingual object'),
+
+  body('description.en')
     .trim()
     .notEmpty()
-    .withMessage('Product description is required')
+    .withMessage('Product description (English) is required')
     .isLength({ min: 10, max: 2000 })
-    .withMessage('Product description must be between 10 and 2000 characters'),
+    .withMessage('Product description (English) must be between 10 and 2000 characters'),
+
+  body('description.ne')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ min: 10, max: 2000 })
+    .withMessage('Product description (Nepali) must be between 10 and 2000 characters'),
 
   body('category')
     .notEmpty()
     .withMessage('Product category is required')
+    .isString()
+    .withMessage('Product category must be a string')
     .isIn(PRODUCT_CATEGORIES)
     .withMessage(`Category must be one of: ${PRODUCT_CATEGORIES.join(', ')}`),
 
@@ -153,22 +177,48 @@ export const validateCreateProduct = [
  * Validation rules for updating a product
  */
 export const validateUpdateProduct = [
+  // Multilingual name validation (optional for updates)
   body('name')
+    .optional()
+    .isObject()
+    .withMessage('Product name must be a multilingual object'),
+  
+  body('name.en')
     .optional()
     .trim()
     .isLength({ min: 2, max: 200 })
-    .withMessage('Product name must be between 2 and 200 characters')
+    .withMessage('Product name (English) must be between 2 and 200 characters')
     .matches(/^[a-zA-Z0-9\s\-\.\,\(\)]+$/)
-    .withMessage('Product name contains invalid characters'),
+    .withMessage('Product name (English) contains invalid characters'),
 
+  body('name.ne')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ min: 2, max: 200 })
+    .withMessage('Product name (Nepali) must be between 2 and 200 characters'),
+
+  // Multilingual description validation (optional for updates)
   body('description')
+    .optional()
+    .isObject()
+    .withMessage('Product description must be a multilingual object'),
+
+  body('description.en')
     .optional()
     .trim()
     .isLength({ min: 10, max: 2000 })
-    .withMessage('Product description must be between 10 and 2000 characters'),
+    .withMessage('Product description (English) must be between 10 and 2000 characters'),
+
+  body('description.ne')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isLength({ min: 10, max: 2000 })
+    .withMessage('Product description (Nepali) must be between 10 and 2000 characters'),
 
   body('category')
     .optional()
+    .isString()
+    .withMessage('Product category must be a string')
     .isIn(PRODUCT_CATEGORIES)
     .withMessage(`Category must be one of: ${PRODUCT_CATEGORIES.join(', ')}`),
 

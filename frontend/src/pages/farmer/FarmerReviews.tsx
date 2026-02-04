@@ -3,8 +3,9 @@ import { LoadingSpinner, ErrorDisplay, EmptyState } from '../../components/UI'
 import Button from '../../components/UI/Button'
 import { reviewService } from '../../services/reviewService'
 import { useAuth } from '../../contexts/AuthProvider'
-import { useAppTranslation } from '../../contexts/I18nProvider'
+import { useI18n, useAppTranslation } from '../../contexts/I18nProvider'
 import { getProductFromOrderItem } from '../../utils/productUtils'
+import { getLocalizedText } from '../../utils/multilingual'
 import { 
   processReviewData, 
   handleMalformedReviewData,
@@ -20,6 +21,7 @@ interface ProcessedReviewData {
 
 const FarmerReviews: React.FC = () => {
   const { user, loading: authLoading } = useAuth()
+  const { language } = useI18n()
   const { t: tReviews } = useAppTranslation('reviews') // Use reviews translations for all review-related content
   const [reviewData, setReviewData] = useState<ProcessedReviewData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -367,7 +369,7 @@ const FarmerReviews: React.FC = () => {
                           return (
                             <div key={index} className="text-sm text-blue-800">
                               <span className="font-medium">
-                                {product.name}
+                                {getLocalizedText(product.name, language) || 'Product'}
                               </span>
                               <span className="text-blue-600 ml-2">
                                 × {item.quantity} {product.unit}
