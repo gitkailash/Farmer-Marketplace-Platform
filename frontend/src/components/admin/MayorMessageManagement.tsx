@@ -118,12 +118,9 @@ const MayorMessageManagement: React.FC = () => {
       setSubmitting(true)
 
       const submitData = {
-        text: formData.text.en || formData.text.ne, // Send primary language text for now
+        text: formData.text,
         scrollSpeed: formData.scrollSpeed,
         isActive: formData.isActive,
-        // Store multilingual data in a custom field for future backend support
-        multilingualText: formData.text,
-        useRichText: formData.useRichText,
         ...(formData.imageUrl.trim() && { imageUrl: formData.imageUrl.trim() })
       }
 
@@ -172,27 +169,15 @@ const MayorMessageManagement: React.FC = () => {
   const handleEdit = (message: MayorMessageAdmin) => {
     setEditingMessage(message)
     
-    // Handle both old string format and new multilingual format
-    const messageData = message as any
-    let textData: MultilingualText
-    
-    if (messageData.multilingualText) {
-      // New multilingual format
-      textData = messageData.multilingualText
-    } else if (typeof message.text === 'string') {
-      // Old string format - assume it's English
-      textData = { en: message.text, ne: '' }
-    } else {
-      // Fallback
-      textData = { en: '', ne: '' }
-    }
+    // Handle multilingual format
+    const textData: MultilingualText = message.text as MultilingualText || { en: '', ne: '' }
     
     setFormData({
       text: textData,
       imageUrl: message.imageUrl || '',
       scrollSpeed: message.scrollSpeed,
       isActive: message.isActive,
-      useRichText: messageData.useRichText || false
+      useRichText: false
     })
     setFormErrors({})
     setShowCreateModal(true)
@@ -308,9 +293,7 @@ const MayorMessageManagement: React.FC = () => {
                     />
                   )}
                   <div className="text-sm">
-                    📢 {typeof activeMessage.text === 'string' 
-                      ? activeMessage.text 
-                      : (activeMessage as any).multilingualText?.en || activeMessage.text}
+                    📢 {(activeMessage.text as MultilingualText)?.en || activeMessage.text}
                   </div>
                 </div>
               </div>
@@ -399,10 +382,8 @@ const MayorMessageManagement: React.FC = () => {
                         />
                       )}
                       <span className="text-gray-700">
-                        📢 {typeof message.text === 'string' 
-                          ? message.text 
-                          : (message as any).multilingualText?.en || message.text}
-                        {(message as any).multilingualText?.ne && (
+                        📢 {(message.text as MultilingualText)?.en || message.text}
+                        {(message.text as MultilingualText)?.ne && (
                           <span className="ml-2 text-sm text-green-600">
                             ✓ {getTranslation('common.bilingual', 'Bilingual')}
                           </span>

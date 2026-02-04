@@ -150,22 +150,42 @@ export const adminGalleryService = {
   },
 
   async createItem(data: {
-    title: string
-    imageUrl: string
-    category: string
-    order?: number
-    isActive?: boolean
+    title: {
+      en: string;
+      ne?: string;
+    };
+    description?: {
+      en: string;
+      ne?: string;
+    };
+    imageUrl: string;
+    category: {
+      en: string;
+      ne?: string;
+    };
+    order?: number;
+    isActive?: boolean;
   }): Promise<ApiResponse<GalleryItemAdmin>> {
     const response = await api.post('/content/gallery', data)
     return response.data
   },
 
   async updateItem(id: string, data: Partial<{
-    title: string
-    imageUrl: string
-    category: string
-    order: number
-    isActive: boolean
+    title: {
+      en: string;
+      ne?: string;
+    };
+    description?: {
+      en: string;
+      ne?: string;
+    };
+    imageUrl: string;
+    category: {
+      en: string;
+      ne?: string;
+    };
+    order: number;
+    isActive: boolean;
   }>): Promise<ApiResponse<GalleryItemAdmin>> {
     const response = await api.put(`/content/gallery/${id}`, data)
     return response.data
@@ -203,24 +223,26 @@ export const adminMayorService = {
   },
 
   async createMessage(data: {
-    text: string
-    imageUrl?: string
-    scrollSpeed?: number
-    isActive?: boolean
-    multilingualText?: { en: string; ne: string }
-    useRichText?: boolean
+    text: {
+      en: string;
+      ne?: string;
+    };
+    imageUrl?: string;
+    scrollSpeed?: number;
+    isActive?: boolean;
   }): Promise<ApiResponse<MayorMessageAdmin>> {
     const response = await api.post('/content/mayor', data)
     return response.data
   },
 
   async updateMessage(id: string, data: Partial<{
-    text: string
-    imageUrl?: string
-    scrollSpeed: number
-    isActive: boolean
-    multilingualText?: { en: string; ne: string }
-    useRichText?: boolean
+    text: {
+      en: string;
+      ne?: string;
+    };
+    imageUrl?: string;
+    scrollSpeed: number;
+    isActive: boolean;
   }>): Promise<ApiResponse<MayorMessageAdmin>> {
     const response = await api.put(`/content/mayor/${id}`, data)
     return response.data
@@ -257,36 +279,46 @@ export const adminNewsService = {
   },
 
   async createItem(data: {
-    headline: string
-    content?: string
-    link?: string
-    priority?: 'LOW' | 'NORMAL' | 'HIGH'
-    language?: string
-    isActive?: boolean
-    publishedAt?: string
-    multilingualHeadline?: { en: string; ne: string }
-    multilingualContent?: { en: string; ne: string }
-    multilingualSummary?: { en: string; ne: string }
-    summary?: string
-    useRichText?: boolean
+    headline: {
+      en: string;
+      ne?: string;
+    };
+    content?: {
+      en: string;
+      ne?: string;
+    };
+    summary?: {
+      en: string;
+      ne?: string;
+    };
+    link?: string;
+    priority?: 'LOW' | 'NORMAL' | 'HIGH';
+    language?: string;
+    isActive?: boolean;
+    publishedAt?: string;
   }): Promise<ApiResponse<NewsItemAdmin>> {
     const response = await api.post('/content/news', data)
     return response.data
   },
 
   async updateItem(id: string, data: Partial<{
-    headline: string
-    content?: string
-    link?: string
-    priority: 'LOW' | 'NORMAL' | 'HIGH'
-    language: string
-    isActive: boolean
-    publishedAt: string
-    multilingualHeadline?: { en: string; ne: string }
-    multilingualContent?: { en: string; ne: string }
-    multilingualSummary?: { en: string; ne: string }
-    summary?: string
-    useRichText?: boolean
+    headline: {
+      en: string;
+      ne?: string;
+    };
+    content?: {
+      en: string;
+      ne?: string;
+    };
+    summary?: {
+      en: string;
+      ne?: string;
+    };
+    link?: string;
+    priority: 'LOW' | 'NORMAL' | 'HIGH';
+    language: string;
+    isActive: boolean;
+    publishedAt: string;
   }>): Promise<ApiResponse<NewsItemAdmin>> {
     const response = await api.put(`/content/news/${id}`, data)
     return response.data

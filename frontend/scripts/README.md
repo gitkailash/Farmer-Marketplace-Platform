@@ -1,5 +1,11 @@
 # Translation Tools
 
+[![i18next](https://img.shields.io/badge/i18next-25.7+-26A69A?logo=i18next&logoColor=white)](https://www.i18next.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Validation](https://img.shields.io/badge/Validation-Automated-green)](https://github.com/i18next/i18next-scanner)
+[![Multilingual](https://img.shields.io/badge/Languages-English%20%7C%20Nepali-blue)](https://www.i18next.com/)
+
 This directory contains tools for managing translations in the Farmer Marketplace Platform.
 
 ## Available Scripts

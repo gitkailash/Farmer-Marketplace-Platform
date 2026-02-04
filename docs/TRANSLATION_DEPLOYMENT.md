@@ -1,5 +1,13 @@
 # Translation Assets Deployment Guide
 
+[![CDN](https://img.shields.io/badge/CDN-Multi%20Provider-orange)](https://www.cloudflare.com/)
+[![AWS S3](https://img.shields.io/badge/AWS-S3-FF9900?logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-CDN-F38020?logo=cloudflare&logoColor=white)](https://www.cloudflare.com/)
+[![Azure](https://img.shields.io/badge/Azure-CDN-0078D4?logo=microsoft-azure&logoColor=white)](https://azure.microsoft.com/en-us/services/cdn/)
+[![Compression](https://img.shields.io/badge/Compression-Gzip%20%7C%20Brotli-green)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Compression)
+[![Versioning](https://img.shields.io/badge/Versioning-Content%20Hash-blue)](https://webpack.js.org/guides/caching/)
+[![i18next](https://img.shields.io/badge/i18next-25.7+-26A69A?logo=i18next&logoColor=white)](https://www.i18next.com/)
+
 This guide explains how to deploy translation assets to CDN for the Farmer Marketplace Platform's internationalization system.
 
 ## Overview

@@ -6,8 +6,18 @@ import mongoose from 'mongoose';
 
 // News request interfaces
 interface CreateNewsItemRequest {
-  headline: string;
-  content?: string;
+  headline: {
+    en: string;
+    ne?: string;
+  };
+  content?: {
+    en: string;
+    ne?: string;
+  };
+  summary?: {
+    en: string;
+    ne?: string;
+  };
   link?: string;
   priority?: NewsPriority;
   language?: string;
@@ -130,9 +140,16 @@ export const getNewsItems = async (req: NewsSearchRequest, res: Response): Promi
       query.priority = priority;
     }
 
-    // Language filter
+    // Language filter - check if translations exist for the requested language
     if (language) {
-      query.language = language.toLowerCase();
+      const lang = language.toLowerCase();
+      if (lang === 'ne') {
+        // For Nepali, check if Nepali translations exist in headline
+        query['headline.ne'] = { $exists: true, $ne: null, $ne: '' };
+      } else {
+        // For English (default), check if English translations exist in headline
+        query['headline.en'] = { $exists: true, $ne: null, $ne: '' };
+      }
     }
 
     // Active filter - non-admin users can only see active items
@@ -203,10 +220,19 @@ export const getTickerNews = async (req: Request, res: Response): Promise<void> 
   try {
     const { language = 'en', limit = 10 } = req.query;
 
-    const newsItems = await NewsItem.find({
-      isActive: true,
-      language: language.toString().toLowerCase()
-    })
+    // Build query to check for available translations
+    const query: any = { isActive: true };
+    
+    const lang = language.toString().toLowerCase();
+    if (lang === 'ne') {
+      // For Nepali, check if Nepali translations exist in headline
+      query['headline.ne'] = { $exists: true, $ne: null, $ne: '' };
+    } else {
+      // For English (default), check if English translations exist in headline
+      query['headline.en'] = { $exists: true, $ne: null, $ne: '' };
+    }
+
+    const newsItems = await NewsItem.find(query)
       .select('headline link priority publishedAt')
       .sort({ priority: -1, publishedAt: -1 })
       .limit(Math.min(50, Math.max(1, Number(limit))))

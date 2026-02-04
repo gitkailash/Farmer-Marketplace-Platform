@@ -399,7 +399,14 @@ export class ContentLocalizer implements IContentLocalizer {
     }
 
     if (data.en?.title || data.en?.body || data.en?.description) {
-      mayor.text = data.en.title || data.en.body || data.en.description || mayor.text;
+      // Update multilingual text field
+      const newText = data.en.title || data.en.body || data.en.description;
+      if (newText) {
+        mayor.text = {
+          en: newText,
+          ne: mayor.text?.ne || ''
+        };
+      }
     }
 
     return await mayor.save();

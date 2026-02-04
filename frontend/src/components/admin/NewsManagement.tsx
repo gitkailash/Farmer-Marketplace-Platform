@@ -148,21 +148,16 @@ const NewsManagement: React.FC = () => {
       setSubmitting(true)
 
       const submitData = {
-        headline: formData.headline.en || formData.headline.ne, // Send primary language headline for now
+        headline: formData.headline,
         priority: formData.priority,
         language: formData.language,
         isActive: formData.isActive,
         publishedAt: formData.publishedAt,
-        // Store multilingual data in custom fields for future backend support
-        multilingualHeadline: formData.headline,
-        useRichText: formData.useRichText,
         ...(formData.content.en.trim() || formData.content.ne.trim() ? { 
-          content: formData.content.en || formData.content.ne,
-          multilingualContent: formData.content 
+          content: formData.content
         } : {}),
         ...(formData.summary.en.trim() || formData.summary.ne.trim() ? { 
-          summary: formData.summary.en || formData.summary.ne,
-          multilingualSummary: formData.summary 
+          summary: formData.summary
         } : {}),
         ...(formData.link.trim() && { link: formData.link.trim() })
       }
@@ -216,35 +211,10 @@ const NewsManagement: React.FC = () => {
   const handleEdit = (item: NewsItemAdmin) => {
     setEditingItem(item)
     
-    // Handle both old string format and new multilingual format
-    const itemData = item as any
-    let headlineData: MultilingualText
-    let contentData: MultilingualText
-    let summaryData: MultilingualText
-    
-    if (itemData.multilingualHeadline) {
-      headlineData = itemData.multilingualHeadline
-    } else if (typeof item.headline === 'string') {
-      headlineData = { en: item.headline, ne: '' }
-    } else {
-      headlineData = { en: '', ne: '' }
-    }
-    
-    if (itemData.multilingualContent) {
-      contentData = itemData.multilingualContent
-    } else if (typeof item.content === 'string') {
-      contentData = { en: item.content || '', ne: '' }
-    } else {
-      contentData = { en: '', ne: '' }
-    }
-    
-    if (itemData.multilingualSummary) {
-      summaryData = itemData.multilingualSummary
-    } else if (itemData.summary && typeof itemData.summary === 'string') {
-      summaryData = { en: itemData.summary, ne: '' }
-    } else {
-      summaryData = { en: '', ne: '' }
-    }
+    // Handle multilingual format
+    const headlineData: MultilingualText = item.headline as MultilingualText || { en: '', ne: '' }
+    const contentData: MultilingualText = item.content as MultilingualText || { en: '', ne: '' }
+    const summaryData: MultilingualText = (item as any).summary as MultilingualText || { en: '', ne: '' }
     
     setFormData({
       headline: headlineData,
@@ -255,14 +225,16 @@ const NewsManagement: React.FC = () => {
       language: (item.language as 'en' | 'ne') || 'en',
       isActive: item.isActive,
       publishedAt: new Date(item.publishedAt).toISOString().slice(0, 16),
-      useRichText: itemData.useRichText || false
+      useRichText: false
     })
     setFormErrors({})
     setShowCreateModal(true)
   }
 
   const handleDelete = async (item: NewsItemAdmin) => {
-    if (!confirm(`Are you sure you want to delete "${item.headline}"?`)) {
+    const headlineText = (item.headline as MultilingualText)?.en || 'this news item'
+    
+    if (!confirm(`Are you sure you want to delete "${headlineText}"?`)) {
       return
     }
 
@@ -485,10 +457,8 @@ const NewsManagement: React.FC = () => {
                     </div>
                     
                     <h3 className="font-medium text-gray-900 mb-2">
-                      {typeof item.headline === 'string' 
-                        ? item.headline 
-                        : (item as any).multilingualHeadline?.en || item.headline}
-                      {(item as any).multilingualHeadline?.ne && (
+                      {(item.headline as MultilingualText)?.en || 'Untitled News Item'}
+                      {(item.headline as MultilingualText)?.ne && (
                         <span className="ml-2 text-sm text-green-600">
                           ✓ {getTranslation('common.bilingual', 'Bilingual')}
                         </span>
@@ -497,9 +467,7 @@ const NewsManagement: React.FC = () => {
                     
                     {item.content && (
                       <p className="text-sm text-gray-600 mb-2 line-clamp-2">
-                        {typeof item.content === 'string' 
-                          ? item.content 
-                          : (item as any).multilingualContent?.en || item.content}
+                        {(item.content as MultilingualText)?.en || ''}
                       </p>
                     )}
 

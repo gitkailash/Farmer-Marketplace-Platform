@@ -1,8 +1,9 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { MultilingualField, multilingualFieldSchema } from './types/multilingual';
 
 // Mayor message document interface
 export interface IMayorMessage extends Document {
-  text: string;
+  text: MultilingualField;
   imageUrl?: string;
   scrollSpeed: number;
   isActive: boolean;
@@ -16,6 +17,7 @@ export interface IMayorMessage extends Document {
   updateScrollSpeed(speed: number): void;
   setImage(imageUrl: string): void;
   removeImage(): void;
+  getLocalizedText(language?: 'en' | 'ne'): string;
   
   // Virtual population
   creator?: any;
@@ -24,11 +26,14 @@ export interface IMayorMessage extends Document {
 // Mayor message schema definition
 const mayorMessageSchema = new Schema<IMayorMessage>({
   text: {
-    type: String,
+    type: multilingualFieldSchema,
     required: [true, 'Mayor message text is required'],
-    trim: true,
-    maxlength: [1000, 'Message text cannot exceed 1000 characters'],
-    minlength: [5, 'Message text must be at least 5 characters long']
+    validate: {
+      validator: function(text: MultilingualField) {
+        return text.en && text.en.length >= 5 && text.en.length <= 1000;
+      },
+      message: 'Message text must be between 5 and 1000 characters'
+    }
   },
   imageUrl: {
     type: String,
@@ -109,6 +114,14 @@ mayorMessageSchema.methods.setImage = function(imageUrl: string): void {
     throw new Error('Invalid image URL format');
   }
   this.imageUrl = imageUrl;
+};
+
+// Instance method to get localized text
+mayorMessageSchema.methods.getLocalizedText = function(language: 'en' | 'ne' = 'en'): string {
+  if (language === 'ne' && this.text.ne) {
+    return this.text.ne;
+  }
+  return this.text.en;
 };
 
 // Instance method to remove image

@@ -289,7 +289,11 @@ const GalleryManagement: React.FC = () => {
   }
 
   const handleDelete = async (item: GalleryItemAdmin) => {
-    if (!confirm(`Are you sure you want to delete "${item.title}"?`)) {
+    const titleText = typeof item.title === 'string' 
+      ? item.title 
+      : item.title?.en || 'this gallery item'
+    
+    if (!confirm(`Are you sure you want to delete "${titleText}"?`)) {
       return
     }
 

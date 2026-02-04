@@ -1,0 +1,123 @@
+name: Deploy Frontend to EC2
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'frontend/**' ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm ci
+    
+    - name: Run linting
+      run: |
+        cd frontend
+        npm run lint
+    
+    - name: Run type checking
+      run: |
+        cd frontend
+        npm run type-check
+    
+    - name: Run tests
+      run: |
+        cd frontend
+        npm run test
+    
+    - name: Build application
+      run: |
+        cd frontend
+        npm run build
+      env:
+        VITE_API_URL: ${{ secrets.VITE_API_URL }}
+        VITE_NODE_ENV: production
+    
+    - name: Run security audit
+      run: |
+        cd frontend
+        npm audit --audit-level high
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-build
+        path: frontend/dist/
+        retention-days: 7
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        port: ${{ secrets.EC2_PORT || 22 }}
+        script: |
+          cd /opt/farmer-marketplace
+          
+          # Pull latest changes
+          echo "📥 Pulling latest changes..."
+          git fetch origin
+          git pull origin main
+          
+          # Build and deploy frontend
+          echo "🔨 Building frontend..."
+          docker-compose -f docker-compose.prod.yml build frontend --no-cache
+          
+          # Deploy frontend
+          echo "🚀 Deploying frontend..."
+          docker-compose -f docker-compose.prod.yml up -d frontend
+          
+          # Health check
+          echo "🏥 Running health check..."
+          sleep 15
+          if curl -f --max-time 30 http://localhost:3000; then
+            echo "✅ Frontend deployment completed successfully!"
+          else
+            echo "❌ Health check failed after deployment"
+            exit 1
+          fi
+          
+          # Clean up old images
+          docker image prune -f
+          
+          echo "🎉 Frontend deployment completed at $(date)"
+
+  notify:
+    needs: [test, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Notify deployment status
+      uses: 8398a7/action-slack@v3
+      if: always()
+      with:
+        status: ${{ job.status }}
+        channel: '#deployments'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

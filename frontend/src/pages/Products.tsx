@@ -181,7 +181,7 @@ const Products: React.FC = () => {
           </div>
 
           {/* Price Filter */}
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <label className={`block text-sm font-medium text-gray-700 mb-2 ${language === 'ne' ? 'font-nepali' : ''}`}>
               {(t('price.label') as string) || 'Price Range'}
             </label>
@@ -211,7 +211,7 @@ const Products: React.FC = () => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Clear Filters */}
           <div className="flex justify-between items-center">

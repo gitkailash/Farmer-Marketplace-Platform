@@ -51,9 +51,9 @@ const NewsTicker: React.FC<NewsTickerProps> = ({
     return getLocalizedText(content, language as 'en' | 'ne')
   }
 
-  // Filter and sort news items
+  // Filter and sort news items - backend already filters by language, so just filter by active status
   const activeItems = items
-    .filter(item => item.isActive && item.language === language)
+    .filter(item => item.isActive)
     .sort((a, b) => {
       // Sort by priority first (HIGH > NORMAL > LOW), then by published date
       const priorityOrder = { HIGH: 3, NORMAL: 2, LOW: 1 }

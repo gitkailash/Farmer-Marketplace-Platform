@@ -110,21 +110,23 @@ const Home: React.FC = () => {
 
   return (
     <Layout className="bg-gray-50">
-      {/* News Ticker - Fixed right after header */}
+      {/* News Ticker - Sticky below header */}
       <NewsTicker 
         items={newsItems}
+        language={language}
         onHeadlineClick={handleNewsClick}
-        className="fixed top-10 sm:top-0 left-0 right-0 z-40"
+        className="sticky top-20 left-0 right-0 z-40"
       />
 
-      {/* Mayor Message - Fixed right after news ticker */}
+      {/* Mayor Message - Sticky below news ticker */}
       <MayorMessage 
         message={mayorMessage}
-        className="fixed top-0 sm:top-0 left-0 right-0 z-30"
+        language={language}
+        className="sticky top-[128px] left-0 right-0 z-30"
       />
 
       {/* Main Content */}
-      <div className="pt-0"> {/* Reduced top padding */}
+      <div className=""> {/* No padding needed - components flow naturally */}
 
         {/* Hero Section */}
         <section className="relative bg-gradient-to-r from-green-600 to-green-800 py-8 sm:py-12">

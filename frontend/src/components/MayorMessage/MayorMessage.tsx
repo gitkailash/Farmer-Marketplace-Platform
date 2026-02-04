@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { getLocalizedText } from '../../utils/multilingual'
+import { MultilingualField } from '../../types/api'
 
 export interface MayorMessageData {
   _id: string
-  text: string
+  text: MultilingualField | string // Support both old and new format
   imageUrl?: string
   scrollSpeed: number // pixels per second
   isActive: boolean
@@ -11,11 +13,13 @@ export interface MayorMessageData {
 interface MayorMessageProps {
   message: MayorMessageData | null
   className?: string
+  language?: string
 }
 
 const MayorMessage: React.FC<MayorMessageProps> = ({ 
   message, 
-  className = '' 
+  className = '',
+  language = 'en'
 }) => {
   const [isPaused, setIsPaused] = useState(false)
   const [scrollPosition, setScrollPosition] = useState(0)
@@ -23,6 +27,14 @@ const MayorMessage: React.FC<MayorMessageProps> = ({
   const textRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | undefined>(undefined)
   const lastTimeRef = useRef<number | undefined>(undefined)
+
+  // Helper function to get localized text from multilingual field or string
+  const getLocalizedMessageText = (text: MultilingualField | string): string => {
+    if (typeof text === 'string') {
+      return text // Legacy format
+    }
+    return getLocalizedText(text, language as 'en' | 'ne')
+  }
 
   useEffect(() => {
     if (!message?.isActive || !containerRef.current || !textRef.current) {
@@ -71,7 +83,7 @@ const MayorMessage: React.FC<MayorMessageProps> = ({
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [isPaused, message?.scrollSpeed, message?.isActive, message?.text])
+  }, [isPaused, message?.scrollSpeed, message?.isActive, message?.text, language])
 
   const handleMouseEnter = () => {
     setIsPaused(true)
@@ -93,7 +105,7 @@ const MayorMessage: React.FC<MayorMessageProps> = ({
       onMouseLeave={handleMouseLeave}
       ref={containerRef}
     >
-      <div className="flex items-center min-h-[60px] sm:min-h-[80px]">
+      <div className="flex items-center min-h-[70px] sm:min-h-[90px] lg:min-h-[100px]">
         {/* Optional image */}
         {message.imageUrl && (
           <div className="flex-shrink-0 p-2 sm:p-4">
@@ -120,8 +132,8 @@ const MayorMessage: React.FC<MayorMessageProps> = ({
               transition: isPaused ? 'transform 0.3s ease' : 'none'
             }}
           >
-            <span className="text-sm sm:text-base font-medium">
-              📢 {message.text}
+            <span className="text-base sm:text-lg lg:text-xl font-semibold">
+              📢 {getLocalizedMessageText(message.text)}
             </span>
           </div>
         </div>

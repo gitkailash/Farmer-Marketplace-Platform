@@ -1,5 +1,10 @@
 # ReviewForm Manual Test Cases
 
+[![Testing](https://img.shields.io/badge/Testing-Manual-orange)](https://en.wikipedia.org/wiki/Manual_testing)
+[![React](https://img.shields.io/badge/React-Component-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Forms](https://img.shields.io/badge/Forms-Validation-green)](https://react-hook-form.com/)
+[![User Experience](https://img.shields.io/badge/UX-Testing-purple)](https://www.nngroup.com/articles/usability-testing-101/)
+
 ## Enhanced Validation and Error Handling Implementation
 
 This document outlines the manual test cases for the enhanced ReviewForm component that implements comprehensive validation and error handling as per task 5.

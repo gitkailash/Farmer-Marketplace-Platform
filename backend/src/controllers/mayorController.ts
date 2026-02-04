@@ -6,7 +6,10 @@ import mongoose from 'mongoose';
 
 // Mayor message request interfaces
 interface CreateMayorMessageRequest {
-  text: string;
+  text: {
+    en: string;
+    ne?: string;
+  };
   imageUrl?: string;
   scrollSpeed?: number;
   isActive?: boolean;
@@ -124,7 +127,12 @@ export const getMayorMessages = async (req: MayorSearchRequest, res: Response): 
       // Admin can see all messages
       if (isActive !== undefined) {
         // Handle both boolean and string values from query parameters
-        const activeValue = typeof isActive === 'string' ? isActive === 'true' : Boolean(isActive);
+        let activeValue: boolean;
+        if (typeof isActive === 'string') {
+          activeValue = isActive.toLowerCase() === 'true';
+        } else {
+          activeValue = Boolean(isActive);
+        }
         query.isActive = activeValue;
       }
     } else {
@@ -151,6 +159,12 @@ export const getMayorMessages = async (req: MayorSearchRequest, res: Response): 
         .lean(),
       MayorMessage.countDocuments(query)
     ]);
+
+    // Debug: Log the actual results
+    console.log(`DEBUG: Query executed - Found ${mayorMessages.length} messages, Total count: ${total}`);
+    console.log(`DEBUG: Query was:`, JSON.stringify(query));
+    console.log(`DEBUG: Sort options:`, JSON.stringify(sortOptions));
+    console.log(`DEBUG: Skip: ${skip}, Limit: ${limitNum}`);
 
     // Calculate pagination info
     const totalPages = Math.ceil(total / limitNum);

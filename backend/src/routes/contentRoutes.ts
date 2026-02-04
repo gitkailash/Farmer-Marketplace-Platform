@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authenticate, requireAdmin } from '../middleware/auth';
+import { authenticate, requireAdmin, optionalAuthenticate } from '../middleware/auth';
 import { handleValidationErrors, sanitizeInput } from '../middleware/validation';
 
 // Gallery controllers
@@ -135,7 +135,7 @@ router.post('/mayor',
  * @desc    Get all mayor messages with filtering and pagination
  * @access  Admin only (for listing), Public for active message
  */
-router.get('/mayor', getMayorMessages);
+router.get('/mayor', optionalAuthenticate, getMayorMessages);
 
 /**
  * @route   GET /api/content/mayor/active

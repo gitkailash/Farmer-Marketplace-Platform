@@ -179,11 +179,21 @@ export const validateGalleryUpdate: ValidationChain[] = [
  */
 export const validateMayorMessage: ValidationChain[] = [
   body('text')
+    .isObject()
+    .withMessage('Text must be a multilingual object'),
+  
+  body('text.en')
     .trim()
     .notEmpty()
-    .withMessage('Mayor message text is required')
+    .withMessage('English text is required')
     .isLength({ min: 5, max: 1000 })
-    .withMessage('Message text must be between 5 and 1000 characters'),
+    .withMessage('English text must be between 5 and 1000 characters'),
+  
+  body('text.ne')
+    .optional()
+    .trim()
+    .isLength({ min: 5, max: 1000 })
+    .withMessage('Nepali text must be between 5 and 1000 characters if provided'),
 
   body('imageUrl')
     .optional()
@@ -210,9 +220,20 @@ export const validateMayorMessage: ValidationChain[] = [
 export const validateMayorUpdate: ValidationChain[] = [
   body('text')
     .optional()
+    .isObject()
+    .withMessage('Text must be a multilingual object'),
+  
+  body('text.en')
+    .optional()
     .trim()
     .isLength({ min: 5, max: 1000 })
-    .withMessage('Message text must be between 5 and 1000 characters'),
+    .withMessage('English text must be between 5 and 1000 characters'),
+  
+  body('text.ne')
+    .optional()
+    .trim()
+    .isLength({ min: 5, max: 1000 })
+    .withMessage('Nepali text must be between 5 and 1000 characters if provided'),
 
   body('imageUrl')
     .optional()
@@ -242,17 +263,55 @@ export const validateMayorUpdate: ValidationChain[] = [
  */
 export const validateNewsItem: ValidationChain[] = [
   body('headline')
+    .isObject()
+    .withMessage('Headline must be a multilingual object'),
+  
+  body('headline.en')
     .trim()
     .notEmpty()
-    .withMessage('News headline is required')
+    .withMessage('English headline is required')
     .isLength({ min: 5, max: 200 })
-    .withMessage('Headline must be between 5 and 200 characters'),
+    .withMessage('English headline must be between 5 and 200 characters'),
+  
+  body('headline.ne')
+    .optional()
+    .trim()
+    .isLength({ min: 5, max: 200 })
+    .withMessage('Nepali headline must be between 5 and 200 characters if provided'),
 
   body('content')
     .optional()
+    .isObject()
+    .withMessage('Content must be a multilingual object if provided'),
+  
+  body('content.en')
+    .optional()
     .trim()
     .isLength({ min: 10, max: 5000 })
-    .withMessage('Content must be between 10 and 5000 characters if provided'),
+    .withMessage('English content must be between 10 and 5000 characters if provided'),
+  
+  body('content.ne')
+    .optional()
+    .trim()
+    .isLength({ min: 10, max: 5000 })
+    .withMessage('Nepali content must be between 10 and 5000 characters if provided'),
+
+  body('summary')
+    .optional()
+    .isObject()
+    .withMessage('Summary must be a multilingual object if provided'),
+  
+  body('summary.en')
+    .optional()
+    .trim()
+    .isLength({ min: 10, max: 500 })
+    .withMessage('English summary must be between 10 and 500 characters if provided'),
+  
+  body('summary.ne')
+    .optional()
+    .trim()
+    .isLength({ min: 10, max: 500 })
+    .withMessage('Nepali summary must be between 10 and 500 characters if provided'),
 
   body('link')
     .optional()
@@ -269,11 +328,8 @@ export const validateNewsItem: ValidationChain[] = [
     .optional()
     .trim()
     .toLowerCase()
-    .isIn([
-      'en', 'es', 'fr', 'pt', 'de', 'it', 'nl', 'pl', 'ru', 
-      'zh', 'ja', 'ko', 'ar', 'hi', 'sw'
-    ])
-    .withMessage('Please provide a valid ISO 639-1 language code'),
+    .isIn(['en', 'ne'])
+    .withMessage('Language must be either "en" (English) or "ne" (Nepali)'),
 
   body('isActive')
     .optional()
@@ -303,15 +359,54 @@ export const validateNewsItem: ValidationChain[] = [
 export const validateNewsUpdate: ValidationChain[] = [
   body('headline')
     .optional()
+    .isObject()
+    .withMessage('Headline must be a multilingual object'),
+  
+  body('headline.en')
+    .optional()
     .trim()
     .isLength({ min: 5, max: 200 })
-    .withMessage('Headline must be between 5 and 200 characters'),
+    .withMessage('English headline must be between 5 and 200 characters'),
+  
+  body('headline.ne')
+    .optional()
+    .trim()
+    .isLength({ min: 5, max: 200 })
+    .withMessage('Nepali headline must be between 5 and 200 characters if provided'),
 
   body('content')
     .optional()
+    .isObject()
+    .withMessage('Content must be a multilingual object if provided'),
+  
+  body('content.en')
+    .optional()
     .trim()
     .isLength({ min: 10, max: 5000 })
-    .withMessage('Content must be between 10 and 5000 characters if provided'),
+    .withMessage('English content must be between 10 and 5000 characters if provided'),
+  
+  body('content.ne')
+    .optional()
+    .trim()
+    .isLength({ min: 10, max: 5000 })
+    .withMessage('Nepali content must be between 10 and 5000 characters if provided'),
+
+  body('summary')
+    .optional()
+    .isObject()
+    .withMessage('Summary must be a multilingual object if provided'),
+  
+  body('summary.en')
+    .optional()
+    .trim()
+    .isLength({ min: 10, max: 500 })
+    .withMessage('English summary must be between 10 and 500 characters if provided'),
+  
+  body('summary.ne')
+    .optional()
+    .trim()
+    .isLength({ min: 10, max: 500 })
+    .withMessage('Nepali summary must be between 10 and 500 characters if provided'),
 
   body('link')
     .optional()
@@ -328,11 +423,8 @@ export const validateNewsUpdate: ValidationChain[] = [
     .optional()
     .trim()
     .toLowerCase()
-    .isIn([
-      'en', 'es', 'fr', 'pt', 'de', 'it', 'nl', 'pl', 'ru', 
-      'zh', 'ja', 'ko', 'ar', 'hi', 'sw'
-    ])
-    .withMessage('Please provide a valid ISO 639-1 language code'),
+    .isIn(['en', 'ne'])
+    .withMessage('Language must be either "en" (English) or "ne" (Nepali)'),
 
   body('isActive')
     .optional()
