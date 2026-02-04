@@ -26,9 +26,102 @@ const router = Router();
 router.use(sanitizeInput);
 
 /**
- * @route   POST /api/messages
- * @desc    Send a message to another user
- * @access  Private (BUYER, FARMER)
+ * @swagger
+ * /messages:
+ *   post:
+ *     summary: Send a message
+ *     description: Send a message to another user (buyers and farmers only)
+ *     tags: [Messages]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - receiverId
+ *               - content
+ *             properties:
+ *               receiverId:
+ *                 type: string
+ *                 description: ID of the message receiver
+ *                 example: 64f1a2b3c4d5e6f7g8h9i0j6
+ *               content:
+ *                 type: string
+ *                 description: Message content
+ *                 example: Hello, I would like to know more about your tomatoes.
+ *               productId:
+ *                 type: string
+ *                 description: Optional product ID if message is about a specific product
+ *                 example: 64f1a2b3c4d5e6f7g8h9i0j2
+ *     responses:
+ *       201:
+ *         description: Message sent successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Message'
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Buyers and farmers only
+ *   get:
+ *     summary: Get messages
+ *     description: Get messages (conversations for users, moderation queue for admins)
+ *     tags: [Messages]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: conversationWith
+ *         schema:
+ *           type: string
+ *         description: Get conversation with specific user ID
+ *       - in: query
+ *         name: unreadOnly
+ *         schema:
+ *           type: boolean
+ *         description: Filter for unread messages only
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 20
+ *         description: Number of items per page
+ *     responses:
+ *       200:
+ *         description: Messages retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Message'
+ *       401:
+ *         description: Unauthorized
  */
 router.post(
   '/',
@@ -39,11 +132,6 @@ router.post(
   sendMessage
 );
 
-/**
- * @route   GET /api/messages
- * @desc    Get messages (conversations for users, moderation queue for admins)
- * @access  Private
- */
 router.get(
   '/',
   authenticate,

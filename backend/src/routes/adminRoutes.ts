@@ -29,9 +29,64 @@ router.use(sanitizeInput);
 // User Management Routes
 
 /**
- * @route   GET /api/admin/users
- * @desc    Get all users with filtering and pagination
- * @access  Private (Admin only)
+ * @swagger
+ * /admin/users:
+ *   get:
+ *     summary: Get all users
+ *     description: Get all users with filtering and pagination (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: role
+ *         schema:
+ *           type: string
+ *           enum: [VISITOR, BUYER, FARMER, ADMIN]
+ *         description: Filter by user role
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search by name or email
+ *       - in: query
+ *         name: isActive
+ *         schema:
+ *           type: boolean
+ *         description: Filter by active status
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 20
+ *         description: Number of items per page
+ *     responses:
+ *       200:
+ *         description: Users retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin only
  */
 router.get(
   '/users',
@@ -43,9 +98,114 @@ router.get(
 );
 
 /**
- * @route   GET /api/admin/users/:id
- * @desc    Get a single user by ID with statistics
- * @access  Private (Admin only)
+ * @swagger
+ * /admin/users/{id}:
+ *   get:
+ *     summary: Get user by ID
+ *     description: Get a single user by ID with statistics (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *         example: 64f1a2b3c4d5e6f7g8h9i0j1
+ *     responses:
+ *       200:
+ *         description: User retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin only
+ *       404:
+ *         description: User not found
+ *   put:
+ *     summary: Update user
+ *     description: Update user information (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *         example: 64f1a2b3c4d5e6f7g8h9i0j1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role:
+ *                 type: string
+ *                 enum: [VISITOR, BUYER, FARMER, ADMIN]
+ *                 description: User role
+ *               isActive:
+ *                 type: boolean
+ *                 description: User active status
+ *               profile:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: User full name
+ *                   phone:
+ *                     type: string
+ *                     description: User phone number
+ *                   address:
+ *                     type: string
+ *                     description: User address
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin only
+ *       404:
+ *         description: User not found
+ *   delete:
+ *     summary: Delete user
+ *     description: Delete a user account (admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *         example: 64f1a2b3c4d5e6f7g8h9i0j1
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin only
+ *       404:
+ *         description: User not found
  */
 router.get(
   '/users/:id',

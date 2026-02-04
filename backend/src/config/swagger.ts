@@ -8,8 +8,8 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'A comprehensive API for connecting farmers directly with buyers in a mobile-friendly marketplace platform',
     contact: {
-      name: 'API Support',
-      email: 'support@farmermarketplace.com',
+      name: 'Kailash Yadav',
+      email: 'kailash@farmermarketplace.com',
     },
     license: {
       name: 'MIT',
@@ -432,6 +432,9 @@ const options: Options = {
     './src/routes/*.ts',
     './src/controllers/*.ts',
     './src/models/*.ts',
+    './dist/routes/*.js',
+    './dist/controllers/*.js',
+    './dist/models/*.js',
   ],
 };
 

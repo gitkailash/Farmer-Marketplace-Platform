@@ -129,7 +129,7 @@ export const getMayorMessages = async (req: MayorSearchRequest, res: Response): 
         // Handle both boolean and string values from query parameters
         let activeValue: boolean;
         if (typeof isActive === 'string') {
-          activeValue = isActive.toLowerCase() === 'true';
+          activeValue = (isActive as string).toLowerCase() === 'true';
         } else {
           activeValue = Boolean(isActive);
         }

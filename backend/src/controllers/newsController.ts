@@ -145,10 +145,10 @@ export const getNewsItems = async (req: NewsSearchRequest, res: Response): Promi
       const lang = language.toLowerCase();
       if (lang === 'ne') {
         // For Nepali, check if Nepali translations exist in headline
-        query['headline.ne'] = { $exists: true, $ne: null, $ne: '' };
+        query['headline.ne'] = { $exists: true, $ne: null, $nin: ['', null] };
       } else {
         // For English (default), check if English translations exist in headline
-        query['headline.en'] = { $exists: true, $ne: null, $ne: '' };
+        query['headline.en'] = { $exists: true, $ne: null, $nin: ['', null] };
       }
     }
 
@@ -226,10 +226,10 @@ export const getTickerNews = async (req: Request, res: Response): Promise<void> 
     const lang = language.toString().toLowerCase();
     if (lang === 'ne') {
       // For Nepali, check if Nepali translations exist in headline
-      query['headline.ne'] = { $exists: true, $ne: null, $ne: '' };
+      query['headline.ne'] = { $exists: true, $ne: null, $nin: ['', null] };
     } else {
       // For English (default), check if English translations exist in headline
-      query['headline.en'] = { $exists: true, $ne: null, $ne: '' };
+      query['headline.en'] = { $exists: true, $ne: null, $nin: ['', null] };
     }
 
     const newsItems = await NewsItem.find(query)

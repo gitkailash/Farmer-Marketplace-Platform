@@ -32,9 +32,123 @@ router.use(sanitizeInput);
 // Routes
 
 /**
- * @route   POST /api/reviews
- * @desc    Create a new review
- * @access  Private (Buyers and Farmers only)
+ * @swagger
+ * /reviews:
+ *   post:
+ *     summary: Create a new review
+ *     description: Create a new review for an order (buyers and farmers only)
+ *     tags: [Reviews]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - orderId
+ *               - revieweeId
+ *               - rating
+ *               - comment
+ *             properties:
+ *               orderId:
+ *                 type: string
+ *                 description: ID of the related order
+ *                 example: 64f1a2b3c4d5e6f7g8h9i0j4
+ *               revieweeId:
+ *                 type: string
+ *                 description: ID of the user being reviewed
+ *                 example: 64f1a2b3c4d5e6f7g8h9i0j6
+ *               rating:
+ *                 type: integer
+ *                 minimum: 1
+ *                 maximum: 5
+ *                 description: Rating from 1 to 5
+ *                 example: 5
+ *               comment:
+ *                 type: string
+ *                 description: Review comment
+ *                 example: Excellent quality tomatoes, very fresh!
+ *     responses:
+ *       201:
+ *         description: Review created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Review'
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Cannot review this order
+ *   get:
+ *     summary: Get reviews
+ *     description: Get reviews with filtering and pagination
+ *     tags: [Reviews]
+ *     parameters:
+ *       - in: query
+ *         name: revieweeId
+ *         schema:
+ *           type: string
+ *         description: Filter by reviewee ID
+ *       - in: query
+ *         name: reviewerId
+ *         schema:
+ *           type: string
+ *         description: Filter by reviewer ID
+ *       - in: query
+ *         name: orderId
+ *         schema:
+ *           type: string
+ *         description: Filter by order ID
+ *       - in: query
+ *         name: rating
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 5
+ *         description: Filter by rating
+ *       - in: query
+ *         name: isApproved
+ *         schema:
+ *           type: boolean
+ *         description: Filter by approval status
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 20
+ *         description: Number of items per page
+ *     responses:
+ *       200:
+ *         description: Reviews retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Review'
  */
 router.post(
   '/',
@@ -45,11 +159,6 @@ router.post(
   createReview
 );
 
-/**
- * @route   GET /api/reviews
- * @desc    Get reviews with filtering and pagination
- * @access  Public (with visibility controls)
- */
 router.get(
   '/',
   validateReviewSearch,
