@@ -57,7 +57,7 @@ echo ""
 
 # Build Backend
 echo -e "${YELLOW}🔨 Building Backend...${NC}"
-cd backend
+cd $APP_DIR/backend
 
 # Check if .env exists
 if [ ! -f ".env" ]; then
@@ -73,7 +73,7 @@ if [ ! -f ".env" ]; then
 fi
 
 echo -e "${YELLOW}📦 Installing backend dependencies...${NC}"
-npm ci --production
+npm ci --omit=dev
 
 echo -e "${YELLOW}🔨 Building backend...${NC}"
 npm run build
@@ -86,11 +86,9 @@ else
     exit 1
 fi
 
-cd ..
-
 # Build Frontend
 echo -e "${YELLOW}🔨 Building Frontend...${NC}"
-cd frontend
+cd $APP_DIR/frontend
 
 # EC2 IP Configuration
 EC2_IP="100.49.247.47"
@@ -118,7 +116,7 @@ if [ ! -f ".env" ]; then
 fi
 
 echo -e "${YELLOW}📦 Installing frontend dependencies...${NC}"
-npm ci
+npm ci --legacy-peer-deps
 
 echo -e "${YELLOW}🔨 Building frontend for production...${NC}"
 npm run build
@@ -135,10 +133,9 @@ else
     exit 1
 fi
 
-cd ..
-
 # Create necessary directories
 echo -e "${YELLOW}📁 Creating necessary directories...${NC}"
+cd $APP_DIR
 mkdir -p logs
 mkdir -p backups
 mkdir -p uploads

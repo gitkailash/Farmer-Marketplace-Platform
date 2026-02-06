@@ -78,10 +78,10 @@ echo -e "${GREEN}✅ Environment files restored${NC}"
 
 # Rebuild Backend
 echo -e "${YELLOW}🔨 Rebuilding Backend...${NC}"
-cd backend
+cd $APP_DIR/backend
 
 echo -e "${YELLOW}📦 Installing backend dependencies...${NC}"
-npm ci --production
+npm ci --omit=dev
 
 echo -e "${YELLOW}🔨 Building backend...${NC}"
 npm run build
@@ -93,14 +93,12 @@ else
     exit 1
 fi
 
-cd ..
-
 # Rebuild Frontend
 echo -e "${YELLOW}🔨 Rebuilding Frontend...${NC}"
-cd frontend
+cd $APP_DIR/frontend
 
 echo -e "${YELLOW}📦 Installing frontend dependencies...${NC}"
-npm ci
+npm ci --legacy-peer-deps
 
 echo -e "${YELLOW}🔨 Building frontend for production...${NC}"
 npm run build
@@ -114,11 +112,9 @@ else
     exit 1
 fi
 
-cd ..
-
 # Restart backend with PM2
 echo -e "${YELLOW}🔄 Restarting backend with PM2...${NC}"
-cd backend
+cd $APP_DIR/backend
 pm2 restart $APP_NAME
 
 # Wait for application to restart
