@@ -265,6 +265,76 @@ bash 07-backup-restore.sh restore
 
 ---
 
+### Script 8: Setup SSL (`08-setup-ssl.sh`) - OPTIONAL
+**Purpose**: Install SSL certificate for HTTPS (requires domain name)
+
+**⚠️ IMPORTANT**: You MUST have a domain name first! SSL cannot be installed on IP addresses.
+
+**What it does**:
+- Installs Certbot (Let's Encrypt client)
+- Verifies domain points to your server
+- Obtains free SSL certificate
+- Configures Nginx for HTTPS
+- Sets up automatic certificate renewal
+- Updates frontend .env with HTTPS URL
+
+**Run as**: `sudo bash 08-setup-ssl.sh yourdomain.com`
+
+**Prerequisites**:
+1. Own a domain name (buy from Namecheap, GoDaddy, or get free from Freenom)
+2. Configure DNS A record to point to your EC2 IP
+3. Wait 5-10 minutes for DNS propagation
+4. Ensure port 80 and 443 are open in security group
+
+**Examples**:
+```bash
+# Setup SSL for your domain
+sudo bash 08-setup-ssl.sh farmermarket.com
+
+# Setup SSL with custom email
+sudo bash 08-setup-ssl.sh farmermarket.com admin@farmermarket.com
+```
+
+**Duration**: ~2-3 minutes
+
+**Output**:
+- ✅ SSL certificate installed
+- ✅ HTTPS enabled
+- ✅ HTTP → HTTPS redirect
+- ✅ Auto-renewal configured
+
+**After SSL setup, rebuild frontend**:
+```bash
+cd /opt/farmer-marketplace/frontend
+npm run clean
+npx vite build --mode production
+sudo systemctl reload nginx
+```
+
+**Access Points After SSL**:
+- Frontend: `https://yourdomain.com`
+- Backend API: `https://yourdomain.com/api`
+- API Docs: `https://yourdomain.com/api/docs/ui`
+
+---
+
+# List all backups
+bash 07-backup-restore.sh list
+
+# Restore from backup (interactive)
+bash 07-backup-restore.sh restore
+```
+
+**Backup Location**: `/opt/farmer-marketplace/backups/`
+
+**Features**:
+- Automatic compression
+- Keeps last 7 backups
+- Safety backup before restore
+- Interactive restore selection
+
+---
+
 ## 🔧 Post-Deployment Configuration
 
 ### 1. Create Admin User
