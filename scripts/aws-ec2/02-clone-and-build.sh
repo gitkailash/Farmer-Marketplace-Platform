@@ -73,8 +73,8 @@ if [ ! -f ".env" ]; then
 fi
 
 echo -e "${YELLOW}📦 Installing backend dependencies...${NC}"
-# Install directly in backend folder, ignoring workspace
-npm install --omit=dev --no-workspaces
+# Install all dependencies (including dev) for build process
+npm install --no-workspaces
 
 echo -e "${YELLOW}🔨 Building backend...${NC}"
 npm run build

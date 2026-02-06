@@ -81,7 +81,7 @@ echo -e "${YELLOW}🔨 Rebuilding Backend...${NC}"
 cd $APP_DIR/backend
 
 echo -e "${YELLOW}📦 Installing backend dependencies...${NC}"
-npm install --omit=dev --no-workspaces
+npm install --no-workspaces
 
 echo -e "${YELLOW}🔨 Building backend...${NC}"
 npm run build
