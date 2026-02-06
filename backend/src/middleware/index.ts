@@ -35,20 +35,9 @@ const authRateLimiter = createRateLimiter(900000, 5); // 5 requests per 15 minut
 const apiRateLimiter = createRateLimiter(); // Default limits (100x in development/test)
 const strictRateLimiter = createRateLimiter(300000, 10); // 10 requests per 5 minutes (10000 in development/test)
 
-// CORS configuration with enhanced security
+// CORS configuration - Allow all origins
 const corsOptions: cors.CorsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, etc.)
-    if (!origin) return callback(null, true);
-    
-    const allowedOrigins = config.CORS_ORIGIN.split(',').map(o => o.trim());
-    
-    if (allowedOrigins.includes(origin) || config.NODE_ENV === 'development') {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true,  // Allow all origins
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
