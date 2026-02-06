@@ -73,12 +73,10 @@ if [ ! -f ".env" ]; then
 fi
 
 echo -e "${YELLOW}📦 Installing backend dependencies...${NC}"
-# Use --workspace flag to install only backend dependencies
-cd $APP_DIR
-npm install --workspace=backend --omit=dev
+# Install directly in backend folder, ignoring workspace
+npm install --omit=dev --no-workspaces
 
 echo -e "${YELLOW}🔨 Building backend...${NC}"
-cd $APP_DIR/backend
 npm run build
 
 if [ -d "dist" ]; then
@@ -119,12 +117,10 @@ if [ ! -f ".env" ]; then
 fi
 
 echo -e "${YELLOW}📦 Installing frontend dependencies...${NC}"
-# Use --workspace flag to install only frontend dependencies
-cd $APP_DIR
-npm install --workspace=frontend
+# Install directly in frontend folder, ignoring workspace
+npm install --legacy-peer-deps --no-workspaces
 
 echo -e "${YELLOW}🔨 Building frontend for production...${NC}"
-cd $APP_DIR/frontend
 npm run build
 
 if [ -d "dist" ]; then

@@ -78,12 +78,12 @@ echo -e "${GREEN}✅ Environment files restored${NC}"
 
 # Rebuild Backend
 echo -e "${YELLOW}🔨 Rebuilding Backend...${NC}"
+cd $APP_DIR/backend
+
 echo -e "${YELLOW}📦 Installing backend dependencies...${NC}"
-cd $APP_DIR
-npm install --workspace=backend --omit=dev
+npm install --omit=dev --no-workspaces
 
 echo -e "${YELLOW}🔨 Building backend...${NC}"
-cd $APP_DIR/backend
 npm run build
 
 if [ -d "dist" ]; then
@@ -95,12 +95,12 @@ fi
 
 # Rebuild Frontend
 echo -e "${YELLOW}🔨 Rebuilding Frontend...${NC}"
+cd $APP_DIR/frontend
+
 echo -e "${YELLOW}📦 Installing frontend dependencies...${NC}"
-cd $APP_DIR
-npm install --workspace=frontend
+npm install --legacy-peer-deps --no-workspaces
 
 echo -e "${YELLOW}🔨 Building frontend for production...${NC}"
-cd $APP_DIR/frontend
 npm run build
 
 if [ -d "dist" ]; then
