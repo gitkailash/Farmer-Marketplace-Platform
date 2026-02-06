@@ -92,13 +92,25 @@ cd ..
 echo -e "${YELLOW}🔨 Building Frontend...${NC}"
 cd frontend
 
+# EC2 IP Configuration
+EC2_IP="100.49.247.47"
+
 # Check if .env exists
 if [ ! -f ".env" ]; then
     echo -e "${YELLOW}⚠️  .env file not found, creating from .env.example...${NC}"
     if [ -f ".env.example" ]; then
         cp .env.example .env
-        echo -e "${YELLOW}⚠️  Please edit frontend/.env with your configuration${NC}"
-        echo -e "${YELLOW}   Required: VITE_API_URL${NC}"
+        
+        # Auto-configure with EC2 IP
+        echo -e "${YELLOW}🔧 Auto-configuring with EC2 IP: $EC2_IP${NC}"
+        sed -i "s|VITE_API_URL=http://localhost:5000/api|VITE_API_URL=http://$EC2_IP/api|g" .env
+        sed -i "s|VITE_NODE_ENV=development|VITE_NODE_ENV=production|g" .env
+        sed -i "s|VITE_ENABLE_DEBUG=true|VITE_ENABLE_DEBUG=false|g" .env
+        
+        echo -e "${GREEN}✅ Frontend .env configured with:${NC}"
+        echo "   VITE_API_URL=http://$EC2_IP/api"
+        echo ""
+        echo -e "${YELLOW}💡 To change IP later, edit: frontend/.env${NC}"
     else
         echo -e "${RED}❌ .env.example not found${NC}"
         exit 1
