@@ -91,7 +91,7 @@ const SyncStatusIndicator: React.FC<SyncStatusIndicatorProps> = ({ status, lastS
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           ),
-          text: t('settings.syncStatus.syncing') as string,
+          text: t('common.settings.syncStatus.syncing') as string,
           color: 'text-blue-600'
         };
       case 'success':
@@ -101,7 +101,7 @@ const SyncStatusIndicator: React.FC<SyncStatusIndicatorProps> = ({ status, lastS
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
           ),
-          text: t('settings.syncStatus.synced') as string,
+          text: t('common.settings.syncStatus.synced') as string,
           color: 'text-green-600'
         };
       case 'error':
@@ -111,7 +111,7 @@ const SyncStatusIndicator: React.FC<SyncStatusIndicatorProps> = ({ status, lastS
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
           ),
-          text: t('settings.syncStatus.error') as string,
+          text: t('common.settings.syncStatus.error') as string,
           color: 'text-red-600'
         };
       default:
@@ -121,7 +121,7 @@ const SyncStatusIndicator: React.FC<SyncStatusIndicatorProps> = ({ status, lastS
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
             </svg>
           ),
-          text: t('settings.syncStatus.idle') as string,
+          text: t('common.settings.syncStatus.idle') as string,
           color: 'text-gray-500'
         };
     }
@@ -135,7 +135,7 @@ const SyncStatusIndicator: React.FC<SyncStatusIndicatorProps> = ({ status, lastS
       <span className={statusDisplay.color}>{statusDisplay.text}</span>
       {lastSyncTime && status === 'success' && (
         <span className="text-gray-400">
-          • {t('settings.lastSync') as string}: {lastSyncTime.toLocaleTimeString()}
+          • {t('common.settings.lastSync') as string}: {lastSyncTime.toLocaleTimeString()}
         </span>
       )}
     </div>
@@ -272,7 +272,7 @@ const UserSettings: React.FC = () => {
       setOriginalSettings(settings);
       setLastSyncTime(new Date());
       setSyncStatus('success');
-      setToast({ message: t('settings.settingsUpdated') as string, type: 'success' });
+      setToast({ message: t('common.settings.settingsUpdated') as string, type: 'success' });
 
     } catch (error) {
       console.error('Failed to save settings:', error);
@@ -296,7 +296,7 @@ const UserSettings: React.FC = () => {
 
   // Reset to defaults
   const handleResetToDefaults = useCallback(() => {
-    if (window.confirm(t('settings.resetConfirm') as string)) {
+    if (window.confirm(t('common.settings.resetConfirm') as string)) {
       const defaultSettings: UserSettingsData = {
         language: 'en',
         localePreferences: {
@@ -320,10 +320,10 @@ const UserSettings: React.FC = () => {
         await refreshAuth();
         setSyncStatus('success');
         setLastSyncTime(new Date());
-        setToast({ message: t('settings.syncRefreshed') as string, type: 'info' });
+        setToast({ message: t('common.settings.syncRefreshed') as string, type: 'info' });
       } catch (error) {
         setSyncStatus('error');
-        setToast({ message: t('settings.syncFailed') as string, type: 'error' });
+        setToast({ message: t('common.settings.syncFailed') as string, type: 'error' });
       }
     } else {
       // Save current changes
@@ -352,10 +352,10 @@ const UserSettings: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {t('settings.title') as string}
+            {t('common.settings.title') as string}
           </h1>
           <p className="text-gray-600">
-            {t('settings.syncDescription') as string}
+            {t('common.settings.syncDescription') as string}
           </p>
         </div>
 
@@ -365,13 +365,13 @@ const UserSettings: React.FC = () => {
             {/* Language Preferences */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                {t('settings.languagePreferences') as string}
+                {t('common.settings.languagePreferences') as string}
               </h2>
               
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('settings.currentLanguage') as string}
+                    {t('common.settings.currentLanguage') as string}
                   </label>
                   <select
                     value={settings.language}
@@ -380,7 +380,7 @@ const UserSettings: React.FC = () => {
                   >
                     {availableLanguages.map((lang) => (
                       <option key={lang} value={lang}>
-                        {t(`languages.${lang}`) as string}
+                        {t(`common.languages.${lang}`) as string}
                       </option>
                     ))}
                   </select>
@@ -391,14 +391,14 @@ const UserSettings: React.FC = () => {
             {/* Locale Preferences */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                {t('settings.localePreferences') as string}
+                {t('common.settings.localePreferences') as string}
               </h2>
               
               <div className="space-y-4">
                 {/* Date Format */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('settings.dateFormat') as string}
+                    {t('common.settings.dateFormat') as string}
                   </label>
                   <select
                     value={settings.localePreferences.dateFormat}
@@ -415,7 +415,7 @@ const UserSettings: React.FC = () => {
                 {/* Time Format */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('settings.timeFormat') as string}
+                    {t('common.settings.timeFormat') as string}
                   </label>
                   <select
                     value={settings.localePreferences.timeFormat}
@@ -430,7 +430,7 @@ const UserSettings: React.FC = () => {
                 {/* Number Format */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('settings.numberFormat') as string}
+                    {t('common.settings.numberFormat') as string}
                   </label>
                   <select
                     value={settings.localePreferences.numberFormat}
@@ -447,7 +447,7 @@ const UserSettings: React.FC = () => {
                 {/* Currency */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t('settings.currency') as string}
+                    {t('common.settings.currency') as string}
                   </label>
                   <select
                     value={settings.localePreferences.currency}
@@ -470,7 +470,7 @@ const UserSettings: React.FC = () => {
                 loading={saving}
                 className="flex-1"
               >
-                {t('settings.saveChanges') as string}
+                {t('common.settings.saveChanges') as string}
               </Button>
               
               <Button
@@ -479,7 +479,7 @@ const UserSettings: React.FC = () => {
                 disabled={saving}
                 className="flex-1"
               >
-                {t('settings.resetToDefaults') as string}
+                {t('common.settings.resetToDefaults') as string}
               </Button>
             </div>
           </div>
@@ -487,16 +487,16 @@ const UserSettings: React.FC = () => {
           {/* Preview Section */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              {t('settings.previewSection') as string}
+              {t('common.settings.previewSection') as string}
             </h2>
             <p className="text-gray-600 mb-6">
-              {t('settings.previewDescription') as string}
+              {t('common.settings.previewDescription') as string}
             </p>
 
             <div className="space-y-4">
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-sm font-medium text-gray-700">
-                  {t('settings.sampleDate') as string}:
+                  {t('common.settings.sampleDate') as string}:
                 </span>
                 <span className="text-sm text-gray-900">
                   {formatDate(sampleDate)}
@@ -505,7 +505,7 @@ const UserSettings: React.FC = () => {
 
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-sm font-medium text-gray-700">
-                  {t('settings.sampleTime') as string}:
+                  {t('common.settings.sampleTime') as string}:
                 </span>
                 <span className="text-sm text-gray-900">
                   {formatTime(sampleDate)}
@@ -514,7 +514,7 @@ const UserSettings: React.FC = () => {
 
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-sm font-medium text-gray-700">
-                  {t('settings.sampleNumber') as string}:
+                  {t('common.settings.sampleNumber') as string}:
                 </span>
                 <span className="text-sm text-gray-900">
                   {formatNumber(sampleNumber)}
@@ -523,7 +523,7 @@ const UserSettings: React.FC = () => {
 
               <div className="flex justify-between items-center py-2">
                 <span className="text-sm font-medium text-gray-700">
-                  {t('settings.sampleCurrency') as string}:
+                  {t('common.settings.sampleCurrency') as string}:
                 </span>
                 <span className="text-sm text-gray-900">
                   {formatCurrency(samplePrice, settings.localePreferences.currency)}
@@ -542,10 +542,10 @@ const UserSettings: React.FC = () => {
                   </div>
                   <div className="ml-3 flex-1">
                     <h3 className="text-sm font-medium text-blue-800">
-                      {t('settings.syncAcrossDevices') as string}
+                      {t('common.settings.syncAcrossDevices') as string}
                     </h3>
                     <p className="text-sm text-blue-700 mt-1">
-                      {t('settings.syncDescription') as string}
+                      {t('common.settings.syncDescription') as string}
                     </p>
                   </div>
                 </div>
@@ -557,7 +557,7 @@ const UserSettings: React.FC = () => {
                     disabled={saving}
                     className="ml-3 text-sm text-blue-600 hover:text-blue-800 underline"
                   >
-                    {t('settings.retrySync') as string}
+                    {t('common.settings.retrySync') as string}
                   </button>
                 )}
               </div>

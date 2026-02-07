@@ -7,6 +7,7 @@ import { ToastProvider } from './contexts/ToastProvider'
 import { I18nProvider, useI18n } from './contexts/I18nProvider'
 import { NotificationInitializer } from './components/NotificationInitializer'
 import ProtectedRoute, { PublicRoute } from './components/ProtectedRoute'
+import ScrollToTop from './components/ScrollToTop'
 import { 
   Layout, 
   DashboardLayout, 
@@ -461,6 +462,7 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
+        <ScrollToTop />
         <I18nProvider>
           <AppContent />
         </I18nProvider>

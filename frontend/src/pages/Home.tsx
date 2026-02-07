@@ -79,7 +79,7 @@ const Home: React.FC = () => {
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">{t('messages.loading')}</p>
+            <p className="text-gray-600">{getTranslation('common.messages.loading', 'Loading...')}</p>
           </div>
         </div>
       </Layout>
@@ -201,14 +201,14 @@ const Home: React.FC = () => {
                         to="/dashboard" 
                         className="bg-white text-green-600 hover:bg-gray-100 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
-                         <HomeIcon className="w-5 h-5 mr-2 inline" /> {t('navigation.dashboard')}
+                         <HomeIcon className="w-5 h-5 mr-2 inline" /> {getTranslation('common.navigation.dashboard','Dashboard')}
                       </Link>
                       {user?.role === 'BUYER' && (
                         <Link 
                           to="/products" 
                           className="border-2 border-white text-white hover:bg-white hover:text-green-600 w-full sm:w-auto text-center px-8 py-4 text-lg font-semibold rounded-full transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                         >
-                          <ShoppingCart className="w-5 h-5 mr-2 inline" /> {t('navigation.products')}
+                          <ShoppingCart className="w-5 h-5 mr-2 inline" /> {getTranslation('common.navigation.products', 'Products')}
                         </Link>
                       )}
                       {user?.role === 'FARMER' && (
