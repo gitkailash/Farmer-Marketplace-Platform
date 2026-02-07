@@ -169,7 +169,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                     {(t('cart.button.total') as string) || 'Total'} ({(t('cart.button.items', { count: totalItems }) as string) || `${totalItems} items`}):
                   </span>
                   <span className="text-xl font-bold text-primary-600">
-                    ${totalAmount.toFixed(2)}
+                    Rs{totalAmount.toFixed(2)}
                   </span>
                 </div>
 
@@ -276,7 +276,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onUpdateQuantity, onRemove, i
           {item.name}
         </h4>
         <p className="text-sm text-gray-600">
-          ${item.price}/{item.unit}
+          Rs{item.price}/{item.unit}
         </p>
         <p className={`text-xs text-gray-500 ${language === 'ne' ? 'font-nepali' : ''}`}>
           {(t('cart.item.byFarmer', { farmerId: item.farmerId.slice(-6) }) as string) || `by Farmer #${item.farmerId.slice(-6)}`}
@@ -309,7 +309,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onUpdateQuantity, onRemove, i
       {/* Price and Remove */}
       <div className="text-right">
         <p className="text-sm font-medium text-gray-900">
-          ${(item.price * item.quantity).toFixed(2)}
+          Rs{(item.price * item.quantity).toFixed(2)}
         </p>
         <button
           onClick={handleRemove}

@@ -113,10 +113,10 @@ const Checkout: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className={`text-3xl font-bold text-gray-900 mb-2 ${language === 'ne' ? 'font-nepali' : ''}`}>
-            {(t('checkout.title') as string) || 'Checkout'}
+            {(t('common.checkout.title') as string) || 'Checkout'}
           </h1>
           <p className={`text-gray-600 ${language === 'ne' ? 'font-nepali' : ''}`}>
-            {(t('checkout.subtitle') as string) || 'Review your order and provide delivery details'}
+            {(t('common.checkout.subtitle') as string) || 'Review your order and provide delivery details'}
           </p>
         </div>
 
@@ -126,19 +126,19 @@ const Checkout: React.FC = () => {
             {/* Delivery Information */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h2 className={`text-xl font-semibold text-gray-900 mb-4 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                {(t('checkout.deliveryInformation') as string) || 'Delivery Information'}
+                {(t('common.checkout.deliveryInformation') as string) || 'Delivery Information'}
               </h2>
               
               <div className="space-y-4">
                 <div>
                   <label htmlFor="deliveryAddress" className={`block text-sm font-medium text-gray-700 mb-2 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                    {(t('checkout.deliveryAddressRequired') as string) || 'Delivery Address *'}
+                    {(t('common.checkout.deliveryAddressRequired') as string) || 'Delivery Address *'}
                   </label>
                   <textarea
                     id="deliveryAddress"
                     value={deliveryAddress}
                     onChange={(e) => setDeliveryAddress(e.target.value)}
-                    placeholder={(t('checkout.deliveryAddressPlaceholder') as string) || 'Enter your complete delivery address...'}
+                    placeholder={(t('common.checkout.deliveryAddressPlaceholder') as string) || 'Enter your complete delivery address...'}
                     rows={3}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${language === 'ne' ? 'font-nepali' : ''}`}
                     required
@@ -147,13 +147,13 @@ const Checkout: React.FC = () => {
 
                 <div>
                   <label htmlFor="notes" className={`block text-sm font-medium text-gray-700 mb-2 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                    {(t('checkout.specialInstructions') as string) || 'Special Instructions (Optional)'}
+                    {(t('common.checkout.specialInstructions') as string) || 'Special Instructions (Optional)'}
                   </label>
                   <textarea
                     id="notes"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder={(t('checkout.specialInstructionsPlaceholder') as string) || 'Any special delivery instructions or notes for the farmer...'}
+                    placeholder={(t('common.checkout.specialInstructionsPlaceholder') as string) || 'Any special delivery instructions or notes for the farmer...'}
                     rows={2}
                     className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${language === 'ne' ? 'font-nepali' : ''}`}
                   />
@@ -164,7 +164,7 @@ const Checkout: React.FC = () => {
             {/* Orders by Farmer */}
             <div className="space-y-4">
               <h2 className={`text-xl font-semibold text-gray-900 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                {(t('checkout.orderDetails') as string) || 'Order Details'}
+                {(t('common.checkout.orderDetails') as string) || 'Order Details'}
               </h2>
               
               {Object.entries(itemsByFarmer).map(([farmerId, items]) => {
@@ -174,10 +174,10 @@ const Checkout: React.FC = () => {
                   <div key={farmerId} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className={`text-lg font-medium text-gray-900 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                        {(t('checkout.farmerOrder', { farmerId: farmerId.slice(-8) }) as string) || `Farmer #${farmerId.slice(-8)}`}
+                        {(t('common.checkout.farmerOrder', { farmerId: farmerId.slice(-8) }) as string) || `Farmer #${farmerId.slice(-8)}`}
                       </h3>
                       <span className="text-lg font-semibold text-primary-600">
-                        ${farmerTotal.toFixed(2)}
+                        Rs{farmerTotal.toFixed(2)}
                       </span>
                     </div>
                     
@@ -195,7 +195,7 @@ const Checkout: React.FC = () => {
                             <div>
                               <h4 className={`font-medium text-gray-900 ${language === 'ne' ? 'font-nepali' : ''}`}>{item.name}</h4>
                               <p className="text-sm text-gray-600">
-                                ${item.price}/{item.unit}
+                                Rs{item.price}/{item.unit}
                               </p>
                             </div>
                           </div>
@@ -204,7 +204,7 @@ const Checkout: React.FC = () => {
                               {item.quantity} {item.unit}
                             </p>
                             <p className="text-sm text-gray-600">
-                              ${(item.price * item.quantity).toFixed(2)}
+                              Rs{(item.price * item.quantity).toFixed(2)}
                             </p>
                           </div>
                         </div>
@@ -228,30 +228,30 @@ const Checkout: React.FC = () => {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
               <h2 className={`text-xl font-semibold text-gray-900 mb-4 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                {(t('checkout.orderSummary') as string) || 'Order Summary'}
+                {(t('common.checkout.orderSummary') as string) || 'Order Summary'}
               </h2>
               
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-sm">
                   <span className={`text-gray-600 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                    {(t('cart.items') as string) || 'Items'} ({cartItems.length})
+                    {(t('common.cart.items') as string) || 'Items'} ({cartItems.length})
                   </span>
-                  <span className="text-gray-900">${totalAmount.toFixed(2)}</span>
+                  <span className="text-gray-900">Rs{totalAmount.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className={`text-gray-600 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                    {(t('cart.delivery') as string) || 'Delivery'}
+                    {(t('common.cart.delivery') as string) || 'Delivery'}
                   </span>
                   <span className={`text-gray-900 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                    {(t('cart.free') as string) || 'Free'}
+                    {(t('common.cart.free') as string) || 'Free'}
                   </span>
                 </div>
                 <div className="border-t border-gray-200 pt-3">
                   <div className="flex justify-between text-lg font-semibold">
                     <span className={`text-gray-900 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                      {(t('cart.total') as string) || 'Total'}
+                      {(t('common.cart.total') as string) || 'Total'}
                     </span>
-                    <span className="text-primary-600">${totalAmount.toFixed(2)}</span>
+                    <span className="text-primary-600">Rs{totalAmount.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -267,10 +267,10 @@ const Checkout: React.FC = () => {
                   {loading ? (
                     <>
                       <LoadingSpinner size="sm" />
-                      {(t('checkout.placingOrder') as string) || 'Placing Order...'}
+                      {(t('common.checkout.placingOrder') as string) || 'Placing Order...'}
                     </>
                   ) : (
-                    (t('checkout.placeOrder') as string) || 'Place Order'
+                    (t('common.checkout.placeOrder') as string) || 'Place Order'
                   )}
                 </Button>
                 
@@ -280,19 +280,19 @@ const Checkout: React.FC = () => {
                   size="lg"
                   fullWidth
                 >
-                  {(t('checkout.continueShopping') as string) || 'Continue Shopping'}
+                  {(t('common.checkout.continueShopping') as string) || 'Continue Shopping'}
                 </Button>
               </div>
 
               <div className="mt-6 text-xs text-gray-500">
                 <p className={`mb-2 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                  {(t('checkout.notes.ordersToFarmers') as string) || '📦 Orders will be sent to individual farmers for acceptance'}
+                  {(t('common.checkout.notes.ordersToFarmers') as string) || '📦 Orders will be sent to individual farmers for acceptance'}
                 </p>
                 <p className={`mb-2 ${language === 'ne' ? 'font-nepali' : ''}`}>
-                  {(t('checkout.notes.deliveryArrangements') as string) || '🚚 Delivery arrangements will be made directly with farmers'}
+                  {(t('common.checkout.notes.deliveryArrangements') as string) || '🚚 Delivery arrangements will be made directly with farmers'}
                 </p>
                 <p className={`${language === 'ne' ? 'font-nepali' : ''}`}>
-                  {(t('checkout.notes.messageFarmers') as string) || '💬 You can message farmers about your orders after placement'}
+                  {(t('common.checkout.notes.messageFarmers') as string) || '💬 You can message farmers about your orders after placement'}
                 </p>
               </div>
             </div>

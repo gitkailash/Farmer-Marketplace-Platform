@@ -307,7 +307,7 @@ const Home: React.FC = () => {
                       </p>
                       <div className="flex items-center justify-between">
                         <span className="text-lg font-bold text-primary-600">
-                          ${product.price}/{product.unit}
+                          Rs{product.price}/{product.unit}
                         </span>
                         <div className="flex items-center text-sm text-gray-500">
                           <Star className="w-4 h-4 mr-1" />

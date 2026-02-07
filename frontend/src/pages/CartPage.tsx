@@ -187,7 +187,7 @@ const CartPage: React.FC = () => {
                     <div className="space-y-3 mb-6">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">{t('cart.page.subtotal', { count: totalItems })}</span>
-                        <span className="text-gray-900">${totalAmount.toFixed(2)}</span>
+                        <span className="text-gray-900">Rs{totalAmount.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">{t('cart.page.shipping')}</span>
@@ -197,7 +197,7 @@ const CartPage: React.FC = () => {
                         <div className="flex justify-between">
                           <span className="text-lg font-medium text-gray-900">{t('cart.page.total')}</span>
                           <span className="text-xl font-bold text-primary-600">
-                            ${totalAmount.toFixed(2)}
+                            Rs{totalAmount.toFixed(2)}
                           </span>
                         </div>
                       </div>
@@ -354,7 +354,7 @@ const CartItem: React.FC<CartItemProps> = ({ item, onUpdateQuantity, onRemove, i
             
             <div className="text-right">
               <p className="text-lg font-semibold text-gray-900">
-                ${(item.price * item.quantity).toFixed(2)}
+                Rs{(item.price * item.quantity).toFixed(2)}
               </p>
               <p className="text-xs text-gray-500">
                 {t('cart.item.stock', { count: item.stock })}

@@ -357,7 +357,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }
             error={errors.unit}
             options={UNITS.map(unit => ({
               value: unit.value,
-              label: language === 'ne' ? ((t(`units.${unit.value}`) as string) || unit.label) : unit.label
+              label: language === 'ne' ? ((t(`products.units.${unit.value}`) as string) || unit.label) : unit.label
             }))}
             placeholder={(t('products.form.unit') as string) || 'Select unit'}
             required

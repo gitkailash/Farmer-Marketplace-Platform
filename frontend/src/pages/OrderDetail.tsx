@@ -205,7 +205,7 @@ const OrderDetail: React.FC = () => {
                 {ORDER_STATUS_ICONS[order.status]} {order.status}
               </span>
               <p className="text-2xl font-bold text-primary-600 mt-2">
-                ${order.totalAmount.toFixed(2)}
+                Rs{order.totalAmount.toFixed(2)}
               </p>
             </div>
           </div>
@@ -311,7 +311,7 @@ const OrderDetail: React.FC = () => {
                         Quantity: {item.quantity}
                       </p>
                       <p className="text-lg font-bold text-primary-600">
-                        ${(item.priceAtTime * item.quantity).toFixed(2)}
+                        Rs{(item.priceAtTime * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -325,7 +325,7 @@ const OrderDetail: React.FC = () => {
                     Total Amount:
                   </span>
                   <span className="text-2xl font-bold text-primary-600">
-                    ${order.totalAmount.toFixed(2)}
+                    Rs{order.totalAmount.toFixed(2)}
                   </span>
                 </div>
               </div>

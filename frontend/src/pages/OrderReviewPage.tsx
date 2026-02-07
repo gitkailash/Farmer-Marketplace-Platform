@@ -344,7 +344,7 @@ const OrderReviewPage: React.FC = () => {
             <div>
               <h3 className="font-medium text-gray-700 mb-2">Order Total</h3>
               <p className="text-2xl font-bold text-primary-600">
-                ${order.totalAmount.toFixed(2)}
+                Rs{order.totalAmount.toFixed(2)}
               </p>
               <p className="text-sm text-gray-600">
                 {order.items.length} item{order.items.length !== 1 ? 's' : ''}
@@ -376,7 +376,7 @@ const OrderReviewPage: React.FC = () => {
                       </span>
                     </div>
                     <span className="font-medium text-gray-900">
-                      ${(processedItem.priceAtTime * processedItem.quantity).toFixed(2)}
+                      Rs{(processedItem.priceAtTime * processedItem.quantity).toFixed(2)}
                     </span>
                   </div>
                 );

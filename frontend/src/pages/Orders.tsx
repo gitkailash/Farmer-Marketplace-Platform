@@ -445,7 +445,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
                 {t(`orders.status.${order.status.toLowerCase()}`)}
               </span>
               <p className="text-lg font-bold text-primary-600 mt-1">
-                ${order.totalAmount.toFixed(2)}
+                Rs{order.totalAmount.toFixed(2)}
               </p>
             </div>
           </div>
@@ -560,7 +560,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
                           
                           <div className="flex items-center gap-4 mt-1">
                             <p className="text-sm text-gray-600">
-                              ${item.priceAtTime.toFixed(2)}
+                              Rs{item.priceAtTime.toFixed(2)}
                               {item.unit ? ` per ${item.unit}` : ' each'}
                             </p>
                             
@@ -581,7 +581,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
                         {t('orders.card.quantity', { quantity: item.quantity })}
                       </p>
                       <p className="text-sm text-gray-600">
-                        ${(item.priceAtTime * item.quantity).toFixed(2)}
+                        Rs{(item.priceAtTime * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -593,7 +593,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
                 <div className="flex justify-between items-center">
                   <span className="font-medium text-gray-900">{t('orders.card.orderTotal')}</span>
                   <span className="font-bold text-lg text-primary-600">
-                    ${order.totalAmount.toFixed(2)}
+                    Rs{order.totalAmount.toFixed(2)}
                   </span>
                 </div>
                 {processedItems.length > 0 && (

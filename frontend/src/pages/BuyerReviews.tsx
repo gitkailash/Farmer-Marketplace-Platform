@@ -523,7 +523,7 @@ const PendingReviewCard: React.FC<PendingReviewCardProps> = ({
             </div>
             <div>
               <span className="font-medium">{tReviews('pending.orderCard.total')}</span>
-              <span className="ml-2 font-semibold text-primary-600">${order.totalAmount.toFixed(2)}</span>
+              <span className="ml-2 font-semibold text-primary-600">Rs{order.totalAmount.toFixed(2)}</span>
             </div>
             <div>
               <span className="font-medium">{tReviews('pending.orderCard.items')}</span>
