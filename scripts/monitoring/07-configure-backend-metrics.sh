@@ -12,7 +12,7 @@ APP_DIR="/opt/farmer-marketplace"
 
 echo -e "${YELLOW}📦 Installing prom-client...${NC}"
 cd $APP_DIR/backend
-npm install prom-client
+npm install prom-client --no-workspaces
 
 echo -e "${YELLOW}📝 Creating metrics endpoint...${NC}"
 cat > $APP_DIR/backend/src/metrics.ts <<'EOF'

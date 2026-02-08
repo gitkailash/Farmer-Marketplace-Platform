@@ -52,6 +52,7 @@
     "mongoose": "^7.5.0",
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
+    "prom-client": "^15.1.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-dist": "^5.31.0",
     "swagger-ui-express": "^5.0.1",
