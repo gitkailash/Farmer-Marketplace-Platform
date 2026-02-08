@@ -13,6 +13,7 @@ import docsRoutes from './routes/docsRoutes';
 import translationRoutes from './routes/translationRoutes';
 import { database } from './config/database';
 import { config } from './config/environment';
+import { metricsHandler } from './metrics';
 
 // Create Express application
 export const createApp = (): express.Application => {
@@ -36,6 +37,9 @@ export const createApp = (): express.Application => {
   app.use('/api/content', contentRoutes);
   app.use('/api/admin', adminRoutes);
   app.use('/api/translations', translationRoutes);
+
+  // Metrics endpoint for Prometheus
+  app.get('/metrics', metricsHandler);
 
   // Health check endpoint
   app.get('/health', async (req, res) => {
