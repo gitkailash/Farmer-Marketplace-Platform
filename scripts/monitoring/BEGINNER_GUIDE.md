@@ -48,6 +48,8 @@ http://100.49.247.47:3000
 - Log volume over time
 - Top log sources
 
+**Note:** Since you're using MongoDB Atlas (cloud), you don't need a MongoDB dashboard here. Atlas has its own monitoring built-in.
+
 ---
 
 ## 📈 **Step 3: Understanding Your Main Dashboard**

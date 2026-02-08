@@ -33,7 +33,7 @@ Alertmanager:  http://100.49.247.47:9093
 1860  - Node Exporter Full (System metrics) ⭐ MUST HAVE
 3662  - Prometheus Stats
 13639 - Loki Dashboard (Logs)
-7362  - MongoDB Exporter
+2583  - MongoDB Exporter (if you add MongoDB exporter later)
 ```
 
 **How to import:**
